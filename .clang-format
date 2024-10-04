@@ -80,6 +80,7 @@ BinPackParameters: false
 AllowAllParametersOfDeclarationOnNextLine: false
 BinPackArguments: false
 AllowAllArgumentsOnNextLine: false
+ReflowComments: true
 UseTab: Never
 IncludeBlocks:   Merge
 IncludeCategories:
