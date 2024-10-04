@@ -42,12 +42,12 @@ void UCheckTopLevelFolderContentIsValidAction::Apply_Implementation(URuleRangerA
         {
             const auto& ErrorMessage = Message.IsEmpty()
                 ? FString::Printf(
-                    TEXT("Asset exists at the root of the content directory. "
-                         "The named of the asset must be one of [%s]%s."),
-                    *FString::Join(ValidAssetNames, TEXT(", ")),
-                    ValidAssetRegexPattern.IsEmpty()
-                        ? TEXT("")
-                        : *FString::Printf(TEXT(" or the asset name must match regex %s"), *ValidAssetRegexPattern))
+                      TEXT("Asset exists at the root of the content directory. "
+                           "The named of the asset must be one of [%s]%s."),
+                      *FString::Join(ValidAssetNames, TEXT(", ")),
+                      ValidAssetRegexPattern.IsEmpty()
+                          ? TEXT("")
+                          : *FString::Printf(TEXT(" or the asset name must match regex %s"), *ValidAssetRegexPattern))
                 : Message;
             ActionContext->Error(FText::FromString(ErrorMessage));
         }
@@ -59,13 +59,13 @@ void UCheckTopLevelFolderContentIsValidAction::Apply_Implementation(URuleRangerA
         {
             const auto& ErrorMessage = Message.IsEmpty()
                 ? FString::Printf(
-                    TEXT("Asset is contained in a top level folder named '%s'. "
-                         "The top level folder must be one of [%s]%s."),
-                    *Item,
-                    *FString::Join(ValidFolderNames, TEXT(", ")),
-                    ValidFolderRegexPattern.IsEmpty()
-                        ? TEXT("")
-                        : *FString::Printf(TEXT(" or the folder name must match regex %s"), *ValidFolderRegexPattern))
+                      TEXT("Asset is contained in a top level folder named '%s'. "
+                           "The top level folder must be one of [%s]%s."),
+                      *Item,
+                      *FString::Join(ValidFolderNames, TEXT(", ")),
+                      ValidFolderRegexPattern.IsEmpty()
+                          ? TEXT("")
+                          : *FString::Printf(TEXT(" or the folder name must match regex %s"), *ValidFolderRegexPattern))
                 : Message;
             ActionContext->Error(FText::FromString(ErrorMessage));
         }
