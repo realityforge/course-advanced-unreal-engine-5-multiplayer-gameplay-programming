@@ -150,8 +150,8 @@ void UEnsureAssetImportedFromDataSourceFolderAction::Apply_Implementation(URuleR
             else if (!bSkipAssetsMissingAssetImportData)
             {
                 ActionContext->Error(FText::FromString(TEXT("Asset missing AssetImportData and "
-                                                       "SkipAssetsMissingAssetImportData=false. Change setting "
-                                                       "or ensure asset has been imported correctly.")));
+                                                            "SkipAssetsMissingAssetImportData=false. Change setting "
+                                                            "or ensure asset has been imported correctly.")));
             }
         }
         else
