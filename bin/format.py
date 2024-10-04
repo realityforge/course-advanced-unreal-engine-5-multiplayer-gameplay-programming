@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ try:
             content = subprocess.run(["clang-format", f"--assume-filename={file}.json"], stdin=f, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True).stdout
         with open(file, 'w') as f:
             f.write(content)
-    
+
     if 0 != len(files_to_format):
         subprocess.run(["clang-format", "-i", *files_to_format], check=True)
 
