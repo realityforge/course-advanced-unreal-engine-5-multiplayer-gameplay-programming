@@ -9,11 +9,8 @@
 UCLASS(minimalapi)
 class AActionGameGameMode : public AGameModeBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	AActionGameGameMode();
+    AActionGameGameMode();
 };
-
-
-
