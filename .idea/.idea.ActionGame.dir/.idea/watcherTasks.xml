@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectTasksOptions">
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="cpp" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Format C++ Files Windows" />
+      <option name="output" value="$FilePath$" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="Warrior" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="h" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Format C++ Header Files Windows" />
+      <option name="output" value="$FilePath$" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="Warrior" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="cs" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Format C# Files Windows" />
+      <option name="output" value="$FilePath$" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="Warrior" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="uproject" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Format Unreal Engine project Files Windows" />
+      <option name="output" value="$FilePath$" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="Warrior" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="uplugin" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Format Unreal Engine plugin Files Windows Copy" />
+      <option name="output" value="$FilePath$" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="Warrior" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
+      <envs />
+    </TaskOptions>
+  </component>
+</project>
