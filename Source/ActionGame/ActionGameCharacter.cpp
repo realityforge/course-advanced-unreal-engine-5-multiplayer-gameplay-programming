@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ActionGameCharacter.h"
+#include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
+#include "AbilitySystem/Components/AG_AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/LocalPlayer.h"
@@ -9,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameplayEffectTypes.h"
 #include "InputActionValue.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -56,6 +59,13 @@ AActionGameCharacter::AActionGameCharacter()
     // Note: The skeletal mesh and anim blueprint references on the Mesh component
     // (inherited from Character) are set in the derived blueprint asset named
     // ThirdPersonCharacter (to avoid direct content references in C++)
+
+    AbilitySystemComponent = CreateDefaultSubobject<UAG_AbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+    AbilitySystemComponent->SetIsReplicated(true);
+    // replicate minimal gameplay effect info to simulated proxies but full info to owners and autonomous proxies
+    AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+
+    AttributeSet = CreateDefaultSubobject<UAG_AttributeSetBase>(TEXT("AttributeSet"));
 }
 
 void AActionGameCharacter::BeginPlay()
@@ -138,4 +148,81 @@ void AActionGameCharacter::Look(const FInputActionValue& Value)
         AddControllerYawInput(LookAxisVector.X);
         AddControllerPitchInput(LookAxisVector.Y);
     }
+}
+
+void AActionGameCharacter::InitializeAttributes()
+{
+    if (HasAuthority() && DefaultAttributesSet && AttributeSet)
+    {
+        FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+        EffectContext.AddSourceObject(this);
+
+        ApplyGameplayEffectToSelf(DefaultAttributesSet, EffectContext);
+    }
+}
+
+void AActionGameCharacter::GiveAbilities()
+{
+    if (HasAuthority() && AbilitySystemComponent)
+    {
+        for (const auto Ability : DefaultAbilities)
+        {
+            AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability));
+        }
+    }
+}
+
+void AActionGameCharacter::ApplyStartupEffects()
+{
+    if (HasAuthority())
+    {
+        FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+        EffectContext.AddSourceObject(this);
+
+        for (const auto Effect : DefaultEffects)
+        {
+            ApplyGameplayEffectToSelf(Effect, EffectContext);
+        }
+    }
+}
+
+void AActionGameCharacter::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+
+    // serverside initialization of ASC, client initialized in OnRep_PlayerState
+    AbilitySystemComponent->InitAbilityActorInfo(this, this);
+    InitializeAttributes();
+    GiveAbilities();
+    ApplyStartupEffects();
+}
+
+void AActionGameCharacter::OnRep_PlayerState()
+{
+    Super::OnRep_PlayerState();
+
+    // clientside initialization of ASC, server initialized in in PossessedBy
+    AbilitySystemComponent->InitAbilityActorInfo(this, this);
+    InitializeAttributes();
+}
+
+bool AActionGameCharacter::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& Effect,
+                                                     const FGameplayEffectContextHandle& InEffectContext)
+{
+    if (Effect.Get())
+    {
+        // ReSharper disable once CppTooWideScopeInitStatement
+        const auto SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(Effect, 1, InEffectContext);
+        if (SpecHandle.IsValid())
+        {
+            const auto EffectHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+            return EffectHandle.WasSuccessfullyApplied();
+        }
+    }
+    return false;
+}
+
+UAbilitySystemComponent* AActionGameCharacter::GetAbilitySystemComponent() const
+{
+    return AbilitySystemComponent;
 }
