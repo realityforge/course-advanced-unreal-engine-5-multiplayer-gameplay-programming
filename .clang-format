@@ -98,6 +98,7 @@ IncludeIsMainRegex: '([-_](test|unittest))?$'
 ---
 Language:        CSharp
 BasedOnStyle:  Microsoft
+InsertNewlineAtEOF: true
 ---
 Language: Json
 SpaceBeforeJsonColon: false
