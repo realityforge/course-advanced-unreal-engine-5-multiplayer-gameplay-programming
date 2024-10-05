@@ -22,11 +22,22 @@
 
 has_error=0
 
-for file in $(git diff-index --cached --name-only HEAD | grep -E '^(Plugins\/RuleRanger\/Source|Source)/.*\.(cpp|h|cs|uplugin|uproject)$'); do
+for file in $(git diff-index --cached --name-only HEAD | grep -E '^(Plugins\/RuleRanger\/Source|Source)/.*\.(cpp|h|cs)$'); do
     if [ -f $file ]; then
         clang-format --dry-run --Werror -i "${file}" 2>/dev/null >/dev/null
         if [ $? -ne 0 ]; then
             clang-format -i "${file}"
+            echo "Commit aborted due to code format inconsistencies. '${file}' re-formatted, please review and update commit as required."
+            has_error=1
+        fi
+    fi
+done
+
+for file in $(git diff-index --cached --name-only HEAD | grep -E '^(Plugins\/RuleRanger\/Source|Source)/.*\.uplugin$|^.*\.uproject$'); do
+    if [ -f $file ]; then
+        clang-format --dry-run --Werror -i "${file}" --assume-filename="${file}.json" 2>/dev/null >/dev/null
+        if [ $? -ne 0 ]; then
+            clang-format -i "${file}" --assume-filename="${file}.json"
             echo "Commit aborted due to code format inconsistencies. '${file}' re-formatted, please review and update commit as required."
             has_error=1
         fi
