@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $FilePathRelativeToProjectRoot$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -14,15 +14,15 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="program" value="python3" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Warrior" />
+      <option name="scopeName" value="Solution" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $FilePathRelativeToProjectRoot$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -34,15 +34,15 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="program" value="python3" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Warrior" />
+      <option name="scopeName" value="Solution" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $FilePathRelativeToProjectRoot$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -54,15 +54,15 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="program" value="python3" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Warrior" />
+      <option name="scopeName" value="Solution" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $FilePathRelativeToProjectRoot$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -74,15 +74,15 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="program" value="python3" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Warrior" />
+      <option name="scopeName" value="Solution" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
     </TaskOptions>
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="bin/format.py --verbose --scope=selected $/FilePathRelativeToProjectRoot$" />
+      <option name="arguments" value="bin/format.py --verbose --scope=selected $FilePathRelativeToProjectRoot$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />
@@ -94,9 +94,9 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$PROJECT_DIR$/../../Program Files/Python310/python" />
+      <option name="program" value="python3" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Warrior" />
+      <option name="scopeName" value="Solution" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
