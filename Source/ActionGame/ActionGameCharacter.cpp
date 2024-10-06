@@ -150,6 +150,7 @@ void AActionGameCharacter::Look(const FInputActionValue& Value)
     }
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
 void AActionGameCharacter::InitializeAttributes()
 {
     if (HasAuthority() && DefaultAttributesSet && AttributeSet)
@@ -157,6 +158,7 @@ void AActionGameCharacter::InitializeAttributes()
         FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
         EffectContext.AddSourceObject(this);
 
+        // ReSharper disable once CppExpressionWithoutSideEffects
         ApplyGameplayEffectToSelf(DefaultAttributesSet, EffectContext);
     }
 }
@@ -181,6 +183,7 @@ void AActionGameCharacter::ApplyStartupEffects()
 
         for (const auto Effect : DefaultEffects)
         {
+            // ReSharper disable once CppExpressionWithoutSideEffects
             ApplyGameplayEffectToSelf(Effect, EffectContext);
         }
     }
