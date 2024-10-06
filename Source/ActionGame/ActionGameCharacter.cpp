@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "ActionGameCharacter.h"
 #include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
 #include "AbilitySystem/Components/AG_AbilitySystemComponent.h"
