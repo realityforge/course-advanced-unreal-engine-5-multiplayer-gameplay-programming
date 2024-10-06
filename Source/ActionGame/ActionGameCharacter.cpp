@@ -11,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameplayEffectTypes.h"
 #include "InputActionValue.h"
+#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -148,26 +149,12 @@ void AActionGameCharacter::Look(const FInputActionValue& Value)
     }
 }
 
-// ReSharper disable once CppMemberFunctionMayBeConst
-void AActionGameCharacter::InitializeAttributes()
-{
-    if (HasAuthority() && DefaultAttributesSet)
-    {
-        check(AttributeSet);
-        FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-        EffectContext.AddSourceObject(this);
-
-        // ReSharper disable once CppExpressionWithoutSideEffects
-        ApplyGameplayEffectToSelf(DefaultAttributesSet, EffectContext);
-    }
-}
-
 void AActionGameCharacter::GiveAbilities()
 {
     if (HasAuthority())
     {
         check(AbilitySystemComponent);
-        for (const auto Ability : DefaultAbilities)
+        for (const auto Ability : CharacterData.Abilities)
         {
             AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability));
         }
@@ -181,7 +168,7 @@ void AActionGameCharacter::ApplyStartupEffects()
         FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
         EffectContext.AddSourceObject(this);
 
-        for (const auto Effect : DefaultEffects)
+        for (const auto Effect : CharacterData.Effects)
         {
             // ReSharper disable once CppExpressionWithoutSideEffects
             ApplyGameplayEffectToSelf(Effect, EffectContext);
@@ -195,7 +182,6 @@ void AActionGameCharacter::PossessedBy(AController* NewController)
 
     // serverside initialization of ASC, client initialized in OnRep_PlayerState
     AbilitySystemComponent->InitAbilityActorInfo(this, this);
-    InitializeAttributes();
     GiveAbilities();
     ApplyStartupEffects();
 }
@@ -206,7 +192,6 @@ void AActionGameCharacter::OnRep_PlayerState()
 
     // clientside initialization of ASC, server initialized in in PossessedBy
     AbilitySystemComponent->InitAbilityActorInfo(this, this);
-    InitializeAttributes();
 }
 
 bool AActionGameCharacter::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& Effect,
@@ -228,4 +213,38 @@ bool AActionGameCharacter::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplay
 UAbilitySystemComponent* AActionGameCharacter::GetAbilitySystemComponent() const
 {
     return AbilitySystemComponent;
+}
+
+FCharacterData AActionGameCharacter::GetCharacterData() const
+{
+    return CharacterData;
+}
+
+void AActionGameCharacter::SetCharacterData(const FCharacterData& InCharacterData)
+{
+    CharacterData = InCharacterData;
+    InitFromCharacterData(InCharacterData, false);
+}
+
+void AActionGameCharacter::OnRep_CharacterData()
+{
+    InitFromCharacterData(CharacterData, true);
+}
+
+void AActionGameCharacter::InitFromCharacterData(const FCharacterData& InCharacterData, bool bFromReplication) {}
+
+void AActionGameCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+    DOREPLIFETIME(AActionGameCharacter, CharacterData);
+}
+
+void AActionGameCharacter::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+
+    if (IsValid(CharacterDataAsset))
+    {
+        SetCharacterData(CharacterDataAsset->CharacterData);
+    }
 }
