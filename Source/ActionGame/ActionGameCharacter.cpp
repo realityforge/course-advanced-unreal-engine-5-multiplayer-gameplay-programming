@@ -153,8 +153,9 @@ void AActionGameCharacter::Look(const FInputActionValue& Value)
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AActionGameCharacter::InitializeAttributes()
 {
-    if (HasAuthority() && DefaultAttributesSet && AttributeSet)
+    if (HasAuthority() && DefaultAttributesSet)
     {
+        check(AttributeSet);
         FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
         EffectContext.AddSourceObject(this);
 
@@ -165,8 +166,9 @@ void AActionGameCharacter::InitializeAttributes()
 
 void AActionGameCharacter::GiveAbilities()
 {
-    if (HasAuthority() && AbilitySystemComponent)
+    if (HasAuthority())
     {
+        check(AbilitySystemComponent);
         for (const auto Ability : DefaultAbilities)
         {
             AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability));
