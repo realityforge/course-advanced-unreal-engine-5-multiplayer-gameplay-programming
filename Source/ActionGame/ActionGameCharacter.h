@@ -93,7 +93,7 @@ protected:
 
 public:
     bool ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& Effect,
-                                   const FGameplayEffectContextHandle& InEffectContext);
+                                   const FGameplayEffectContextHandle& InEffectContext) const;
 
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 

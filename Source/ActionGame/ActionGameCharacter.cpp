@@ -212,7 +212,7 @@ void AActionGameCharacter::OnRep_PlayerState()
 }
 
 bool AActionGameCharacter::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& Effect,
-                                                     const FGameplayEffectContextHandle& InEffectContext)
+                                                     const FGameplayEffectContextHandle& InEffectContext) const
 {
     if (Effect.Get())
     {
