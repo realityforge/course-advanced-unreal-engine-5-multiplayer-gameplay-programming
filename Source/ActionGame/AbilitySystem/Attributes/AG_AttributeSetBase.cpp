@@ -10,6 +10,10 @@ void UAG_AttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCal
     {
         SetHealth(FMath::Clamp(GetHealth(), 0, GetMaxHealth()));
     }
+    else if (GetStaminaAttribute() == Data.EvaluatedData.Attribute)
+    {
+        SetStamina(FMath::Clamp(GetStamina(), 0, GetMaxStamina()));
+    }
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
@@ -24,6 +28,18 @@ void UAG_AttributeSetBase::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxH
     GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, MaxHealth, OldMaxHealth)
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void UAG_AttributeSetBase::OnRep_Stamina(const FGameplayAttributeData& OldStamina)
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, Stamina, OldStamina)
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void UAG_AttributeSetBase::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina)
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, MaxStamina, OldMaxStamina)
+}
+
 void UAG_AttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -31,4 +47,6 @@ void UAG_AttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
     // No condition == send anytime it changes
     DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, Health, COND_None, REPNOTIFY_Always)
     DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxHealth, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, Stamina, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxStamina, COND_None, REPNOTIFY_Always)
 }

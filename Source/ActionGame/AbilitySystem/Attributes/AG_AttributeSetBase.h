@@ -25,6 +25,14 @@ public:
     FGameplayAttributeData MaxHealth;
     ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, MaxHealth);
 
+    UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_Stamina)
+    FGameplayAttributeData Stamina;
+    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, Stamina);
+
+    UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_MaxStamina)
+    FGameplayAttributeData MaxStamina;
+    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, MaxStamina);
+
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
@@ -35,4 +43,10 @@ protected:
 
     UFUNCTION()
     void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
+
+    UFUNCTION()
+    void OnRep_Stamina(const FGameplayAttributeData& OldStamina);
+
+    UFUNCTION()
+    void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
 };
