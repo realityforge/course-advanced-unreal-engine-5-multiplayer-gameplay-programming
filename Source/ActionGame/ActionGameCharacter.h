@@ -53,7 +53,7 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UInputAction* LookAction;
 
 public:
-    AActionGameCharacter();
+    AActionGameCharacter(const FObjectInitializer& ObjectInitializer);
 
 protected:
     /** Called for movement input */
