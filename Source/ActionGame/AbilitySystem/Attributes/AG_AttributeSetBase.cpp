@@ -1,4 +1,6 @@
 #include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
@@ -13,6 +15,31 @@ void UAG_AttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCal
     else if (GetStaminaAttribute() == Data.EvaluatedData.Attribute)
     {
         SetStamina(FMath::Clamp(GetStamina(), 0, GetMaxStamina()));
+    }
+    else if (GetMaxMovementSpeedAttribute() == Data.EvaluatedData.Attribute)
+    {
+        if (const auto Character = Cast<ACharacter>(GetOwningActor()))
+        {
+            if (const auto CharacterMovementComponent = Character->GetCharacterMovement())
+            {
+                CharacterMovementComponent->MaxWalkSpeed = GetMaxMovementSpeed();
+            }
+            else
+            {
+                UE_LOG(
+                    LogTemp,
+                    Warning,
+                    TEXT("Failed to set MaxMovementSpeed on Character %s. Missing valid CharacterMovementComponent."),
+                    *GetOwningActor()->GetActorNameOrLabel())
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp,
+                   Warning,
+                   TEXT("Failed to set MaxMovementSpeed on Actor %s. Expected actor to be a Character."),
+                   *GetOwningActor()->GetActorNameOrLabel())
+        }
     }
 }
 
@@ -40,6 +67,12 @@ void UAG_AttributeSetBase::OnRep_MaxStamina(const FGameplayAttributeData& OldMax
     GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, MaxStamina, OldMaxStamina)
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void UAG_AttributeSetBase::OnRep_MaxMovementSpeed(const FGameplayAttributeData& OldMaxMovementSpeed)
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, MaxMovementSpeed, OldMaxMovementSpeed)
+}
+
 void UAG_AttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -49,4 +82,5 @@ void UAG_AttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
     DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxHealth, COND_None, REPNOTIFY_Always)
     DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, Stamina, COND_None, REPNOTIFY_Always)
     DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxStamina, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxMovementSpeed, COND_None, REPNOTIFY_Always)
 }

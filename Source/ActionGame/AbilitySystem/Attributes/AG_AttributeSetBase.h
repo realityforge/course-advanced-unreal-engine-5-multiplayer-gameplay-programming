@@ -33,6 +33,10 @@ public:
     FGameplayAttributeData MaxStamina;
     ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, MaxStamina);
 
+    UPROPERTY(BlueprintReadOnly, Category = "Movement Speed", ReplicatedUsing = OnRep_MaxMovementSpeed)
+    FGameplayAttributeData MaxMovementSpeed;
+    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, MaxMovementSpeed);
+
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
@@ -49,4 +53,7 @@ protected:
 
     UFUNCTION()
     void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina);
+
+    UFUNCTION()
+    void OnRep_MaxMovementSpeed(const FGameplayAttributeData& OldMaxMovementSpeed);
 };
