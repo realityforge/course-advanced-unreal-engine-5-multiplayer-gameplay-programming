@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "ActionGameTypes.generated.h"
 
+class UCharacterAnimDataAsset;
 class UGameplayAbility;
 class UGameplayEffect;
 
@@ -16,4 +17,19 @@ struct FCharacterData
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "GAS", meta = (AllowAbstract = "false"))
     TArray<TSubclassOf<UGameplayEffect>> Effects;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Animation")
+    TObjectPtr<UCharacterAnimDataAsset> CharacterAnimData{ nullptr };
+};
+
+USTRUCT(BlueprintType)
+struct FCharacterAnimData
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditDefaultsOnly)
+    TObjectPtr<UBlendSpace> MovementBlendSpace{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly)
+    TObjectPtr<UAnimSequenceBase> IdleAnimation{ nullptr };
 };
