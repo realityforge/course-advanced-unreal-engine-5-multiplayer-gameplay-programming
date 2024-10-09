@@ -20,18 +20,20 @@ plugins_to_process = ["RuleRanger"]
 parser = argparse.ArgumentParser(description="Unreal Source Code Formatter")
 
 parser.add_argument('--verbose', action='store_true', help='Increase output verbosity')
-parser.add_argument('--scope', type=str, choices=['all', 'selected'], default='all', help='The scope of source code analysis')
 parser.add_argument('files', type=str, nargs='*', help='The file to analyze')
 
 args = parser.parse_args()
 
 if args.verbose:
-    print(f"Performing Source Code Formatting. Scope= {args.scope}. Files: {args.files}")
+    print(f"Performing Source Code Formatting. Files: {args.files}")
 
 
 try:
-    files = subprocess.check_output(["git", "ls-tree", "-r", "--name-only", "HEAD", *args.files],
+    index_files = subprocess.check_output(["git", "diff-index", "--cached", "--name-only", "HEAD", *args.files],
+                                          universal_newlines=True).splitlines()
+    tree_files = subprocess.check_output(["git", "ls-tree", "-r", "--name-only", "HEAD", *args.files],
                                     universal_newlines=True).splitlines()
+    files = tree_files + index_files
     files_to_format = []
     files_to_format_assuming_json = []
     for file in files:
