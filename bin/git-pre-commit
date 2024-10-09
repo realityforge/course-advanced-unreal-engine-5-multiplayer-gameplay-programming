@@ -22,6 +22,7 @@
 
 has_error=0
 
+# TODO: Merge this into format.py then symlink into git config?
 for file in $(git diff-index --cached --name-only HEAD | grep -E '^(Plugins\/RuleRanger\/Source|Source)/.*\.(cpp|h|cs)$'); do
     if [ -f $file ]; then
         clang-format --dry-run --Werror -i "${file}" 2>/dev/null >/dev/null
