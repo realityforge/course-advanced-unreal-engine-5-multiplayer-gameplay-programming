@@ -2,6 +2,7 @@
 #include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
 #include "AbilitySystem/Components/AG_AbilitySystemComponent.h"
 #include "ActorComponents/AG_CharacterMovementComponent.h"
+#include "ActorComponents/FootstepsComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/LocalPlayer.h"
@@ -67,6 +68,8 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
     AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
     AttributeSet = CreateDefaultSubobject<UAG_AttributeSetBase>(TEXT("AttributeSet"));
+
+    FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
 }
 
 void AActionGameCharacter::BeginPlay()

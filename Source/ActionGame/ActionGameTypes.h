@@ -33,3 +33,10 @@ struct FCharacterAnimData
     UPROPERTY(EditDefaultsOnly)
     TObjectPtr<UAnimSequenceBase> IdleAnimation{ nullptr };
 };
+
+UENUM(BlueprintType)
+enum class EFoot : uint8
+{
+    Left,
+    Right
+};

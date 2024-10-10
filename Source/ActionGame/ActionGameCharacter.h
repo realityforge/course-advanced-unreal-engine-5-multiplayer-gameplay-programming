@@ -8,6 +8,7 @@
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
 
+class UFootstepsComponent;
 class UAbilitySystemComponent;
 struct FGameplayEffectContextHandle;
 class UGameplayAbility;
@@ -27,6 +28,9 @@ UCLASS(config = Game)
 class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
 {
     GENERATED_BODY()
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Footsteps", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UFootstepsComponent> FootstepsComponent{ nullptr };
 
     /** Camera boom positioning the camera behind the character */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -105,6 +109,8 @@ public:
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
     /** Returns FollowCamera subobject **/
     FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+    /** Returns UFootstepsComponent subobject **/
+    FORCEINLINE UFootstepsComponent* GetFootstepsComponent() const { return FootstepsComponent; }
 
     UFUNCTION(BlueprintCallable)
     FCharacterData GetCharacterData() const;
