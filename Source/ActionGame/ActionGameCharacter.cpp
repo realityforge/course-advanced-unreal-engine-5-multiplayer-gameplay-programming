@@ -1,6 +1,7 @@
 #include "ActionGameCharacter.h"
 #include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
 #include "AbilitySystem/Components/AG_AbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "ActorComponents/AG_CharacterMovementComponent.h"
 #include "ActorComponents/FootstepsComponent.h"
 #include "Camera/CameraComponent.h"
@@ -54,9 +55,9 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
     FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
     FollowCamera->SetupAttachment(CameraBoom,
                                   USpringArmComponent::SocketName); // Attach the camera to the end of the
-                                                                    // boom and let the boom adjust to match
-                                                                    // the controller orientation
-    FollowCamera->bUsePawnControlRotation = false;                  // Camera does not rotate relative to arm
+    // boom and let the boom adjust to match
+    // the controller orientation
+    FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
     // Note: The skeletal mesh and anim blueprint references on the Mesh component
     // (inherited from Character) are set in the derived blueprint asset named
@@ -70,6 +71,28 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
     AttributeSet = CreateDefaultSubobject<UAG_AttributeSetBase>(TEXT("AttributeSet"));
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
+}
+
+void AActionGameCharacter::PerformJump()
+{
+    // We do not call super here and implement jump to the parent class
+    // instead send event to gameplay ability system and have it do the jumping
+    FGameplayEventData Payload;
+    Payload.Instigator = this;
+    Payload.EventTag = JumpEventTag;
+
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, JumpEventTag, Payload);
+}
+
+void AActionGameCharacter::Landed(const FHitResult& Hit)
+{
+    Super::Landed(Hit);
+
+    if (AbilitySystemComponent)
+    {
+        // We have landed so remove all effects that are only applicable while in the air
+        AbilitySystemComponent->RemoveActiveEffectsWithTags(InAirTags);
+    }
 }
 
 void AActionGameCharacter::BeginPlay()
@@ -98,8 +121,10 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     {
 
         // Jumping
-        EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-        EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+        EnhancedInputComponent->BindAction(JumpAction,
+                                           ETriggerEvent::Started,
+                                           this,
+                                           &AActionGameCharacter::PerformJump);
 
         // Moving
         EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Move);

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DataAssets/CharacterDataAsset.h"
 #include "GameFramework/Character.h"
+#include "GameplayTagContainer.h"
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
 
@@ -56,8 +57,17 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
     UInputAction* LookAction;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    FGameplayTag JumpEventTag;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    FGameplayTagContainer InAirTags;
+
 public:
-    AActionGameCharacter(const FObjectInitializer& ObjectInitializer);
+    explicit AActionGameCharacter(const FObjectInitializer& ObjectInitializer);
+
+    virtual void PerformJump();
+    virtual void Landed(const FHitResult& Hit) override;
 
 protected:
     /** Called for movement input */
@@ -79,10 +89,10 @@ protected:
     virtual void OnRep_PlayerState() override;
 
     UPROPERTY(EditDefaultsOnly)
-    TObjectPtr<UAG_AbilitySystemComponent> AbilitySystemComponent;
+    TObjectPtr<UAG_AbilitySystemComponent> AbilitySystemComponent{ nullptr };
 
     UPROPERTY(Transient)
-    TObjectPtr<UAG_AttributeSetBase> AttributeSet;
+    TObjectPtr<UAG_AttributeSetBase> AttributeSet{ nullptr };
 
     UPROPERTY(ReplicatedUsing = OnRep_CharacterData)
     FCharacterData CharacterData;
