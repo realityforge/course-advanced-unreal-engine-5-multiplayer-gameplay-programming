@@ -142,17 +142,17 @@ void AActionGameCharacter::BeginPlay()
 void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     // Add Input Mapping Context
-    if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+    if (const auto PlayerController = Cast<APlayerController>(GetController()))
     {
-        if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
-                ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+        const auto LocalPlayer = PlayerController->GetLocalPlayer();
+        if (const auto Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer))
         {
             Subsystem->AddMappingContext(DefaultMappingContext, 0);
         }
     }
 
     // Set up action bindings
-    if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+    if (const auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
     {
 
         // Jumping
