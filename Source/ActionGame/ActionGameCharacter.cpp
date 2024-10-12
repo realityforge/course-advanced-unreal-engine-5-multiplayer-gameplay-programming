@@ -2,6 +2,7 @@
 #include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
 #include "AbilitySystem/Components/AG_AbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemLog.h"
 #include "ActorComponents/AG_CharacterMovementComponent.h"
 #include "ActorComponents/FootstepsComponent.h"
 #include "Camera/CameraComponent.h"
@@ -95,6 +96,40 @@ void AActionGameCharacter::Landed(const FHitResult& Hit)
     }
 }
 
+void AActionGameCharacter::OnStartCrouch(const float HalfHeightAdjust, const float ScaledHalfHeightAdjust)
+{
+    Super::OnStartCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+    if (CrouchStateEffectClass)
+    {
+        if (const auto ASC = AbilitySystemComponent.Get())
+        {
+            const auto EffectContext = ASC->MakeEffectContext();
+            // ReSharper disable once CppTooWideScopeInitStatement
+            const auto EffectSpecHandle = ASC->MakeOutgoingSpec(CrouchStateEffectClass, 1, EffectContext);
+            if (!EffectSpecHandle.IsValid())
+            {
+                ABILITY_LOG(Warning, TEXT("Failed to apply CrouchStateEffect"));
+            }
+        }
+    }
+    else
+    {
+        ABILITY_LOG(Warning, TEXT("CrouchStateEffect not specified"));
+    }
+}
+
+void AActionGameCharacter::OnEndCrouch(const float HalfHeightAdjust, const float ScaledHalfHeightAdjust)
+{
+    if (CrouchStateEffectClass)
+    {
+        if (const auto ASC = AbilitySystemComponent.Get())
+        {
+            ASC->RemoveActiveGameplayEffectBySourceEffect(CrouchStateEffectClass, nullptr);
+        }
+    }
+    Super::OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
+}
+
 void AActionGameCharacter::BeginPlay()
 {
     // Call the base class
@@ -126,6 +161,18 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
                                            this,
                                            &AActionGameCharacter::PerformJump);
 
+        if (CrouchAction)
+        {
+            EnhancedInputComponent->BindAction(CrouchAction,
+                                               ETriggerEvent::Started,
+                                               this,
+                                               &AActionGameCharacter::OnCrouchStarted);
+            EnhancedInputComponent->BindAction(CrouchAction,
+                                               ETriggerEvent::Completed,
+                                               this,
+                                               &AActionGameCharacter::OnCrouchEnded);
+        }
+
         // Moving
         EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Move);
 
@@ -140,6 +187,24 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
                     "is built to use the Enhanced Input system. If you intend to use "
                     "the legacy system, then you will need to update this C++ file."),
                *GetNameSafe(this));
+    }
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AActionGameCharacter::OnCrouchStarted(const FInputActionValue& Value)
+{
+    if (const auto ASC = AbilitySystemComponent)
+    {
+        ASC->TryActivateAbilitiesByTag(CrouchTags, true);
+    }
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AActionGameCharacter::OnCrouchEnded(const FInputActionValue& Value)
+{
+    if (const auto ASC = AbilitySystemComponent)
+    {
+        ASC->CancelAbilities(&CrouchTags);
     }
 }
 

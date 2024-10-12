@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DataAssets/CharacterDataAsset.h"
 #include "GameFramework/Character.h"
+#include "GameplayEffect.h"
 #include "GameplayTagContainer.h"
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
@@ -57,19 +58,33 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
     UInputAction* LookAction;
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+    UInputAction* CrouchAction;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     FGameplayTag JumpEventTag;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     FGameplayTagContainer InAirTags;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    FGameplayTagContainer CrouchTags;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    TSubclassOf<UGameplayEffect> CrouchStateEffectClass;
+
 public:
     explicit AActionGameCharacter(const FObjectInitializer& ObjectInitializer);
 
     virtual void PerformJump();
     virtual void Landed(const FHitResult& Hit) override;
+    virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
+    virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
 protected:
+    void OnCrouchStarted(const FInputActionValue& Value);
+    void OnCrouchEnded(const FInputActionValue& Value);
+
     /** Called for movement input */
     void Move(const FInputActionValue& Value);
 

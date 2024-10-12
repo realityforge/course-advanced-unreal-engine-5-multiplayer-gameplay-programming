@@ -31,7 +31,13 @@ struct FCharacterAnimData
     TObjectPtr<UBlendSpace> MovementBlendSpace{ nullptr };
 
     UPROPERTY(EditDefaultsOnly)
+    TObjectPtr<UBlendSpace> CrouchingBlendSpace{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly)
     TObjectPtr<UAnimSequenceBase> IdleAnimation{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly)
+    TObjectPtr<UAnimSequenceBase> CrouchingIdleAnimation{ nullptr };
 };
 
 UENUM(BlueprintType)

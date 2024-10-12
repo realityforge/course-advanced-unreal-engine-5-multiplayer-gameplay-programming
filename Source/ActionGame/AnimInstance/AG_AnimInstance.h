@@ -21,4 +21,10 @@ protected:
 
     UFUNCTION(BlueprintCallable, meta = (BlueprintThreadSafe))
     UAnimSequenceBase* GetIdleAnimation() const;
+
+    UFUNCTION(BlueprintCallable, meta = (BlueprintThreadSafe))
+    UBlendSpace* GetCrouchingLocomotionBlendSpace() const;
+
+    UFUNCTION(BlueprintCallable, meta = (BlueprintThreadSafe))
+    UAnimSequenceBase* GetCrouchingIdleAnimation() const;
 };
