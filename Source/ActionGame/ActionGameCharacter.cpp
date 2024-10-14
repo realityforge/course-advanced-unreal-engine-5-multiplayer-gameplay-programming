@@ -154,7 +154,6 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     // Set up action bindings
     if (const auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
     {
-
         // Jumping
         EnhancedInputComponent->BindAction(JumpAction,
                                            ETriggerEvent::Started,
