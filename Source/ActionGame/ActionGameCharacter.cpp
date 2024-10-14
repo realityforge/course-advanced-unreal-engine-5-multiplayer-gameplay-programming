@@ -190,7 +190,7 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
-void AActionGameCharacter::OnCrouchStarted(const FInputActionValue& Value)
+void AActionGameCharacter::OnCrouchStarted()
 {
     if (const auto ASC = AbilitySystemComponent)
     {
@@ -199,7 +199,7 @@ void AActionGameCharacter::OnCrouchStarted(const FInputActionValue& Value)
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
-void AActionGameCharacter::OnCrouchEnded(const FInputActionValue& Value)
+void AActionGameCharacter::OnCrouchEnded()
 {
     if (const auto ASC = AbilitySystemComponent)
     {

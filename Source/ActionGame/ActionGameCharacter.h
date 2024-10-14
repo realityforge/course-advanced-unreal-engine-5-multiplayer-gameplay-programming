@@ -82,8 +82,8 @@ public:
     virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
 protected:
-    void OnCrouchStarted(const FInputActionValue& Value);
-    void OnCrouchEnded(const FInputActionValue& Value);
+    void OnCrouchStarted();
+    void OnCrouchEnded();
 
     /** Called for movement input */
     void Move(const FInputActionValue& Value);
