@@ -61,6 +61,9 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
     UInputAction* CrouchAction;
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UInputAction> SprintAction{ nullptr };
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     FGameplayTag JumpEventTag;
 
@@ -73,6 +76,9 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     TSubclassOf<UGameplayEffect> CrouchStateEffectClass;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+    FGameplayTagContainer SprintTags;
+
 public:
     explicit AActionGameCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -81,9 +87,16 @@ public:
     virtual void OnStartCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
     virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
+    void OnMaxMovementSpeedChanged(const FOnAttributeChangeData& Data);
+
 protected:
     void OnCrouchStarted();
     void OnCrouchEnded();
+
+    void OnSprintStarted();
+    void OnSprintEnded();
+
+    FDelegateHandle MaxMovementSpeedChangeDelegateHandle;
 
     /** Called for movement input */
     void Move(const FInputActionValue& Value);

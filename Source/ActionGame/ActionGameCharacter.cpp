@@ -69,6 +69,9 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
     // replicate minimal gameplay effect info to simulated proxies but full info to owners and autonomous proxies
     AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
+    AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxMovementSpeedAttribute())
+        .AddUObject(this, &AActionGameCharacter::OnMaxMovementSpeedChanged);
+
     AttributeSet = CreateDefaultSubobject<UAG_AttributeSetBase>(TEXT("AttributeSet"));
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
@@ -130,6 +133,12 @@ void AActionGameCharacter::OnEndCrouch(const float HalfHeightAdjust, const float
     Super::OnEndCrouch(HalfHeightAdjust, ScaledHalfHeightAdjust);
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AActionGameCharacter::OnMaxMovementSpeedChanged(const FOnAttributeChangeData& Data)
+{
+    GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
+}
+
 void AActionGameCharacter::BeginPlay()
 {
     // Call the base class
@@ -172,6 +181,18 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
                                                &AActionGameCharacter::OnCrouchEnded);
         }
 
+        if (SprintAction)
+        {
+            EnhancedInputComponent->BindAction(SprintAction,
+                                               ETriggerEvent::Started,
+                                               this,
+                                               &AActionGameCharacter::OnSprintStarted);
+            EnhancedInputComponent->BindAction(SprintAction,
+                                               ETriggerEvent::Completed,
+                                               this,
+                                               &AActionGameCharacter::OnSprintEnded);
+        }
+
         // Moving
         EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Move);
 
@@ -204,6 +225,24 @@ void AActionGameCharacter::OnCrouchEnded()
     if (const auto ASC = AbilitySystemComponent)
     {
         ASC->CancelAbilities(&CrouchTags);
+    }
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AActionGameCharacter::OnSprintStarted()
+{
+    if (const auto ASC = AbilitySystemComponent)
+    {
+        ASC->TryActivateAbilitiesByTag(SprintTags, true);
+    }
+}
+
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AActionGameCharacter::OnSprintEnded()
+{
+    if (const auto ASC = AbilitySystemComponent)
+    {
+        ASC->CancelAbilities(&SprintTags);
     }
 }
 
