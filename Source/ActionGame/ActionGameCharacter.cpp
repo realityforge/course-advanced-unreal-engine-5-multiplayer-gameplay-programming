@@ -284,7 +284,7 @@ void AActionGameCharacter::OnRep_PlayerState()
 {
     Super::OnRep_PlayerState();
 
-    // clientside initialization of ASC, server initialized in in PossessedBy
+    // clientside initialization of ASC, server initialized in PossessedBy
     AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
