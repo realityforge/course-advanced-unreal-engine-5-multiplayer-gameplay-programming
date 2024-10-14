@@ -209,10 +209,7 @@ void AActionGameCharacter::OnCrouchEnded()
 
 void AActionGameCharacter::Move(const FInputActionValue& Value)
 {
-    // input is a Vector2D
-    FVector2D MovementVector = Value.Get<FVector2D>();
-
-    if (Controller != nullptr)
+    if (Controller)
     {
         // find out which way is forward
         const FRotator Rotation = Controller->GetControlRotation();
@@ -225,6 +222,7 @@ void AActionGameCharacter::Move(const FInputActionValue& Value)
         const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
         // add movement
+        const FVector2D MovementVector = Value.Get<FVector2D>();
         AddMovementInput(ForwardDirection, MovementVector.Y);
         AddMovementInput(RightDirection, MovementVector.X);
     }
@@ -232,12 +230,10 @@ void AActionGameCharacter::Move(const FInputActionValue& Value)
 
 void AActionGameCharacter::Look(const FInputActionValue& Value)
 {
-    // input is a Vector2D
-    FVector2D LookAxisVector = Value.Get<FVector2D>();
-
-    if (Controller != nullptr)
+    if (Controller)
     {
         // add yaw and pitch input to controller
+        const FVector2D LookAxisVector = Value.Get<FVector2D>();
         AddControllerYawInput(LookAxisVector.X);
         AddControllerPitchInput(LookAxisVector.Y);
     }
