@@ -218,10 +218,10 @@ void AActionGameCharacter::Move(const FInputActionValue& Value)
         const FRotator Rotation = Controller->GetControlRotation();
         const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-        // get forward vector
+        // get the forward vector
         const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-        // get right vector
+        // get the right vector
         const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
         // add movement
