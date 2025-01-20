@@ -7,7 +7,7 @@
 /**
  * TODO: WHy not use UGameplayAbility_CharacterJump?
  */
-UCLASS()
+UCLASS(Abstract)
 class ACTIONGAME_API UGA_Jump : public UAG_GameplayAbility
 {
     GENERATED_BODY()

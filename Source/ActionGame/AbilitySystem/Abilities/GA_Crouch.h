@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "GA_Crouch.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class ACTIONGAME_API UGA_Crouch : public UAG_GameplayAbility
 {
     GENERATED_BODY()
