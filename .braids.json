@@ -1,6 +1,11 @@
 {
   "config_version": 1,
   "mirrors": {
+    "Plugins/Aeon": {
+      "url": "https://github.com/realityforge/Aeon.git",
+      "branch": "main",
+      "revision": "b8af28195aeaffddea857105d91480a440a22683"
+    },
     "Plugins/RuleRanger": {
       "url": "https://github.com/realityforge/RuleRanger.git",
       "branch": "main",

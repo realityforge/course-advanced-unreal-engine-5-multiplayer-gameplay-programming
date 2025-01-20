@@ -1,0 +1,4 @@
+---,ObjectType,Variant,Prefix,Suffix,Description
+AeonAbilityTagRelationshipMapping,"/Script/Aeon.AeonAbilityTagRelationshipMapping","","TagRelationships_","",""
+AeonAbilitySet,"/Script/Aeon.AeonAbilitySet","","AbilitySet_","",""
+AeonInputConfig,"/Script/Aeon.AeonInputConfig","","InputData_","",""
