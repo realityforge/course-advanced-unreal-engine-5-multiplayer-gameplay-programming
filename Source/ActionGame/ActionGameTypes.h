@@ -6,6 +6,8 @@
 class UCharacterAnimDataAsset;
 class UGameplayAbility;
 class UGameplayEffect;
+class UBlendSpace;
+class UAnimSequenceBase;
 
 USTRUCT(BlueprintType)
 struct FCharacterData
