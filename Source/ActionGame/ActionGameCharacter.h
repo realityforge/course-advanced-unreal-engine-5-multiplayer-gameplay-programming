@@ -113,7 +113,7 @@ protected:
     virtual void PossessedBy(AController* NewController) override;
     virtual void OnRep_PlayerState() override;
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(VisibleDefaultsOnly)
     TObjectPtr<UAeonAbilitySystemComponent> AbilitySystemComponent{ nullptr };
 
     UPROPERTY(Transient)
