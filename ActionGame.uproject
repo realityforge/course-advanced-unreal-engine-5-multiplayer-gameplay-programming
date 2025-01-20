@@ -24,6 +24,10 @@
       ]
     },
     {
+      "Name": "Aeon",
+      "Enabled": true
+    },
+    {
       "Name": "GameplayAbilities",
       "Enabled": true
     }
