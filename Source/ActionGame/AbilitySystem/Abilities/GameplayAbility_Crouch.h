@@ -2,19 +2,16 @@
 
 #include "AbilitySystem/Abilities/AG_GameplayAbility.h"
 #include "CoreMinimal.h"
-#include "GA_Jump.generated.h"
+#include "GameplayAbility_Crouch.generated.h"
 
-/**
- * TODO: WHy not use UGameplayAbility_CharacterJump?
- */
 UCLASS(Abstract)
-class ACTIONGAME_API UGA_Jump : public UAG_GameplayAbility
+class ACTIONGAME_API UGameplayAbility_Crouch : public UAG_GameplayAbility
 {
     GENERATED_BODY()
 
-    UGA_Jump();
-
 public:
+    UGameplayAbility_Crouch();
+
     virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                     const FGameplayAbilityActorInfo* ActorInfo,
                                     const FGameplayTagContainer* SourceTags,
@@ -26,4 +23,9 @@ protected:
                                  const FGameplayAbilityActorInfo* ActorInfo,
                                  const FGameplayAbilityActivationInfo ActivationInfo,
                                  const FGameplayEventData* TriggerEventData) override;
+    virtual void EndAbility(const FGameplayAbilitySpecHandle Handle,
+                            const FGameplayAbilityActorInfo* ActorInfo,
+                            const FGameplayAbilityActivationInfo ActivationInfo,
+                            bool bReplicateEndAbility,
+                            bool bWasCancelled) override;
 };

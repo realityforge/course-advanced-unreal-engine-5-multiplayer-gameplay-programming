@@ -1,7 +1,7 @@
-#include "AbilitySystem/Abilities/GA_Crouch.h"
+#include "AbilitySystem/Abilities/GameplayAbility_Crouch.h"
 #include "GameFramework/Character.h"
 
-UGA_Crouch::UGA_Crouch()
+UGameplayAbility_Crouch::UGameplayAbility_Crouch()
 {
     // Part of this ability runs predictively on the local client if there is one
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
@@ -9,11 +9,11 @@ UGA_Crouch::UGA_Crouch()
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
-bool UGA_Crouch::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                    const FGameplayAbilityActorInfo* ActorInfo,
-                                    const FGameplayTagContainer* SourceTags,
-                                    const FGameplayTagContainer* TargetTags,
-                                    FGameplayTagContainer* OptionalRelevantTags) const
+bool UGameplayAbility_Crouch::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                                 const FGameplayAbilityActorInfo* ActorInfo,
+                                                 const FGameplayTagContainer* SourceTags,
+                                                 const FGameplayTagContainer* TargetTags,
+                                                 FGameplayTagContainer* OptionalRelevantTags) const
 {
     if (Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags))
     {
@@ -32,10 +32,10 @@ bool UGA_Crouch::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
     }
 }
 
-void UGA_Crouch::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                 const FGameplayAbilityActorInfo* ActorInfo,
-                                 const FGameplayAbilityActivationInfo ActivationInfo,
-                                 const FGameplayEventData* TriggerEventData)
+void UGameplayAbility_Crouch::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                              const FGameplayAbilityActorInfo* ActorInfo,
+                                              const FGameplayAbilityActivationInfo ActivationInfo,
+                                              const FGameplayEventData* TriggerEventData)
 {
     if (HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
     {
@@ -51,11 +51,11 @@ void UGA_Crouch::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
     }
 }
 
-void UGA_Crouch::EndAbility(const FGameplayAbilitySpecHandle Handle,
-                            const FGameplayAbilityActorInfo* ActorInfo,
-                            const FGameplayAbilityActivationInfo ActivationInfo,
-                            bool bReplicateEndAbility,
-                            bool bWasCancelled)
+void UGameplayAbility_Crouch::EndAbility(const FGameplayAbilitySpecHandle Handle,
+                                         const FGameplayAbilityActorInfo* ActorInfo,
+                                         const FGameplayAbilityActivationInfo ActivationInfo,
+                                         bool bReplicateEndAbility,
+                                         bool bWasCancelled)
 {
     const auto Actor = ActorInfo->AvatarActor.Get();
     if (const auto Character = CastChecked<ACharacter>(Actor, ECastCheckedType::NullAllowed))

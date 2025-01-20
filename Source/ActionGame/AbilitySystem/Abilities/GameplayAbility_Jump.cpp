@@ -1,8 +1,8 @@
-#include "AbilitySystem/Abilities/GA_Jump.h"
+#include "AbilitySystem/Abilities/GameplayAbility_Jump.h"
 #include "AbilitySystemComponent.h"
 #include "GameFramework/Character.h"
 
-UGA_Jump::UGA_Jump()
+UGameplayAbility_Jump::UGameplayAbility_Jump()
 {
     // Part of this ability runs predictively on the local client if there is one
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
@@ -10,11 +10,11 @@ UGA_Jump::UGA_Jump()
     InstancingPolicy = EGameplayAbilityInstancingPolicy::NonInstanced;
 }
 
-bool UGA_Jump::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                  const FGameplayAbilityActorInfo* ActorInfo,
-                                  const FGameplayTagContainer* SourceTags,
-                                  const FGameplayTagContainer* TargetTags,
-                                  FGameplayTagContainer* OptionalRelevantTags) const
+bool UGameplayAbility_Jump::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                               const FGameplayAbilityActorInfo* ActorInfo,
+                                               const FGameplayTagContainer* SourceTags,
+                                               const FGameplayTagContainer* TargetTags,
+                                               FGameplayTagContainer* OptionalRelevantTags) const
 {
     if (Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags))
     {
@@ -33,10 +33,10 @@ bool UGA_Jump::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
     }
 }
 
-void UGA_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                               const FGameplayAbilityActorInfo* ActorInfo,
-                               const FGameplayAbilityActivationInfo ActivationInfo,
-                               const FGameplayEventData* TriggerEventData)
+void UGameplayAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                            const FGameplayAbilityActorInfo* ActorInfo,
+                                            const FGameplayAbilityActivationInfo ActivationInfo,
+                                            const FGameplayEventData* TriggerEventData)
 {
     if (HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
     {
