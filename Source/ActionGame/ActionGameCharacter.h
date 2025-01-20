@@ -16,7 +16,7 @@ struct FGameplayEffectContextHandle;
 class UGameplayAbility;
 struct FActiveGameplayEffectHandle;
 class UGameplayEffect;
-class UAG_AbilitySystemComponent;
+class UAeonAbilitySystemComponent;
 class UAG_AttributeSetBase;
 class USpringArmComponent;
 class UCameraComponent;
@@ -114,7 +114,7 @@ protected:
     virtual void OnRep_PlayerState() override;
 
     UPROPERTY(EditDefaultsOnly)
-    TObjectPtr<UAG_AbilitySystemComponent> AbilitySystemComponent{ nullptr };
+    TObjectPtr<UAeonAbilitySystemComponent> AbilitySystemComponent{ nullptr };
 
     UPROPERTY(Transient)
     TObjectPtr<UAG_AttributeSetBase> AttributeSet{ nullptr };
