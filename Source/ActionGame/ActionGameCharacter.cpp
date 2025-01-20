@@ -139,12 +139,6 @@ void AActionGameCharacter::OnMaxMovementSpeedChanged(const FOnAttributeChangeDat
     GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
 }
 
-void AActionGameCharacter::BeginPlay()
-{
-    // Call the base class
-    Super::BeginPlay();
-}
-
 //////////////////////////////////////////////////////////////////////////
 // Input
 
