@@ -1,15 +1,10 @@
 #pragma once
 
 #include "AbilitySystemComponent.h"
+#include "Aeon/AbilitySystem/AeonAttributeSetHelper.h"
 #include "AttributeSet.h"
 #include "CoreMinimal.h"
 #include "AG_AttributeSetBase.generated.h"
-
-#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName)           \
-    GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-    GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName)               \
-    GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName)               \
-    GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 UCLASS()
 class ACTIONGAME_API UAG_AttributeSetBase : public UAttributeSet
