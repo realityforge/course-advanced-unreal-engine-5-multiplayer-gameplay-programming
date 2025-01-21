@@ -269,7 +269,7 @@ public:
      * @param SourceObject The source-object to apply when granting abilities.
      */
     void GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystemComponent,
-                             FAeonAbilitySetHandles* OutGrantedHandles,
+                             FAeonAbilitySetHandles* OutGrantedHandles = nullptr,
                              int32 LevelDelta = 0,
                              UObject* SourceObject = nullptr) const;
 
