@@ -47,13 +47,13 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
     GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
 
     // Create a camera boom (pulls in towards the player if there is a collision)
-    CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+    CameraBoom = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
     CameraBoom->SetupAttachment(RootComponent);
     CameraBoom->TargetArmLength = 400.0f;       // The camera follows at this distance behind the character
     CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
 
     // Create a follow camera
-    FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+    FollowCamera = CreateDefaultSubobject<UCameraComponent>("FollowCamera");
     FollowCamera->SetupAttachment(CameraBoom,
                                   USpringArmComponent::SocketName); // Attach the camera to the end of the
     // boom and let the boom adjust to match
@@ -64,7 +64,7 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
     // (inherited from Character) are set in the derived blueprint asset named
     // ThirdPersonCharacter (to avoid direct content references in C++)
 
-    AbilitySystemComponent = CreateDefaultSubobject<UAeonAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+    AbilitySystemComponent = CreateDefaultSubobject<UAeonAbilitySystemComponent>("AbilitySystemComponent");
     AbilitySystemComponent->SetIsReplicated(true);
     // replicate minimal gameplay effect info to simulated proxies but full info to owners and autonomous proxies
     AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
