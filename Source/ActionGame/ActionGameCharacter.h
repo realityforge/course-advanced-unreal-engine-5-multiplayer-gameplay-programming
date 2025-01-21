@@ -120,7 +120,7 @@ protected:
     TObjectPtr<UAeonAbilitySet> AbilitySet{ nullptr };
 
     UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UCharacterAnimDataAsset> CharacterAnimDataAsset;
+    TObjectPtr<UCharacterAnimDataAsset> CharacterAnimDataAsset{ nullptr };
 
 public:
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
