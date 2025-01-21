@@ -4,6 +4,7 @@
 #include "AbilitySystemLog.h"
 #include "ActorComponents/AG_CharacterMovementComponent.h"
 #include "ActorComponents/FootstepsComponent.h"
+#include "Aeon/AbilitySystem/AeonAbilitySet.h"
 #include "Aeon/AbilitySystem/AeonAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -15,7 +16,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameplayEffectTypes.h"
 #include "InputActionValue.h"
-#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -71,8 +71,6 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
 
     AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxMovementSpeedAttribute())
         .AddUObject(this, &AActionGameCharacter::OnMaxMovementSpeedChanged);
-
-    AttributeSet = CreateDefaultSubobject<UAG_AttributeSetBase>(TEXT("AttributeSet"));
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
 }
@@ -272,41 +270,18 @@ void AActionGameCharacter::Look(const FInputActionValue& Value)
     }
 }
 
-void AActionGameCharacter::GiveAbilities()
-{
-    if (HasAuthority())
-    {
-        check(AbilitySystemComponent);
-        for (const auto Ability : CharacterData.Abilities)
-        {
-            AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(Ability));
-        }
-    }
-}
-
-void AActionGameCharacter::ApplyStartupEffects()
-{
-    if (HasAuthority())
-    {
-        FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-        EffectContext.AddSourceObject(this);
-
-        for (const auto Effect : CharacterData.Effects)
-        {
-            // ReSharper disable once CppExpressionWithoutSideEffects
-            ApplyGameplayEffectToSelf(Effect, EffectContext);
-        }
-    }
-}
-
 void AActionGameCharacter::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
 
     // serverside initialization of ASC, client initialized in OnRep_PlayerState
     AbilitySystemComponent->InitAbilityActorInfo(this, this);
-    GiveAbilities();
-    ApplyStartupEffects();
+    if (AbilitySet)
+    {
+        AbilitySet->GiveToAbilitySystem(AbilitySystemComponent);
+        AttributeSet = CastChecked<UAG_AttributeSetBase>(
+            AbilitySystemComponent->GetAttributeSet(UAG_AttributeSetBase::StaticClass()));
+    }
 }
 
 void AActionGameCharacter::OnRep_PlayerState()
@@ -317,57 +292,12 @@ void AActionGameCharacter::OnRep_PlayerState()
     AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
-bool AActionGameCharacter::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& Effect,
-                                                     const FGameplayEffectContextHandle& InEffectContext) const
-{
-    if (Effect.Get())
-    {
-        // ReSharper disable once CppTooWideScopeInitStatement
-        const auto SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(Effect, 1, InEffectContext);
-        if (SpecHandle.IsValid())
-        {
-            const auto EffectHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-            return EffectHandle.WasSuccessfullyApplied();
-        }
-    }
-    return false;
-}
-
 UAbilitySystemComponent* AActionGameCharacter::GetAbilitySystemComponent() const
 {
     return AbilitySystemComponent;
 }
 
-FCharacterData AActionGameCharacter::GetCharacterData() const
+UCharacterAnimDataAsset* AActionGameCharacter::GetCharacterAnimDataAsset() const
 {
-    return CharacterData;
-}
-
-void AActionGameCharacter::SetCharacterData(const FCharacterData& InCharacterData)
-{
-    CharacterData = InCharacterData;
-    InitFromCharacterData(InCharacterData, false);
-}
-
-void AActionGameCharacter::OnRep_CharacterData()
-{
-    InitFromCharacterData(CharacterData, true);
-}
-
-void AActionGameCharacter::InitFromCharacterData(const FCharacterData& InCharacterData, bool bFromReplication) {}
-
-void AActionGameCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-    DOREPLIFETIME(AActionGameCharacter, CharacterData);
-}
-
-void AActionGameCharacter::PostInitializeComponents()
-{
-    Super::PostInitializeComponents();
-
-    if (IsValid(CharacterDataAsset))
-    {
-        SetCharacterData(CharacterDataAsset->CharacterData);
-    }
+    return CharacterAnimDataAsset;
 }

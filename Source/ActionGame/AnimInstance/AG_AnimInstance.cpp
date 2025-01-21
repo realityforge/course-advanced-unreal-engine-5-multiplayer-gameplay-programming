@@ -6,7 +6,7 @@ const FCharacterAnimData* UAG_AnimInstance::GetCharacterAnimData() const
 {
     if (const auto ActionGameCharacter = Cast<AActionGameCharacter>(GetOwningActor()))
     {
-        if (const auto CharacterAnimDataAsset = ActionGameCharacter->GetCharacterData().CharacterAnimData)
+        if (const auto CharacterAnimDataAsset = ActionGameCharacter->GetCharacterAnimDataAsset())
         {
             return &CharacterAnimDataAsset->CharacterAnimData;
         }

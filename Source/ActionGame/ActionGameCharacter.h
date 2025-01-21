@@ -3,13 +3,13 @@
 #include "AbilitySystemInterface.h"
 #include "ActionGameTypes.h"
 #include "CoreMinimal.h"
-#include "DataAssets/CharacterDataAsset.h"
 #include "GameFramework/Character.h"
 #include "GameplayEffect.h"
 #include "GameplayTagContainer.h"
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
 
+class UAeonAbilitySet;
 class UFootstepsComponent;
 class UAbilitySystemComponent;
 struct FGameplayEffectContextHandle;
@@ -107,9 +107,6 @@ protected:
     // APawn interface
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-    void GiveAbilities();
-    void ApplyStartupEffects();
-
     virtual void PossessedBy(AController* NewController) override;
     virtual void OnRep_PlayerState() override;
 
@@ -117,28 +114,21 @@ protected:
     TObjectPtr<UAeonAbilitySystemComponent> AbilitySystemComponent{ nullptr };
 
     UPROPERTY(Transient)
-    TObjectPtr<UAG_AttributeSetBase> AttributeSet{ nullptr };
-
-    UPROPERTY(ReplicatedUsing = OnRep_CharacterData)
-    FCharacterData CharacterData;
+    TObjectPtr<UAG_AttributeSetBase const> AttributeSet{ nullptr };
 
     UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UCharacterDataAsset> CharacterDataAsset{ nullptr };
+    TObjectPtr<UAeonAbilitySet> AbilitySet{ nullptr };
 
-    UFUNCTION()
-    void OnRep_CharacterData();
-
-    virtual void InitFromCharacterData(const FCharacterData& InCharacterData, bool bFromReplication = false);
+    UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true", AllowPrivateAccess = "true"))
+    TObjectPtr<UCharacterAnimDataAsset> CharacterAnimDataAsset;
 
 public:
-    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
-    virtual void PostInitializeComponents() override;
-
-    bool ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect>& Effect,
-                                   const FGameplayEffectContextHandle& InEffectContext) const;
-
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+    FORCEINLINE UAeonAbilitySystemComponent* GetAeonAbilitySystemComponent_Fast() const
+    {
+        return AbilitySystemComponent;
+    }
 
     /** Returns CameraBoom subobject **/
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -148,8 +138,5 @@ public:
     FORCEINLINE UFootstepsComponent* GetFootstepsComponent() const { return FootstepsComponent; }
 
     UFUNCTION(BlueprintCallable)
-    FCharacterData GetCharacterData() const;
-
-    UFUNCTION(BlueprintCallable)
-    void SetCharacterData(const FCharacterData& InCharacterData);
+    UCharacterAnimDataAsset* GetCharacterAnimDataAsset() const;
 };
