@@ -225,7 +225,7 @@ public:
  * to understand.
  */
 UCLASS(BlueprintType, Const)
-class UAeonAbilitySet final : public UPrimaryDataAsset
+class AEON_API UAeonAbilitySet final : public UPrimaryDataAsset
 {
     GENERATED_BODY()
 
