@@ -119,7 +119,7 @@ protected:
     UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UAeonAbilitySet> AbilitySet{ nullptr };
 
-    UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true", AllowPrivateAccess = "true"))
+    UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UCharacterAnimDataAsset> CharacterAnimDataAsset;
 
 public:
