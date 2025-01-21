@@ -210,7 +210,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             // ReSharper disable once CppUseStructuredBinding
             if (const auto& Entry = Abilities[Index]; IsValid(Entry.Ability))
             {
-                const auto CDO = Entry.Ability->GetDefaultObject<UAeonGameplayAbility>();
+                const auto CDO = Entry.Ability->GetDefaultObject<UGameplayAbility>();
                 FGameplayAbilitySpec AbilitySpec(CDO, Entry.Level + LevelDelta);
                 AbilitySpec.SourceObject = SourceObject;
                 if (Entry.InputTag.IsValid())
