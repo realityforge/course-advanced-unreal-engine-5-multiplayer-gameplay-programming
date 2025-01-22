@@ -4,7 +4,7 @@
     "Plugins/Aeon": {
       "url": "https://github.com/realityforge/Aeon.git",
       "branch": "main",
-      "revision": "b8af28195aeaffddea857105d91480a440a22683"
+      "revision": "c1379b144d7aab1eae120fca38f70fcb708f55e5"
     },
     "Plugins/RuleRanger": {
       "url": "https://github.com/realityforge/RuleRanger.git",
