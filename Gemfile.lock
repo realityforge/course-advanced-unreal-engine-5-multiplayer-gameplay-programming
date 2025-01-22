@@ -17,6 +17,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  arm64-darwin-24
 
 DEPENDENCIES
   braid (= 1.1.7)
