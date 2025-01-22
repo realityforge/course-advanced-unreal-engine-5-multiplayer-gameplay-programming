@@ -1,4 +1,2 @@
----,ObjectType,Variant,Prefix,Suffix
-GameplayAbility,"/Script/GameplayAbilities.GameplayAbility","","GA_",""
-GameplayEffect,"/Script/GameplayAbilities.GameplayEffect","","GE_",""
-UGameplayCueNotify_Static,"/Script/GameplayAbilities.GameplayCueNotify_Static","","GCN_",""
+---,ObjectType,Variant,Prefix,Suffix,Description
+ControlRig,"/Script/ControlRig.ControlRig","","CR_","",""

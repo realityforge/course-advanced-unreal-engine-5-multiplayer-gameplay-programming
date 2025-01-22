@@ -17,6 +17,8 @@
 #include "RuleRangerConfig.h"
 #include "Subsystems/EditorAssetSubsystem.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureTextureFollowsConventionAction)
+
 static FName NAME_RuleRanger_Variant("RuleRanger.Variant");
 
 void UEnsureTextureFollowsConventionAction::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)

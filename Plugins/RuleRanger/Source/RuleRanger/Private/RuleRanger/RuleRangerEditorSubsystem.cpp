@@ -23,6 +23,8 @@
 #include "Subsystems/EditorAssetSubsystem.h"
 #include "Subsystems/ImportSubsystem.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RuleRangerEditorSubsystem)
+
 static FString ImportMarkerValue = FString(TEXT("True"));
 
 void URuleRangerEditorSubsystem::Initialize(FSubsystemCollectionBase& Collection)

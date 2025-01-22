@@ -14,6 +14,8 @@
 
 #include "EnsureTextureGroupValidAction.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureTextureGroupValidAction)
+
 void UEnsureTextureGroupValidAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
 {
     // ReSharper disable once CppTooWideScopeInitStatement

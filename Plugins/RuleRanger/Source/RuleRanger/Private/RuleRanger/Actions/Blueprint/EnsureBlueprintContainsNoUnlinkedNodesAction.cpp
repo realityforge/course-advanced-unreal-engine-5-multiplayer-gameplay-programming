@@ -11,11 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "EnsureBlueprintContainsNoUnlinkedNodesAction.h"
 #include "AnimGraphNode_TransitionResult.h"
 #include "AnimStateTransitionNode.h"
 #include "EdGraphNode_Comment.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureBlueprintContainsNoUnlinkedNodesAction)
 
 bool UEnsureBlueprintContainsNoUnlinkedNodesAction::ShouldHaveLinks(const TObjectPtr<UEdGraphNode> Node) const
 {

@@ -11,8 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "EnsureMaterialHasNoCompileErrorAction.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureMaterialHasNoCompileErrorAction)
 
 void UEnsureMaterialHasNoCompileErrorAction::Apply_Implementation(URuleRangerActionContext* ActionContext,
                                                                   UObject* Object)

@@ -13,6 +13,8 @@
  */
 #include "RuleRangerMatcher.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RuleRangerMatcher)
+
 bool URuleRangerMatcher::Test_Implementation(UObject* Object) const
 {
     return false;

@@ -14,6 +14,8 @@
 
 #include "EnsureTextureMipGenValidAction.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureTextureMipGenValidAction)
+
 void UEnsureTextureMipGenValidAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
 {
     // ReSharper disable once CppTooWideScopeInitStatement

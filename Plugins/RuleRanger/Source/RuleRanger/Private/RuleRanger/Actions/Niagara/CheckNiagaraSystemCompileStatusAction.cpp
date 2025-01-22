@@ -11,11 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "CheckNiagaraSystemCompileStatusAction.h"
 #include "NiagaraScript.h"
 #include "NiagaraScriptSource.h"
 #include "NiagaraSystem.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(CheckNiagaraSystemCompileStatusAction)
 
 bool UCheckNiagaraSystemCompileStatusAction::ValidateScript(URuleRangerActionContext* ActionContext,
                                                             const UObject* Object,

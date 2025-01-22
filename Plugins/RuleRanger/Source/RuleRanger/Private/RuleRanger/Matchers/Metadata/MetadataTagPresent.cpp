@@ -14,6 +14,8 @@
 #include "MetadataTagPresent.h"
 #include "Editor.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(MetadataTagPresent)
+
 bool UMetadataTagPresent::Test_Implementation(UObject* Object) const
 {
     return Key != NAME_None && IsValid(Object) ? Object->GetPackage()->GetMetaData()->HasValue(Object, Key) : false;

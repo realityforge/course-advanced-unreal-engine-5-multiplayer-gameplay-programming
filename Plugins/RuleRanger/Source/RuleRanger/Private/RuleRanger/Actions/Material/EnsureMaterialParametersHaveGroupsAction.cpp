@@ -11,8 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "EnsureMaterialParametersHaveGroupsAction.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureMaterialParametersHaveGroupsAction)
 
 void UEnsureMaterialParametersHaveGroupsAction::AnalyzeParameter(URuleRangerActionContext* ActionContext,
                                                                  const UMaterial* Material,

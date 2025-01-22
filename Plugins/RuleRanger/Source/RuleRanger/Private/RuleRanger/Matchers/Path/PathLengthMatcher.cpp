@@ -14,6 +14,8 @@
 
 #include "PathLengthMatcher.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(PathLengthMatcher)
+
 bool UPathLengthMatcher::Test_Implementation(UObject* Object) const
 {
     const FString PathName = Object->GetPackage()->GetPathName();

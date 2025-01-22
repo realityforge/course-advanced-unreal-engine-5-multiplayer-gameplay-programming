@@ -13,6 +13,8 @@
  */
 #include "NotMatcher.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(NotMatcher)
+
 bool UNotMatcher::Test_Implementation(UObject* Object) const
 {
     return IsValid(Object) && IsValid(Matcher) && !Matcher->Test(Object);

@@ -11,11 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "EnsureAssetImportedFromDataSourceFolderAction.h"
 #include "Editor/EditorPerProjectUserSettings.h"
 #include "EditorFramework/AssetImportData.h"
 #include "UObject/PropertyAccessUtil.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureAssetImportedFromDataSourceFolderAction)
 
 void UEnsureAssetImportedFromDataSourceFolderAction::ValidateAssetImportData(
     URuleRangerActionContext* ActionContext,

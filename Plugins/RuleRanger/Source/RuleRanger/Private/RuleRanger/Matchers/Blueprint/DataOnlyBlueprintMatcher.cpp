@@ -14,6 +14,8 @@
 #include "DataOnlyBlueprintMatcher.h"
 #include "Kismet2/BlueprintEditorUtils.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(DataOnlyBlueprintMatcher)
+
 bool UDataOnlyBlueprintMatcher::Test_Implementation(UObject* Object) const
 {
     const UBlueprint* Blueprint = Cast<UBlueprint>(Object);

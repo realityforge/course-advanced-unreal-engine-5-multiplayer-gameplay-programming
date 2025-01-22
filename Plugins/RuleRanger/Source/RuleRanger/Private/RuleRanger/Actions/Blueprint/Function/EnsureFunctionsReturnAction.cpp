@@ -11,10 +11,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "EnsureFunctionsReturnAction.h"
 #include "K2Node_FunctionEntry.h"
 #include "K2Node_FunctionResult.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureFunctionsReturnAction)
 
 bool UEnsureFunctionsReturnAction::ShouldAnalyzeGraph(UBlueprint* Blueprint, UEdGraph* Graph) const
 {

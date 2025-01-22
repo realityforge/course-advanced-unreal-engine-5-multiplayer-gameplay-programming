@@ -13,6 +13,8 @@
  */
 #include "SourceFilenameStartsWithMatcher.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(SourceFilenameStartsWithMatcher)
+
 bool USourceFilenameStartsWithMatcher::Match(UObject* Object,
                                              const FString& SourcePath,
                                              const bool bInCaseSensitive) const

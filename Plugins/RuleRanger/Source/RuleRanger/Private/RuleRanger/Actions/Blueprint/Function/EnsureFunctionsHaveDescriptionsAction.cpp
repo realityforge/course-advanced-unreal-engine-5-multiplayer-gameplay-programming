@@ -11,9 +11,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "EnsureFunctionsHaveDescriptionsAction.h"
 #include "K2Node_FunctionEntry.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureFunctionsHaveDescriptionsAction)
 
 void UEnsureFunctionsHaveDescriptionsAction::AnalyzeFunction(URuleRangerActionContext* ActionContext,
                                                              UBlueprint* Blueprint,

@@ -15,6 +15,8 @@
 #include "Editor.h"
 #include "RuleRanger/RuleRangerUtilities.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EditorPropertyMatcherBase)
+
 bool UEditorPropertyMatcherBase::TestEditorProperty(UObject* Object,
                                                     UObject* const Instance,
                                                     FProperty* const Property) const

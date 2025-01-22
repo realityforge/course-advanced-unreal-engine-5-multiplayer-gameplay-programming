@@ -13,6 +13,8 @@
  */
 #include "FullyRoughMaterialMatcher.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(FullyRoughMaterialMatcher)
+
 bool UFullyRoughMaterialMatcher::Test_Implementation(UObject* Object) const
 {
     const UMaterial* Material = Cast<UMaterial>(Object);

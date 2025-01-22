@@ -14,6 +14,8 @@
 #include "NameWildcardMatcher.h"
 #include "Editor.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(NameWildcardMatcher)
+
 bool UNameWildcardMatcher::Test_Implementation(UObject* Object) const
 {
     return Object->GetName().MatchesWildcard(WildcardPattern,

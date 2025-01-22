@@ -15,6 +15,8 @@
 #include "RuleRangerObjectBase.h"
 #include "RuleRangerLogging.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RuleRangerObjectBase)
+
 void URuleRangerObjectBase::LogInfo(const UObject* const Object, const FString& Message) const
 {
     RR_VERY_VERBOSE_ALOG("%s:%s: %s", *GetClass()->GetName(), Object ? *Object->GetName() : TEXT("-"), *Message);

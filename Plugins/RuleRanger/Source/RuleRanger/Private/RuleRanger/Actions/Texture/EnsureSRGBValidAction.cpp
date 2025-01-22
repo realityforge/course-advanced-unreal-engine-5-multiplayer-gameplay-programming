@@ -14,6 +14,8 @@
 
 #include "EnsureSRGBValidAction.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureSRGBValidAction)
+
 void UEnsureSRGBValidAction::Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object)
 {
     // ReSharper disable once CppTooWideScopeInitStatement

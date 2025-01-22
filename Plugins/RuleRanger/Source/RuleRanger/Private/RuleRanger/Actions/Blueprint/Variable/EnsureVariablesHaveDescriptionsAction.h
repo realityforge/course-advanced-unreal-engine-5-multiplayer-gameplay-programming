@@ -20,7 +20,7 @@
 #include "EnsureVariablesHaveDescriptionsAction.generated.h"
 
 /**
- * Action to check that the variable defined in the Blueprint have descriptions.
+ * Action to check that the variables defined in the Blueprint have descriptions.
  */
 UCLASS(DisplayName = "Ensure Blueprint Variables Have Descriptions")
 class RULERANGER_API UEnsureVariablesHaveDescriptionsAction final : public UBlueprintVariableActionBase
@@ -31,7 +31,11 @@ class RULERANGER_API UEnsureVariablesHaveDescriptionsAction final : public UBlue
     UPROPERTY(EditAnywhere)
     bool bCheckInstanceEditableVariables{ true };
 
-    /** Should the action check instance editable variables? */
+    /** Should the action check non-instance editable variables? */
+    UPROPERTY(EditAnywhere)
+    bool bCheckNonInstanceEditableVariables{ true };
+
+    /** Should the action check transient variables? */
     UPROPERTY(EditAnywhere)
     bool bCheckTransientVariables{ false };
 

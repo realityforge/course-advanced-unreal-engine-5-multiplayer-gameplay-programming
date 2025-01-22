@@ -14,6 +14,8 @@
 
 #include "EnsureTextureCompressionValidAction.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureTextureCompressionValidAction)
+
 void UEnsureTextureCompressionValidAction::Apply_Implementation(URuleRangerActionContext* ActionContext,
                                                                 UObject* Object)
 {

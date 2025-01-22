@@ -15,6 +15,8 @@
 #include "Editor.h"
 #include "RuleRanger/RuleRangerUtilities.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(ObjectTypeMatcher)
+
 bool UObjectTypeMatcher::Test_Implementation(UObject* Object) const
 {
     return bTraverseAllTypeHierarchies ? FRuleRangerUtilities::IsA(Object, ObjectType) : Object->IsA(ObjectType);

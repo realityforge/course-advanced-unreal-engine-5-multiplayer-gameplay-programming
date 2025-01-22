@@ -16,6 +16,8 @@
 #include "RuleRangerMessageLog.h"
 #include "RuleRangerRule.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RuleRangerActionContext)
+
 ERuleRangerActionState URuleRangerActionContext::GetState()
 {
     return ActionState;

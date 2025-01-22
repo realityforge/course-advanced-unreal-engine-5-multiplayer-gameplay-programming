@@ -11,8 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "BlueprintFunctionAccessFilteringActionBase.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(BlueprintFunctionAccessFilteringActionBase)
 
 bool UBlueprintFunctionAccessFilteringActionBase::ShouldAnalyzeFunction(UBlueprint* Blueprint,
                                                                         UK2Node_FunctionEntry* FunctionEntry) const

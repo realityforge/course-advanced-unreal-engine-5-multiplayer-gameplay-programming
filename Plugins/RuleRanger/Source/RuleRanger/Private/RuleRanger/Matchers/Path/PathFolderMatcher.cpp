@@ -13,6 +13,8 @@
  */
 #include "PathFolderMatcher.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(PathFolderMatcher)
+
 bool UPathFolderMatcher::Test_Implementation(UObject* Object) const
 {
     TArray<FString> Folders;

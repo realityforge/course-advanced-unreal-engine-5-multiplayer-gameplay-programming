@@ -17,6 +17,8 @@
 #include "RuleRangerLogging.h"
 #include "RuleRangerRule.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RuleRangerEditorValidator)
+
 URuleRangerEditorValidator::URuleRangerEditorValidator()
 {
     bIsEnabled = true;
