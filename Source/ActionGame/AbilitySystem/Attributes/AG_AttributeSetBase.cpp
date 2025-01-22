@@ -1,22 +1,30 @@
 #include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
-void UAG_AttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+void UAG_AttributeSetBase::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
-    Super::PostGameplayEffectExecute(Data);
+    // Make sure we clamp attributes to valid ranges
+    if (GetHealthAttribute() == Attribute)
+    {
+        NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+    }
+    else if (GetStaminaAttribute() == Attribute)
+    {
+        NewValue = FMath::Clamp(NewValue, 0.f, GetMaxStamina());
+    }
+    else if (GetMaxHealthAttribute() == Attribute || GetMaxStaminaAttribute() == Attribute)
+    {
+        NewValue = FMath::Max(NewValue, 1.f);
+    }
+}
 
-    if (GetHealthAttribute() == Data.EvaluatedData.Attribute)
-    {
-        SetHealth(FMath::Clamp(GetHealth(), 0, GetMaxHealth()));
-    }
-    else if (GetStaminaAttribute() == Data.EvaluatedData.Attribute)
-    {
-        SetStamina(FMath::Clamp(GetStamina(), 0, GetMaxStamina()));
-    }
-    else if (GetMaxMovementSpeedAttribute() == Data.EvaluatedData.Attribute)
+void UAG_AttributeSetBase::PostAttributeChange(const FGameplayAttribute& Attribute,
+                                               const float OldValue,
+                                               const float NewValue)
+{
+    if (GetMaxMovementSpeedAttribute() == Attribute)
     {
         if (const auto Character = Cast<ACharacter>(GetOwningActor()))
         {
@@ -26,18 +34,19 @@ void UAG_AttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCal
             }
             else
             {
-                UE_LOG(
-                    LogTemp,
-                    Warning,
-                    TEXT("Failed to set MaxMovementSpeed on Character %s. Missing valid CharacterMovementComponent."),
-                    *GetOwningActor()->GetActorNameOrLabel())
+                UE_LOG(LogTemp,
+                       Error,
+                       TEXT("Failed to set MaxMovementSpeed on Character %s. "
+                            "Missing valid CharacterMovementComponent."),
+                       *GetOwningActor()->GetActorNameOrLabel())
             }
         }
         else
         {
             UE_LOG(LogTemp,
-                   Warning,
-                   TEXT("Failed to set MaxMovementSpeed on Actor %s. Expected actor to be a Character."),
+                   Error,
+                   TEXT("Failed to set MaxMovementSpeed on Actor %s. "
+                        "Expected actor to be a Character."),
                    *GetOwningActor()->GetActorNameOrLabel())
         }
     }
