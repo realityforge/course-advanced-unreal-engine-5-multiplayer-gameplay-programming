@@ -9,7 +9,7 @@
 class UObject;
 
 /** Minimal class that supports extension by game feature plugins */
-UCLASS(Blueprintable)
+UCLASS(Abstract, Blueprintable)
 class MODULARGAMEPLAYACTORS_API AModularPawn : public APawn
 {
 	GENERATED_BODY()

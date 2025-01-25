@@ -11,7 +11,7 @@ namespace EEndPlayReason { enum Type : int; }
 class UObject;
 
 /** Minimal class that supports extension by game feature plugins */
-UCLASS(Blueprintable)
+UCLASS(Abstract, Blueprintable)
 class MODULARGAMEPLAYACTORS_API AModularPlayerState : public APlayerState
 {
 	GENERATED_BODY()

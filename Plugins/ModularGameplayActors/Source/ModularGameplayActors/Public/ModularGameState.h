@@ -9,7 +9,7 @@
 class UObject;
 
 /** Pair this with a ModularGameModeBase */
-UCLASS(Blueprintable)
+UCLASS(Abstract, Blueprintable)
 class MODULARGAMEPLAYACTORS_API AModularGameStateBase : public AGameStateBase
 {
 	GENERATED_BODY()

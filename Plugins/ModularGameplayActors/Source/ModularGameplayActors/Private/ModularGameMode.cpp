@@ -12,18 +12,9 @@
 AModularGameModeBase::AModularGameModeBase(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	GameStateClass = AModularGameStateBase::StaticClass();
-	PlayerControllerClass = AModularPlayerController::StaticClass();
-	PlayerStateClass = AModularPlayerState::StaticClass();
-	DefaultPawnClass = AModularPawn::StaticClass();
 }
 
 AModularGameMode::AModularGameMode(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	GameStateClass = AModularGameState::StaticClass();
-	PlayerControllerClass = AModularPlayerController::StaticClass();
-	PlayerStateClass = AModularPlayerState::StaticClass();
-	DefaultPawnClass = AModularPawn::StaticClass();
 }
-
