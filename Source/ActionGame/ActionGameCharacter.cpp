@@ -3,6 +3,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemLog.h"
 #include "ActorComponents/AG_CharacterMovementComponent.h"
+#include "ActorComponents/AG_MotionWarpingComponent.h"
 #include "ActorComponents/FootstepsComponent.h"
 #include "Aeon/AbilitySystem/AeonAbilitySet.h"
 #include "Aeon/AbilitySystem/AeonAbilitySystemComponent.h"
@@ -73,17 +74,21 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
         .AddUObject(this, &AActionGameCharacter::OnMaxMovementSpeedChanged);
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
+    MotionWarpingComponent = CreateDefaultSubobject<UAG_MotionWarpingComponent>("MotionWarpingComponent");
 }
 
 void AActionGameCharacter::PerformJump()
 {
     // We do not call super here and implement jump to the parent class
     // instead send event to gameplay ability system and have it do the jumping
-    FGameplayEventData Payload;
-    Payload.Instigator = this;
-    Payload.EventTag = JumpEventTag;
+    // FGameplayEventData Payload;
+    // Payload.Instigator = this;
+    // Payload.EventTag = JumpEventTag;
+    //
+    // UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, JumpEventTag, Payload);
 
-    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, JumpEventTag, Payload);
+    // New style
+    GetAGCharacterMovementComponent()->TryTraversal(GetAeonAbilitySystemComponent_Fast());
 }
 
 void AActionGameCharacter::Landed(const FHitResult& Hit)
