@@ -11,7 +11,8 @@
       "AdditionalDependencies": [
         "GameplayAbilities",
         "Engine",
-        "PhysicsCore"
+        "PhysicsCore",
+        "MotionWarping"
       ]
     }
   ],
@@ -29,6 +30,10 @@
     },
     {
       "Name": "GameplayAbilities",
+      "Enabled": true
+    },
+    {
+      "Name": "MotionWarping",
       "Enabled": true
     },
     {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AbilitySystemInterface.h"
+#include "ActorComponents/AG_CharacterMovementComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameplayEffect.h"
@@ -8,6 +9,8 @@
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
 
+class UAG_MotionWarpingComponent;
+class UAG_CharacterMovementComponent;
 class UAeonAbilitySet;
 class UFootstepsComponent;
 class UAbilitySystemComponent;
@@ -78,6 +81,9 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     FGameplayTagContainer SprintTags;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MotionWarp, meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UAG_MotionWarpingComponent> MotionWarpingComponent{ nullptr };
+
 public:
     explicit AActionGameCharacter(const FObjectInitializer& ObjectInitializer);
 
@@ -87,6 +93,12 @@ public:
     virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
     void OnMaxMovementSpeedChanged(const FOnAttributeChangeData& Data);
+
+    FORCEINLINE UAG_MotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
+    FORCEINLINE UAG_CharacterMovementComponent* GetAGCharacterMovementComponent() const
+    {
+        return GetCharacterMovement<UAG_CharacterMovementComponent>();
+    }
 
 protected:
     void OnCrouchStarted();
