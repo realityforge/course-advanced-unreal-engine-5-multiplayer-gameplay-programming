@@ -1,7 +1,6 @@
 #pragma once
 
 #include "AbilitySystemInterface.h"
-#include "ActionGameTypes.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameplayEffect.h"
