@@ -9,6 +9,7 @@
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
 
+class UCharacterAnimDataAsset;
 class UAG_MotionWarpingComponent;
 class UAG_CharacterMovementComponent;
 class UAeonAbilitySet;
