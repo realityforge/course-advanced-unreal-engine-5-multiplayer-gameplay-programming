@@ -14,9 +14,9 @@
 #pragma once
 
 #include "AttributeSet.h"
+#include "Engine/DataAsset.h"
 #include "GameplayTagContainer.h"
 #include "ScalableFloat.h"
-#include "Engine/DataAsset.h"
 #include "AeonAbilitySet.generated.h"
 
 class UGameplayAbility;
