@@ -77,7 +77,7 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     FGameplayTagContainer CrouchTags;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-    TSubclassOf<UGameplayEffect> CrouchStateEffectClass;
+    TSubclassOf<UGameplayEffect> CrouchStateEffectClass{ nullptr };
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     FGameplayTagContainer SprintTags;
