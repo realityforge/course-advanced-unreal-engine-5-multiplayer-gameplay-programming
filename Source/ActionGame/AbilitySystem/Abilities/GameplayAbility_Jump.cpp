@@ -4,7 +4,7 @@
 
 UGameplayAbility_Jump::UGameplayAbility_Jump()
 {
-    // Part of this ability runs predictively on the local client if there is one
+    // Part of this ability runs predicatively on the local client if there is one
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
     // This ability is never instanced. Anything that executes the ability is operating on the CDO.
     InstancingPolicy = EGameplayAbilityInstancingPolicy::NonInstanced;
