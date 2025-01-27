@@ -47,6 +47,7 @@ bool UGameplayAbility_Vault::CommitCheck(const FGameplayAbilitySpecHandle Handle
             for (; Index < HorizontalTraceCount; ++Index)
             {
                 const FVector TraceStart = StartLocation + Index * UpVector * HorizontalTraceStep;
+                // ReSharper disable once CppTooWideScopeInitStatement
                 const FVector TraceEnd = TraceStart + ForwardVector * HorizontalTraceLength;
                 if (UKismetSystemLibrary::SphereTraceSingleForObjects(this,
                                                                       TraceStart,
