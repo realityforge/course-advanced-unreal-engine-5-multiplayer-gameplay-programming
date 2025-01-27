@@ -37,8 +37,8 @@ class ACTIONGAME_API UGameplayAbility_Vault : public UAG_GameplayAbility
     UPROPERTY(EditDefaultsOnly, Category = "Trace", meta = (RuleRangerRequired))
     TObjectPtr<UAnimMontage> VaultMontage{ nullptr };
 
-    FVector JumpToLocation;
-    FVector JumpOverLocation;
+    FVector JumpToLocation{};
+    FVector JumpOverLocation{};
 
     UPROPERTY()
     TObjectPtr<UAbilityTask_PlayMontageAndWait> MontageTask{ nullptr };
