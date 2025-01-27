@@ -6,9 +6,7 @@
 
 class UAeonAbilitySystemComponent;
 class UGameplayAbility;
-/**
- *
- */
+
 UCLASS()
 class ACTIONGAME_API UAG_CharacterMovementComponent : public UCharacterMovementComponent
 {
