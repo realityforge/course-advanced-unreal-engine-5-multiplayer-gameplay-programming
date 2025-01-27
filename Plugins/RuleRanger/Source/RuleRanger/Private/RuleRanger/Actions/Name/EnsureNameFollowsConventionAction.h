@@ -120,11 +120,15 @@ class RULERANGER_API UEnsureNameFollowsConventionAction : public URuleRangerActi
     GENERATED_BODY()
 
     /** The array of tables that contains the deprecated naming rules */
-    UPROPERTY(EditAnywhere, meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.DeprecatedNameConvention"))
+    UPROPERTY(EditAnywhere,
+              meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.DeprecatedNameConvention",
+                      ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UDataTable>> DeprecatedConventionsTables;
 
     /** The array of tables that contains the object naming rules */
-    UPROPERTY(EditAnywhere, meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.NameConvention"))
+    UPROPERTY(EditAnywhere,
+              meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.NameConvention",
+                      ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UDataTable>> NameConventionsTables;
 
     /** Cache of DataTables from Config. */

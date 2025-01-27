@@ -25,7 +25,7 @@ void URuleRangerRule::Apply_Implementation(URuleRangerActionContext* ActionConte
     if (Match(ActionContext, Object))
     {
         int32 ActionIndex = 0;
-        for (const TObjectPtr<URuleRangerAction> Action : Actions)
+        for (const auto Action : Actions)
         {
             if (IsValid(Object))
             {

@@ -96,6 +96,8 @@ private:
     /**
      * Function invoked when each rule is applied to an object when user requested an explicit scan.
      *
+     * @param Config The RuleRangerConfig context in which to execute rules.
+     * @param RuleSet The RuleSet that contains the Rule.
      * @param Rule The rule to apply.
      * @param InObject the object to apply rule to.
      * @return true to keep processing, false if no more rules should be applied to object.
@@ -108,6 +110,8 @@ private:
     /**
      * Function invoked when each rule is applied to an object when user requested an explicit scan and autofix.
      *
+     * @param Config The RuleRangerConfig context in which to execute rules.
+     * @param RuleSet The RuleSet that contains the Rule.
      * @param Rule The rule to apply.
      * @param InObject the object to apply rule to.
      * @return true to keep processing, false if no more rules should be applied to object.

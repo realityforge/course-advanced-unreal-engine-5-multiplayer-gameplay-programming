@@ -49,7 +49,6 @@ void FRuleRangerUtilities::CollectTypeHierarchy(const UObject* Object, TArray<UC
         {
             bProcessedBlueprintHierarchy = true;
             // If Object is a Blueprint then we have an alternate hierarchy accessible via the ParentClass property.
-            // TODO: Assess with a similar pattern needs to be applied for other asset based class hierarchies...
             UClass* BlueprintClass{ Cast<UBlueprint>(Object)->ParentClass };
             while (BlueprintClass)
             {

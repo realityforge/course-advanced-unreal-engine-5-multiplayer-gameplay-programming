@@ -82,7 +82,7 @@ bool URuleRangerEditorValidator::ProcessRule(URuleRangerConfig* const Config,
                                              URuleRangerRuleSet* const RuleSet,
                                              URuleRangerRule* Rule,
                                              UObject* InObject,
-                                             FDataValidationContext& Context)
+                                             const FDataValidationContext& Context)
 {
     // ReSharper disable once CppTooWideScopeInitStatement
     const bool bIsSave = EDataValidationUsecase::Save == Context.GetValidationUsecase();

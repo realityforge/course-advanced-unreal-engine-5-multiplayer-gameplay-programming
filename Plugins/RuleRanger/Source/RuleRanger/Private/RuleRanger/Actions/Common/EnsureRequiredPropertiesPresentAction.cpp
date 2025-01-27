@@ -69,6 +69,7 @@ void UEnsureRequiredPropertiesPresentAction::PerformChecksOnObject(URuleRangerAc
     }
 }
 
+// ReSharper disable once CppMemberFunctionMayBeStatic
 void UEnsureRequiredPropertiesPresentAction::DeriveRequiredComponentProperties(
     const UClass* Class,
     TMap<FString, TArray<FString>>& RequiredComponentProperties)
@@ -103,6 +104,7 @@ void UEnsureRequiredPropertiesPresentAction::DeriveRequiredComponentProperties(
     }
 }
 
+// ReSharper disable once CppMemberFunctionMayBeStatic
 void UEnsureRequiredPropertiesPresentAction::PerformChecksForComponentProperties(
     URuleRangerActionContext* ActionContext,
     const UClass* Class,

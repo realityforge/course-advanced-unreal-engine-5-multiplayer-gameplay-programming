@@ -27,7 +27,7 @@ void UEnsureSoundWaveSampleRateValidAction::Apply_Implementation(URuleRangerActi
 
     // ReSharper disable once CppTooWideScopeInitStatement
     const float SampleRate = SoundWave->GetSampleRateForCurrentPlatform();
-    if (!ValidSampleRates.Contains((int32)SampleRate))
+    if (!ValidSampleRates.Contains(static_cast<int32>(SampleRate)))
     {
         FString ValidValues{ "" };
         for (const int32 ValidSampleRate : ValidSampleRates)

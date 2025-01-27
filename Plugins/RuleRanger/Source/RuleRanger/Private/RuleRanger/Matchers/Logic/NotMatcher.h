@@ -28,9 +28,9 @@ class RULERANGER_API UNotMatcher final : public URuleRangerMatcher
     GENERATED_BODY()
 
     /** The matchers to perform logical NOT operation on. */
-    UPROPERTY(Instanced, EditAnywhere)
+    UPROPERTY(Instanced, EditAnywhere, meta = (AllowAbstract = "false", ForceShowPluginContent = "true"))
     TObjectPtr<URuleRangerMatcher> Matcher;
 
 public:
-    bool Test_Implementation(UObject* Object) const override;
+    virtual bool Test_Implementation(UObject* Object) const override;
 };

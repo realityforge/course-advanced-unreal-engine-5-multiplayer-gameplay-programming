@@ -18,7 +18,7 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureBlueprintContainsNoUnlinkedNodesAction)
 
-bool UEnsureBlueprintContainsNoUnlinkedNodesAction::ShouldHaveLinks(const TObjectPtr<UEdGraphNode> Node) const
+bool UEnsureBlueprintContainsNoUnlinkedNodesAction::ShouldHaveLinks(const TObjectPtr<UEdGraphNode>& Node) const
 {
     if (!bErrorOnLooseDefaultEvents && Node->IsAutomaticallyPlacedGhostNode())
     {

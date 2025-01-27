@@ -58,7 +58,7 @@ private:
                      URuleRangerRuleSet* const RuleSet,
                      URuleRangerRule* Rule,
                      UObject* InObject,
-                     FDataValidationContext& Context);
+                     const FDataValidationContext& Context);
 
     bool WillRuleRunInDataValidationUsecase(const URuleRangerRule* Rule,
                                             const UObject* InObject,

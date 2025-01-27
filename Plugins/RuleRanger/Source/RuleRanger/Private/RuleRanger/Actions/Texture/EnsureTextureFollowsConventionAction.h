@@ -33,7 +33,8 @@ class RULERANGER_API UEnsureTextureFollowsConventionAction final : public UTextu
 
     /** The array of tables that contains the texture conventions */
     UPROPERTY(EditAnywhere,
-              meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.RuleRangerTextureConvention"))
+              meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.RuleRangerTextureConvention",
+                      ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UDataTable>> ConventionsTables;
 
     /** Cache of DataTables from Config. */

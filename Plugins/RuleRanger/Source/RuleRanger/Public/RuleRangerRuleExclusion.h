@@ -37,15 +37,21 @@ public:
     FText Description;
 
     /** A set of RuleSets that are excluded. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rules", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rules",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerRuleSet>> RuleSets;
 
     /** A set of Rules that are excluded. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rules", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rules",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerRule>> Rules;
 
     /** A set of objects that the exclusions apply to. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rules", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rules",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UObject>> Objects;
 
     /** A set of path prefixes that the exclusions apply to. */

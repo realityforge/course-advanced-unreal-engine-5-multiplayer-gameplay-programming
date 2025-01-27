@@ -36,15 +36,21 @@ public:
     /**
      * A set of DataTables that are used to drive different actions.
      */
-    UPROPERTY(EditDefaultsOnly, Category = "Rule Sets", meta = (DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rule Sets",
+              meta = (DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<UDataTable>> DataTables;
 
     /** A set of rule sets to be applied to directories. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rule Sets", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rule Sets",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerRuleSet>> RuleSets;
 
     /** A set of exclusions when applying rules. */
-    UPROPERTY(EditDefaultsOnly, Category = "Rule Sets", meta = (AllowAbstract = "false", DisplayThumbnail = "false"))
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rule Sets",
+              meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerRuleExclusion>> Exclusions;
 
     bool ConfigMatches(const FString& Path);

@@ -80,11 +80,17 @@ public:
     int32 Priority{ 1000 };
 
     /** The matchers that an object MUST match before this rule is applied. */
-    UPROPERTY(Instanced, EditAnywhere, Category = "Rule Ranger")
+    UPROPERTY(Instanced,
+              EditAnywhere,
+              Category = "Rule Ranger",
+              meta = (AllowAbstract = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerMatcher>> Matchers;
 
     /** The actions that will be applied if the object is matched by the rule. */
-    UPROPERTY(Instanced, EditAnywhere, Category = "Rule Ranger")
+    UPROPERTY(Instanced,
+              EditAnywhere,
+              Category = "Rule Ranger",
+              meta = (AllowAbstract = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerAction>> Actions;
 
     /**

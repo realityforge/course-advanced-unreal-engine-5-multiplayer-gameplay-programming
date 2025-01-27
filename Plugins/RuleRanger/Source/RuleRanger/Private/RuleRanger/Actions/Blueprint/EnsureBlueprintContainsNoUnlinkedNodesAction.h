@@ -32,7 +32,7 @@ class RULERANGER_API UEnsureBlueprintContainsNoUnlinkedNodesAction final : publi
     UPROPERTY(EditAnywhere)
     bool bErrorOnLooseDefaultEvents{ false };
 
-    bool ShouldHaveLinks(const TObjectPtr<UEdGraphNode> Node) const;
+    bool ShouldHaveLinks(const TObjectPtr<UEdGraphNode>& Node) const;
 
 public:
     virtual void Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object) override;
