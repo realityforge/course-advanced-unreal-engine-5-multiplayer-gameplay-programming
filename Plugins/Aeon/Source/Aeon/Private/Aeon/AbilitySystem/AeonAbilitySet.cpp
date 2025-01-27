@@ -21,7 +21,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AeonAbilitySet)
 
 #if WITH_EDITOR
-void FAeonGameplayAbilityEntry::InitTitleProperty()
+void FAeonGameplayAbilityEntry::InitEditorFriendlyTitleProperty()
 {
     if (Ability)
     {
@@ -29,27 +29,27 @@ void FAeonGameplayAbilityEntry::InitTitleProperty()
         check(Package);
         if (Ability->IsInBlueprint())
         {
-            Title = FString::Printf(TEXT("%s [%d] %s"),
-                                    *FPackageName::GetShortName(Package),
-                                    Level,
-                                    InputTag.IsValid() ? *InputTag.ToString() : TEXT(""));
+            EditorFriendlyTitle = FString::Printf(TEXT("%s [%d] %s"),
+                                                  *FPackageName::GetShortName(Package),
+                                                  Level,
+                                                  InputTag.IsValid() ? *InputTag.ToString() : TEXT(""));
         }
         else
         {
-            Title = FString::Printf(TEXT("%s.%s [%d] %s"),
-                                    *FPackageName::GetShortName(Package),
-                                    *Ability->GetName(),
-                                    Level,
-                                    InputTag.IsValid() ? *InputTag.ToString() : TEXT(""));
+            EditorFriendlyTitle = FString::Printf(TEXT("%s.%s [%d] %s"),
+                                                  *FPackageName::GetShortName(Package),
+                                                  *Ability->GetName(),
+                                                  Level,
+                                                  InputTag.IsValid() ? *InputTag.ToString() : TEXT(""));
         }
     }
     else
     {
-        Title = TEXT("None");
+        EditorFriendlyTitle = TEXT("None");
     }
 }
 
-void FAeonGameplayEffectEntry::InitTitleProperty()
+void FAeonGameplayEffectEntry::InitEditorFriendlyTitleProperty()
 {
     if (Effect)
     {
@@ -57,21 +57,21 @@ void FAeonGameplayEffectEntry::InitTitleProperty()
         check(Package);
         if (Effect->IsInBlueprint())
         {
-            Title = FString::Printf(TEXT("%s [%d]"), *FPackageName::GetShortName(Package), Level);
+            EditorFriendlyTitle = FString::Printf(TEXT("%s [%d]"), *FPackageName::GetShortName(Package), Level);
         }
         else
         {
-            Title =
+            EditorFriendlyTitle =
                 FString::Printf(TEXT("%s.%s [%d]"), *FPackageName::GetShortName(Package), *Effect->GetName(), Level);
         }
     }
     else
     {
-        Title = TEXT("None");
+        EditorFriendlyTitle = TEXT("None");
     }
 }
 
-void FAeonAttributeSetEntry::InitTitleProperty()
+void FAeonAttributeSetEntry::InitEditorFriendlyTitleProperty()
 {
     if (AttributeSet)
     {
@@ -79,22 +79,24 @@ void FAeonAttributeSetEntry::InitTitleProperty()
         check(Package);
         if (AttributeSet->IsInBlueprint())
         {
-            Title = FPackageName::GetShortName(Package);
+            EditorFriendlyTitle = FPackageName::GetShortName(Package);
         }
         else
         {
-            Title = FString::Printf(TEXT("%s.%s"), *FPackageName::GetShortName(Package), *AttributeSet->GetName());
+            EditorFriendlyTitle =
+                FString::Printf(TEXT("%s.%s"), *FPackageName::GetShortName(Package), *AttributeSet->GetName());
         }
     }
     else
     {
-        Title = TEXT("None");
+        EditorFriendlyTitle = TEXT("None");
     }
 }
 
-void FAeonAttributeInitializer::InitTitleProperty()
+void FAeonAttributeInitializer::InitEditorFriendlyTitleProperty()
 {
-    Title = FString::Printf(TEXT("%s [%d] = %.2f"), *Attribute.GetName(), Level, Value.GetValueAtLevel(Level));
+    EditorFriendlyTitle =
+        FString::Printf(TEXT("%s [%d] = %.2f"), *Attribute.GetName(), Level, Value.GetValueAtLevel(Level));
 }
 #endif
 
@@ -380,46 +382,46 @@ EDataValidationResult UAeonAbilitySet::IsDataValid(FDataValidationContext& Conte
     return Result;
 }
 
-void UAeonAbilitySet::UpdateAbilityTitles()
+void UAeonAbilitySet::UpdateAbilityEditorFriendlyTitles()
 {
     for (int32 Index = 0; Index < Abilities.Num(); ++Index)
     {
         if (auto& Ability = Abilities[Index]; IsValid(Ability.Ability))
         {
-            Ability.InitTitleProperty();
+            Ability.InitEditorFriendlyTitleProperty();
         }
     }
 }
 
-void UAeonAbilitySet::UpdateEffectTitles()
+void UAeonAbilitySet::UpdateEffectEditorFriendlyTitles()
 {
     for (int32 Index = 0; Index < Effects.Num(); ++Index)
     {
         if (auto& Effect = Effects[Index]; IsValid(Effect.Effect))
         {
-            Effect.InitTitleProperty();
+            Effect.InitEditorFriendlyTitleProperty();
         }
     }
 }
 
-void UAeonAbilitySet::UpdateAttributeSetTitles()
+void UAeonAbilitySet::UpdateAttributeSetEditorFriendlyTitles()
 {
     for (int32 Index = 0; Index < AttributeSets.Num(); ++Index)
     {
         if (auto& AttributeSet = AttributeSets[Index]; IsValid(AttributeSet.AttributeSet))
         {
-            AttributeSet.InitTitleProperty();
+            AttributeSet.InitEditorFriendlyTitleProperty();
         }
     }
 }
 
-void UAeonAbilitySet::UpdateAttributeValueTitles()
+void UAeonAbilitySet::UpdateAttributeValueEditorFriendlyTitles()
 {
     for (int32 Index = 0; Index < AttributeValues.Num(); ++Index)
     {
         if (auto& AttributeValue = AttributeValues[Index]; AttributeValue.Attribute.IsValid())
         {
-            AttributeValue.InitTitleProperty();
+            AttributeValue.InitEditorFriendlyTitleProperty();
         }
     }
 }
@@ -435,20 +437,45 @@ void UAeonAbilitySet::PostEditChangeProperty(FPropertyChangedEvent& PropertyChan
 
         if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Abilities)) == PropertyName)
         {
-            UpdateAbilityTitles();
+            UpdateAbilityEditorFriendlyTitles();
         }
         else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Effects)) == PropertyName)
         {
-            UpdateEffectTitles();
+            UpdateEffectEditorFriendlyTitles();
         }
         else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeSets)) == PropertyName)
         {
-            UpdateAttributeSetTitles();
+            UpdateAttributeSetEditorFriendlyTitles();
         }
         else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeValues)) == PropertyName)
         {
-            UpdateAttributeValueTitles();
+            UpdateAttributeValueEditorFriendlyTitles();
         }
+    }
+}
+
+void UAeonAbilitySet::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
+{
+    Super::PostEditChangeChainProperty(PropertyChangedEvent);
+
+    // ReSharper disable once CppTooWideScopeInitStatement
+    const auto PropertyName = PropertyChangedEvent.PropertyChain.GetActiveMemberNode()->GetValue()->GetFName();
+
+    if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Abilities)) == PropertyName)
+    {
+        UpdateAbilityEditorFriendlyTitles();
+    }
+    else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Effects)) == PropertyName)
+    {
+        UpdateEffectEditorFriendlyTitles();
+    }
+    else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeSets)) == PropertyName)
+    {
+        UpdateAttributeSetEditorFriendlyTitles();
+    }
+    else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeValues)) == PropertyName)
+    {
+        UpdateAttributeValueEditorFriendlyTitles();
     }
 }
 #endif
@@ -457,9 +484,9 @@ void UAeonAbilitySet::PostLoad()
 {
     Super::PostLoad();
 #if WITH_EDITOR
-    UpdateAbilityTitles();
-    UpdateEffectTitles();
-    UpdateAttributeSetTitles();
-    UpdateAttributeValueTitles();
+    UpdateAbilityEditorFriendlyTitles();
+    UpdateEffectEditorFriendlyTitles();
+    UpdateAttributeSetEditorFriendlyTitles();
+    UpdateAttributeValueEditorFriendlyTitles();
 #endif
 }

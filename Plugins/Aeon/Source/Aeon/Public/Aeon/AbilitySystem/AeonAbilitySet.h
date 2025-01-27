@@ -40,7 +40,7 @@ struct FAeonGameplayAbilityEntry
 
     /** The transient title property to use in the editor. */
     UPROPERTY(VisibleDefaultsOnly, Transient, meta = (EditCondition = "false", EditConditionHides))
-    FString Title;
+    FString EditorFriendlyTitle;
 #endif
 
     /** The Gameplay Ability to grant. */
@@ -61,7 +61,7 @@ private:
     /**
      * Derive the transient title property for use in the editor.
      */
-    void InitTitleProperty();
+    void InitEditorFriendlyTitleProperty();
 #endif
 };
 
@@ -78,7 +78,7 @@ struct FAeonGameplayEffectEntry
 
     /** The transient title property to use in the editor. */
     UPROPERTY(VisibleDefaultsOnly, Transient, meta = (EditCondition = "false", EditConditionHides))
-    FString Title;
+    FString EditorFriendlyTitle;
 #endif
 
     /** The Gameplay Effect to grant. */
@@ -95,7 +95,7 @@ private:
     /**
      * Derive the transient title property for use in the editor.
      */
-    void InitTitleProperty();
+    void InitEditorFriendlyTitleProperty();
 #endif
 };
 
@@ -112,7 +112,7 @@ struct FAeonAttributeSetEntry
 
     /** The transient title property to use in the editor. */
     UPROPERTY(VisibleDefaultsOnly, Transient, meta = (EditCondition = "false", EditConditionHides))
-    FString Title;
+    FString EditorFriendlyTitle;
 #endif
 
     /** The AttributeSet to grant. */
@@ -125,7 +125,7 @@ private:
     /**
      * Derive the transient title property for use in the editor.
      */
-    void InitTitleProperty();
+    void InitEditorFriendlyTitleProperty();
 #endif
 };
 
@@ -139,7 +139,7 @@ struct FAeonAttributeInitializer
 
     /** The transient title property to use in the editor. */
     UPROPERTY(VisibleDefaultsOnly, Transient, meta = (EditCondition = "false", EditConditionHides))
-    FString Title;
+    FString EditorFriendlyTitle;
 #endif
 
     /**
@@ -165,7 +165,7 @@ private:
     /**
      * Derive the transient title property for use in the editor.
      */
-    void InitTitleProperty();
+    void InitEditorFriendlyTitleProperty();
 #endif
 };
 
@@ -234,19 +234,19 @@ class AEON_API UAeonAbilitySet final : public UPrimaryDataAsset
     FGameplayTagContainer Tags;
 
     /** Gameplay Abilities to grant to the ASC when the AeonAbilitySet is granted to the ASC. */
-    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "Title"))
+    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "EditorFriendlyTitle"))
     TArray<FAeonGameplayAbilityEntry> Abilities;
 
     /** Gameplay Effects to grant to the ASC when the AeonAbilitySet is granted to the ASC. */
-    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "Title"))
+    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "EditorFriendlyTitle"))
     TArray<FAeonGameplayEffectEntry> Effects;
 
     /** AttributeSets to grant to the ASC when the AeonAbilitySet is granted to the ASC. */
-    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "Title"))
+    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "EditorFriendlyTitle"))
     TArray<FAeonAttributeSetEntry> AttributeSets;
 
     /** Attribute base values to initialize on the ASC when the AeonAbilitySet is granted to the ASC. */
-    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "Title"))
+    UPROPERTY(EditDefaultsOnly, meta = (TitleProperty = "EditorFriendlyTitle"))
     TArray<FAeonAttributeInitializer> AttributeValues;
 
 public:
@@ -285,28 +285,34 @@ private:
     /**
      * Update the titles for abilities to improve editor experience.
      */
-    void UpdateAbilityTitles();
+    void UpdateAbilityEditorFriendlyTitles();
 
     /**
      * Update the titles for effects to improve editor experience.
      */
-    void UpdateEffectTitles();
+    void UpdateEffectEditorFriendlyTitles();
 
     /**
      * Update the titles for AttributeSets to improve editor experience.
      */
-    void UpdateAttributeSetTitles();
+    void UpdateAttributeSetEditorFriendlyTitles();
 
     /**
      * Update the titles for AttributeValues to improve editor experience.
      */
-    void UpdateAttributeValueTitles();
+    void UpdateAttributeValueEditorFriendlyTitles();
 
 public:
     /**
      * Updates the titles of abilities, effects, and attribute sets.
      */
     virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
+    /**
+     * Updates the titles of abilities, effects, and attribute sets.
+     * This is called when properties that are inside of structs are modified.
+     */
+    virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
 #endif // WITH_EDITOR
 
     virtual void PostLoad() override;
