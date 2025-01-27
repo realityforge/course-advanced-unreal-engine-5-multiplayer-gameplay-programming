@@ -12,11 +12,11 @@ static TAutoConsoleVariable CVarShowTraversal(TEXT("ShowDebugTraversal"),
 bool UAG_CharacterMovementComponent::TryTraversal(UAeonAbilitySystemComponent* AbilitySystemComponent)
 {
     check(AbilitySystemComponent);
-    for (auto Ability : TraversalAbilities)
+    for (const auto Ability : TraversalAbilities)
     {
         if (AbilitySystemComponent->TryActivateAbilityByClass(Ability, true))
         {
-            if (auto Spec = AbilitySystemComponent->FindAbilitySpecFromClass(Ability))
+            if (const auto Spec = AbilitySystemComponent->FindAbilitySpecFromClass(Ability))
             {
                 if (Spec->IsActive())
                 {
