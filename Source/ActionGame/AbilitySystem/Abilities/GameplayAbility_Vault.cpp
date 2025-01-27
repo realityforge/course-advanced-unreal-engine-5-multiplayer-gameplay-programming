@@ -23,9 +23,9 @@ bool UGameplayAbility_Vault::CommitCheck(const FGameplayAbilitySpecHandle Handle
     {
         if (auto Character = GetActionGameCharacterFromActorInfo())
         {
-            FVector StartLocation = Character->GetActorLocation();
-            FVector ForwardVector = Character->GetActorForwardVector();
-            FVector UpVector = Character->GetActorUpVector();
+            const auto StartLocation = Character->GetActorLocation();
+            const auto ForwardVector = Character->GetActorForwardVector();
+            const auto UpVector = Character->GetActorUpVector();
 
             TArray<AActor*> IgnoreActors{ Character };
 
@@ -33,8 +33,7 @@ bool UGameplayAbility_Vault::CommitCheck(const FGameplayAbilitySpecHandle Handle
             check(CVar);
             const bool bShowDebugTraversal = CVar->GetBool();
 
-            const EDrawDebugTrace::Type DebugDrawType =
-                bShowDebugTraversal ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
+            const auto DebugDrawType = bShowDebugTraversal ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
 
             bool bJumpToLocationSet = false;
             int32 JumpToLocationIndex = INDEX_NONE;
