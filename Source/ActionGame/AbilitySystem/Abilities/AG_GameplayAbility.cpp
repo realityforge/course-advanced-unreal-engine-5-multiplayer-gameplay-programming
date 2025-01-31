@@ -79,11 +79,12 @@ void UAG_GameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
 {
     if (IsInstantiated())
     {
-        for (auto EffectHandle : ActiveEffectHandles)
+        UAbilitySystemComponent* AbilitySystemComponent = ActorInfo->AbilitySystemComponent.Get();
+        for (const auto EffectHandle : ActiveEffectHandles)
         {
             if (EffectHandle.IsValid())
             {
-                ActorInfo->AbilitySystemComponent->RemoveActiveGameplayEffect(EffectHandle);
+                AbilitySystemComponent->RemoveActiveGameplayEffect(EffectHandle);
             }
         }
         ActiveEffectHandles.Reset();
