@@ -58,15 +58,13 @@ void UAG_GameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 {
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-    const auto ASC = ActorInfo->AbilitySystemComponent.Get();
-    const auto EffectContext = ASC->MakeEffectContext();
-
-    if (ASC)
+    if (const auto AbilitySystemComponent = ActorInfo->AbilitySystemComponent.Get())
     {
-        ApplyGameplayEffects(ASC, EffectContext, false);
+        const auto EffectContext = AbilitySystemComponent->MakeEffectContext();
+        ApplyGameplayEffects(AbilitySystemComponent, EffectContext, false);
         if (IsInstantiated())
         {
-            ApplyGameplayEffects(ASC, EffectContext, true);
+            ApplyGameplayEffects(AbilitySystemComponent, EffectContext, true);
         }
     }
 }
