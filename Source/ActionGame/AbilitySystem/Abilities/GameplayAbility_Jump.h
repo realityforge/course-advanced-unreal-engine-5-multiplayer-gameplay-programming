@@ -12,9 +12,15 @@ class ACTIONGAME_API UGameplayAbility_Jump : public UAG_GameplayAbility
 {
     GENERATED_BODY()
 
-    UGameplayAbility_Jump();
+    UPROPERTY(EditDefaultsOnly)
+    FGameplayTag WallRunStateTag{ FGameplayTag::EmptyTag };
+
+    UPROPERTY(EditDefaultsOnly)
+    float OffWallJumpStrength{ 100.0f };
 
 public:
+    UGameplayAbility_Jump();
+
     virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                     const FGameplayAbilityActorInfo* ActorInfo,
                                     const FGameplayTagContainer* SourceTags,
