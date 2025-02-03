@@ -2,17 +2,17 @@
 * -text
 Config/*.ini text=auto
 **/Config/*.ini text=auto
-*.json text
-*.md text
-*.sh text eol=lf
-*.bat text eol=crlf
-.braids.json text eol=lf
-*.txt text
-.gitattributes text
-.gitignore text
-.ruby-version text
-Gemfile text
-LICENSE text
+*.json text=auto
+*.md text=auto
+*.sh text=auto eol=lf
+*.bat text=auto eol=crlf
+.braids.json text=auto eol=lf
+*.txt text=auto
+.gitattributes text=auto
+.gitignore text=auto
+.ruby-version text=auto
+Gemfile text=auto
+LICENSE text=auto
 
 *.h text=auto eol=native
 *.cs text=auto eol=native
