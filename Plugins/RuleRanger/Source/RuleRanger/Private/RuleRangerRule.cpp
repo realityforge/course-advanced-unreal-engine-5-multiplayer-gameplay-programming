@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 #include "RuleRangerRule.h"
+#include "Logging/StructuredLog.h"
 #include "RuleRanger/RuleRangerUtilities.h"
 #include "RuleRangerAction.h"
 #include "RuleRangerActionContext.h"
@@ -52,20 +53,25 @@ void URuleRangerRule::Apply_Implementation(URuleRangerActionContext* ActionConte
                     const auto State = ActionContext->GetState();
                     if (ERuleRangerActionState::AS_Fatal == State)
                     {
-                        RR_VERBOSE_ALOG("ApplyRule(%s) on rule %s applied action %s which resulted in fatal error. "
-                                        "Processing rules will not continue.",
-                                        *Object->GetName(),
-                                        *GetName(),
-                                        *Action->GetName());
+                        UE_LOGFMT(RuleRanger,
+                                  Verbose,
+                                  "ApplyRule({Object}) on rule {Rule} applied action {Action} "
+                                  "which resulted in fatal error. Processing rules will not continue.",
+                                  Object->GetName(),
+                                  GetName(),
+                                  Action->GetName());
                         return;
                     }
                     else if (!bContinueOnError && ERuleRangerActionState::AS_Error == State)
                     {
-                        RR_VERBOSE_ALOG("ApplyRule(%s) on rule %s applied action %s which resulted in error. "
-                                        "Processing rules will not continue as ContinueOnError=False.",
-                                        *Object->GetName(),
-                                        *GetName(),
-                                        *Action->GetName());
+                        UE_LOGFMT(
+                            RuleRanger,
+                            Verbose,
+                            "ApplyRule({Object}) on rule {Rule} applied action {Action} "
+                            "which resulted in error. Processing rules will not continue as ContinueOnError=False.",
+                            Object->GetName(),
+                            GetName(),
+                            Action->GetName());
                         return;
                     }
                 }
@@ -78,7 +84,7 @@ void URuleRangerRule::Apply_Implementation(URuleRangerActionContext* ActionConte
 bool URuleRangerRule::Match(URuleRangerActionContext* ActionContext, UObject* Object) const
 {
     int32 MatcherIndex = 0;
-    for (const TObjectPtr<URuleRangerMatcher> Matcher : Matchers)
+    for (const TObjectPtr Matcher : Matchers)
     {
         if (IsValid(Object))
         {
@@ -92,10 +98,12 @@ bool URuleRangerRule::Match(URuleRangerActionContext* ActionContext, UObject* Ob
             {
                 if (!Matcher->Test(Object))
                 {
-                    RR_VERBOSE_ALOG("Match(%s) on rule %s exited early as matcher %s did not match",
-                                    *Object->GetName(),
-                                    *GetName(),
-                                    *Matcher->GetName());
+                    UE_LOGFMT(RuleRanger,
+                              Verbose,
+                              "Match({Object}) on rule {Rule} exited early as matcher {Matcher} did not match",
+                              Object->GetName(),
+                              GetName(),
+                              Matcher->GetName());
                     return false;
                 }
             }

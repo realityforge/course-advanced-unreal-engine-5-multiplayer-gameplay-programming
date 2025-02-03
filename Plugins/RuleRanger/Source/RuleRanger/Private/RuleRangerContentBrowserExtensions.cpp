@@ -15,6 +15,7 @@
 #include "RuleRangerContentBrowserExtensions.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "ContentBrowserModule.h"
+#include "Logging/StructuredLog.h"
 #include "RuleRanger/RuleRangerEditorSubsystem.h"
 #include "RuleRangerCommands.h"
 #include "RuleRangerDeveloperSettings.h"
@@ -260,7 +261,7 @@ static void OnFixSelectedPaths(const TArray<FString>& AssetPaths)
 // ReSharper disable once CppPassValueParameterByConstReference
 static void OnExtendForSelectedPaths(FMenuBuilder& MenuBuilder)
 {
-    RR_VERY_VERBOSE_ALOG("FRuleRangerContentBrowserExtensions: OnExtendContentBrowser() invoked.");
+    UE_LOGFMT(RuleRanger, VeryVerbose, "FRuleRangerContentBrowserExtensions: OnExtendContentBrowser() invoked.");
 
     MenuBuilder.BeginSection("RuleRangerContentBrowserContext",
                              NSLOCTEXT("RuleRanger", "ContextMenuSectionName", "Rule Ranger"));
@@ -274,7 +275,7 @@ static void OnExtendForSelectedPaths(FMenuBuilder& MenuBuilder)
 
 static TSharedRef<FExtender> OnExtendSelectedPathsMenu(const TArray<FString>& Paths)
 {
-    RR_VERY_VERBOSE_ALOG("OnExtendSelectedPathsMenu() invoked.");
+    UE_LOGFMT(RuleRanger, VeryVerbose, "OnExtendSelectedPathsMenu() invoked.");
 
     const TSharedPtr<FUICommandList> CommandList = MakeShareable(new FUICommandList);
     CommandList->MapAction(FRuleRangerCommands::Get().ScanSelectedPaths,
@@ -292,7 +293,7 @@ static TSharedRef<FExtender> OnExtendSelectedPathsMenu(const TArray<FString>& Pa
 // ReSharper disable once CppPassValueParameterByConstReference
 static void OnExtendForSelectedAssets(FMenuBuilder& MenuBuilder)
 {
-    RR_VERY_VERBOSE_ALOG("OnExtendForSelectedAssets() invoked.");
+    UE_LOGFMT(RuleRanger, VeryVerbose, "OnExtendForSelectedAssets() invoked.");
 
     MenuBuilder.BeginSection("RuleRangerContentBrowserContext",
                              NSLOCTEXT("RuleRanger", "ContextMenuSectionName", "Rule Ranger"));
@@ -306,7 +307,7 @@ static void OnExtendForSelectedAssets(FMenuBuilder& MenuBuilder)
 
 static TSharedRef<FExtender> OnExtendForSelectedAssetsMenu(const TArray<FAssetData>& Assets)
 {
-    RR_VERY_VERBOSE_ALOG("OnExtendForSelectedAssetsMenu() invoked.");
+    UE_LOGFMT(RuleRanger, VeryVerbose, "OnExtendForSelectedAssetsMenu() invoked.");
 
     const TSharedPtr<FUICommandList> CommandList = MakeShareable(new FUICommandList);
     CommandList->MapAction(FRuleRangerCommands::Get().ScanSelectedAssets,
@@ -332,7 +333,9 @@ void FRuleRangerContentBrowserExtensions::Initialize()
 {
     auto& Module = FModuleManager::LoadModuleChecked<FContentBrowserModule>(TEXT("ContentBrowser"));
 
-    RR_VERY_VERBOSE_ALOG("FRuleRangerContentBrowserExtensions::Shutdown(): Registering ContentBrowser Extensions.");
+    UE_LOGFMT(RuleRanger,
+              VeryVerbose,
+              "FRuleRangerContentBrowserExtensions::Shutdown(): Registering ContentBrowser Extensions.");
     SelectedPathsDelegate = FContentBrowserMenuExtender_SelectedPaths::CreateStatic(&OnExtendSelectedPathsMenu);
     Module.GetAllPathViewContextMenuExtenders().Add(SelectedPathsDelegate);
     SelectedPathsDelegateHandle = SelectedPathsDelegate.GetHandle();
@@ -354,8 +357,9 @@ void FRuleRangerContentBrowserExtensions::Shutdown()
         auto& Module = FModuleManager::LoadModuleChecked<FContentBrowserModule>(ContentBrowserModuleName);
         if (SelectedPathsDelegateHandle.IsValid())
         {
-            RR_VERY_VERBOSE_ALOG(
-                "FRuleRangerContentBrowserExtensions::Shutdown(): Deregistering ContentBrowser Extensions.");
+            UE_LOGFMT(RuleRanger,
+                      VeryVerbose,
+                      "FRuleRangerContentBrowserExtensions::Shutdown(): Deregistering ContentBrowser Extensions.");
             auto Target = SelectedPathsDelegateHandle;
             Module.GetAllPathViewContextMenuExtenders().RemoveAll(
                 [&Target](const auto& Delegate) { return Delegate.GetHandle() == Target; });
@@ -363,8 +367,10 @@ void FRuleRangerContentBrowserExtensions::Shutdown()
         }
         else
         {
-            RR_VERBOSE_ALOG("FRuleRangerContentBrowserExtensions::Shutdown(): Skipping deregister of "
-                            "ContentBrowserExtensions as handle is Invalid.");
+            UE_LOGFMT(RuleRanger,
+                      Verbose,
+                      "FRuleRangerContentBrowserExtensions::Shutdown(): Skipping deregister of "
+                      "ContentBrowserExtensions as handle is Invalid.");
         }
     }
 }

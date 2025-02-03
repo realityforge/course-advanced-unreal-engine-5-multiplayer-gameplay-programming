@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 #include "RuleRanger.h"
+#include "Logging/StructuredLog.h"
 #include "RuleRangerCommands.h"
 #include "RuleRangerContentBrowserExtensions.h"
 #include "RuleRangerDefaultEvents.h"
@@ -32,7 +33,7 @@ void FRuleRangerModule::StartupModule()
     if (!IsRunningCommandlet())
     {
         // Add integrations of RuleRanger into Editor UI
-        RR_VERY_VERBOSE_ALOG("RuleRangerModule: Initializing Editor integration.");
+        UE_LOGFMT(RuleRanger, VeryVerbose, "RuleRangerModule: Initializing Editor integration.");
         FRuleRangerStyle::Initialize();
         FRuleRangerStyle::ReloadTextures();
         FRuleRangerCommands::Register();
@@ -41,7 +42,7 @@ void FRuleRangerModule::StartupModule()
     }
     else
     {
-        RR_VERY_VERBOSE_ALOG("RuleRangerModule: Skipping Editor integration as running as a commandlet.");
+        UE_LOGFMT(RuleRanger, VeryVerbose, "RuleRangerModule: Skipping Editor integration as running as a commandlet.");
     }
 }
 

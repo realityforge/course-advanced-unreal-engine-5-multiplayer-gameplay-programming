@@ -12,6 +12,7 @@
  * limitations under the License.
  */
 #include "RuleRanger/RuleRangerEditorValidator.h"
+#include "Logging/StructuredLog.h"
 #include "RuleRanger/RuleRangerEditorSubsystem.h"
 #include "RuleRangerActionContext.h"
 #include "RuleRangerLogging.h"
@@ -50,7 +51,7 @@ EDataValidationResult URuleRangerEditorValidator::ValidateLoadedAsset_Implementa
 {
     if (!ActionContext)
     {
-        RR_VERY_VERBOSE_ALOG("RuleRangerEditorSubsystem: Creating the initial ActionContext");
+        UE_LOGFMT(RuleRanger, VeryVerbose, "RuleRangerEditorSubsystem: Creating the initial ActionContext");
         ActionContext = NewObject<URuleRangerActionContext>(this, URuleRangerActionContext::StaticClass());
     }
 
@@ -68,7 +69,10 @@ EDataValidationResult URuleRangerEditorValidator::ValidateLoadedAsset_Implementa
     }
     else
     {
-        RR_ERROR_ALOG("OnAssetValidate(%s) unable to locate RuleRangerEditorSubsystem.", *InAsset->GetName());
+        UE_LOGFMT(RuleRanger,
+                  Error,
+                  "OnAssetValidate({Asset}) unable to locate RuleRangerEditorSubsystem.",
+                  InAsset->GetName());
     }
 
     if (EDataValidationResult::NotValidated == GetValidationResult())
@@ -88,9 +92,11 @@ bool URuleRangerEditorValidator::ProcessRule(URuleRangerConfig* const Config,
     const bool bIsSave = EDataValidationUsecase::Save == Context.GetValidationUsecase();
     if ((!bIsSave && Rule->bApplyOnValidate) || (bIsSave && Rule->bApplyOnSave))
     {
-        RR_VERY_VERBOSE_ALOG("OnAssetValidate(%s) detected applicable rule %s.",
-                             *InObject->GetName(),
-                             *Rule->GetName());
+        UE_LOGFMT(RuleRanger,
+                  VeryVerbose,
+                  "OnAssetValidate({Object}) detected applicable rule {Rule}.",
+                  InObject->GetName(),
+                  Rule->GetName());
 
         ActionContext->ResetContext(Config,
                                     RuleSet,
@@ -133,18 +139,22 @@ bool URuleRangerEditorValidator::WillRuleRunInDataValidationUsecase(
     const bool bIsSave = EDataValidationUsecase::Save == DataValidationUsecase;
     if (!bIsSave && Rule->bApplyOnValidate)
     {
-        RR_VERY_VERBOSE_ALOG("CanValidateAsset(%s) detected applicable rule %s in usecase %s.",
-                             *InObject->GetName(),
-                             *Rule->GetName(),
-                             *DescribeDataValidationUsecase(DataValidationUsecase));
+        UE_LOGFMT(RuleRanger,
+                  VeryVerbose,
+                  "CanValidateAsset({Object}) detected applicable rule {Rule} in usecase {Usecase}.",
+                  InObject->GetName(),
+                  Rule->GetName(),
+                  DescribeDataValidationUsecase(DataValidationUsecase));
         return true;
     }
     else if (bIsSave && Rule->bApplyOnSave)
     {
-        RR_VERY_VERBOSE_ALOG("CanValidateAsset(%s) detected applicable rule %s in usecase %s.",
-                             *InObject->GetName(),
-                             *Rule->GetName(),
-                             *DescribeDataValidationUsecase(DataValidationUsecase));
+        UE_LOGFMT(RuleRanger,
+                  VeryVerbose,
+                  "CanValidateAsset({Object}) detected applicable rule {Rule} in usecase {Usecase}.",
+                  InObject->GetName(),
+                  Rule->GetName(),
+                  DescribeDataValidationUsecase(DataValidationUsecase));
         return true;
     }
     else
@@ -176,8 +186,10 @@ bool URuleRangerEditorValidator::CanValidateAsset_Implementation(const FAssetDat
     }
     else
     {
-        RR_ERROR_ALOG("CanValidateAsset_Implementation(%s) unable to locate RuleRangerEditorSubsystem.",
-                      *InAsset->GetName());
+        UE_LOGFMT(RuleRanger,
+                  Error,
+                  "CanValidateAsset_Implementation({Asset}) unable to locate RuleRangerEditorSubsystem.",
+                  InAsset->GetName());
     }
 
     return Result;
