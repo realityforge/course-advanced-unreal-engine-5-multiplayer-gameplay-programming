@@ -16,6 +16,7 @@
 #include "Aeon/AbilitySystem/AeonAbilitySystemComponent.h"
 #include "Aeon/AbilitySystem/AeonGameplayAbility.h"
 #include "Aeon/Logging.h"
+#include "Logging/StructuredLog.h"
 #include "Misc/DataValidation.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AeonAbilitySet)
@@ -137,15 +138,19 @@ void FAeonAbilitySetHandles::RemoveFromAbilitySystemComponent()
         }
         else
         {
-            AEON_WARNING_ALOG("RemoveAbilitySetFromAbilitySystemComponent() must be invoked when "
-                              "OwnerActor is Authoritative");
+            UE_LOGFMT(Aeon,
+                      Warning,
+                      "RemoveAbilitySetFromAbilitySystemComponent() must be invoked when "
+                      "OwnerActor is Authoritative");
         }
     }
     else
     {
-        AEON_WARNING_ALOG("RemoveAbilitySetFromAbilitySystemComponent() invoked when AbilitySystemComponent "
-                          "is invalid. This is likely a result of invoking it multiple times. Please guard "
-                          "call with IsValid() or avoid calling when handles are invalid.");
+        UE_LOGFMT(Aeon,
+                  Warning,
+                  "RemoveAbilitySetFromAbilitySystemComponent() invoked when AbilitySystemComponent "
+                  "is invalid. This is likely a result of invoking it multiple times. Please guard "
+                  "call with IsValid() or avoid calling when handles are invalid.");
     }
 }
 
@@ -177,7 +182,11 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
                 {
                     if (const auto Tag = Tags.GetByIndex(Index); !Tag.IsValid())
                     {
-                        AEON_ERROR_ALOG("AbilitySet '%s' has invalid tag at Tags[%d]", *GetNameSafe(this), Index);
+                        UE_LOGFMT(Aeon,
+                                  Error,
+                                  "AbilitySet '{AbilitySet}' has invalid tag at Tags[{Tags}]",
+                                  GetNameSafe(this),
+                                  Index);
                     }
                 }
             }
@@ -203,7 +212,11 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             }
             else
             {
-                AEON_ERROR_ALOG("AbilitySet '%s' has invalid value at AttributeSets[%d]", *GetNameSafe(this), Index);
+                UE_LOGFMT(Aeon,
+                          Error,
+                          "AbilitySet '{AbilitySet}' has invalid value at AttributeSets[{Index}]",
+                          GetNameSafe(this),
+                          Index);
             }
         }
 
@@ -230,7 +243,11 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             }
             else
             {
-                AEON_ERROR_ALOG("AbilitySet '%s' has invalid value at Abilities[%d]", *GetNameSafe(this), Index);
+                UE_LOGFMT(Aeon,
+                          Error,
+                          "AbilitySet '{AbilitySet}' has invalid value at Abilities[{Index}]",
+                          GetNameSafe(this),
+                          Index);
             }
         }
 
@@ -251,7 +268,11 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             }
             else
             {
-                AEON_ERROR_ALOG("AbilitySet '%s' has invalid value at Effects[%d]", *GetNameSafe(this), Index);
+                UE_LOGFMT(Aeon,
+                          Error,
+                          "AbilitySet '{AbilitySet}' has invalid value at Effects[{Index}]",
+                          GetNameSafe(this),
+                          Index);
             }
         }
 
@@ -269,24 +290,30 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
                 }
                 else
                 {
-                    AEON_ERROR_ALOG("AbilitySet '%s' has an attribute initializer '%s' for an attribute from an "
-                                    "AttributeSet '%s' that is not granted to the AbilitySystemComponent "
-                                    "at AttributeValues[%d]",
-                                    *GetNameSafe(this),
-                                    *Attribute.GetName(),
-                                    *Attribute.GetAttributeSetClass()->GetName(),
-                                    Index);
+                    UE_LOGFMT(Aeon,
+                              Error,
+                              "AbilitySet '{AbilitySet}' has an attribute initializer '{Attribute}' for an "
+                              "attribute from an AttributeSet '{AttributeSet}' that is not granted to the "
+                              "AbilitySystemComponent at AttributeValues[{Index}]",
+                              GetNameSafe(this),
+                              Attribute.GetName(),
+                              Attribute.GetAttributeSetClass()->GetName(),
+                              Index);
                 }
             }
             else
             {
-                AEON_ERROR_ALOG("AbilitySet '%s' has invalid value at AttributeValues[%d]", *GetNameSafe(this), Index);
+                UE_LOGFMT(Aeon,
+                          Error,
+                          "AbilitySet '{AbilitySet}' has invalid value at AttributeValues[{Index}]",
+                          GetNameSafe(this),
+                          Index);
             }
         }
     }
     else
     {
-        AEON_WARNING_ALOG("GiveToAbilitySystem() must be invoked when OwnerActor is Authoritative");
+        UE_LOGFMT(Aeon, Warning, "GiveToAbilitySystem() must be invoked when OwnerActor is Authoritative");
     }
 }
 

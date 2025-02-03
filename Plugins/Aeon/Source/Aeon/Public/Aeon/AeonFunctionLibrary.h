@@ -17,6 +17,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AeonFunctionLibrary.generated.h"
 
+struct FGameplayAbilitySpec;
 struct FGameplayCueParameters;
 class UAbilitySystemComponent;
 struct FGameplayTag;
@@ -41,9 +42,15 @@ public:
      * @return true if the Ability is present and attempt to activate occured, but it may return false positives due to
      * failure later in activation.
      */
-    UFUNCTION(BlueprintCallable, Category = "Aeon|Ability")
+    UFUNCTION(BlueprintCallable,
+              Category = "Aeon|Ability",
+              meta = (DisplayName = "Try Activate Random Single Ability By Tag", ReturnDisplayName = "Success"))
+    static bool BP_TryActivateRandomSingleAbilityByTag(UAbilitySystemComponent* AbilitySystemComponent,
+                                                       const FGameplayTag AbilityTag);
+
     static bool TryActivateRandomSingleAbilityByTag(UAbilitySystemComponent* AbilitySystemComponent,
-                                                    const FGameplayTag AbilityTag);
+                                                    const FGameplayTag AbilityTag,
+                                                    FGameplayAbilitySpec** OutGameplayAbilitySpec = nullptr);
 
     UFUNCTION(BlueprintCallable,
               Category = "Aeon|GameplayCue",

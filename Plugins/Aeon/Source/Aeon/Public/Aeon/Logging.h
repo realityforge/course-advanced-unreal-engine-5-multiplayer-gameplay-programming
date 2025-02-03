@@ -32,34 +32,3 @@ AEON_API DECLARE_LOG_CATEGORY_EXTERN(AeonTagRelationship, Display, All);
 #else
 AEON_API DECLARE_LOG_CATEGORY_EXTERN(AeonTagRelationship, Display, Warning);
 #endif
-
-// A simplified set of macros for logging
-
-#define AEON_LOG(Verbosity, Format, ...)                \
-    {                                                   \
-        UE_LOG(Aeon, Verbosity, Format, ##__VA_ARGS__); \
-    }
-
-#define AEON_SHOW_MESSAGE(Color, Format, ...)                                                         \
-    {                                                                                                 \
-        if (GEngine)                                                                                  \
-        {                                                                                             \
-            GEngine->AddOnScreenDebugMessage(-1, 7.f, Color, FString::Printf(Format, ##__VA_ARGS__)); \
-        }                                                                                             \
-    }
-
-#define AEON_SHOW_INFO_MESSAGE(Format, ...) AEON_SHOW_MESSAGE(FColor::White, Format, ##__VA_ARGS__)
-
-#define AEON_ERROR_LOG(Format, ...) \
-    AEON_LOG(Error, Format, ##__VA_ARGS__) AEON_SHOW_MESSAGE(FColor::Red, Format, ##__VA_ARGS__)
-#define AEON_WARNING_LOG(Format, ...) \
-    AEON_LOG(Warning, Format, ##__VA_ARGS__) AEON_SHOW_MESSAGE(FColor::Yellow, Format, ##__VA_ARGS__)
-#define AEON_INFO_LOG(Format, ...) AEON_LOG(Log, Format, ##__VA_ARGS__)
-#define AEON_VERBOSE_LOG(Format, ...) AEON_LOG(Verbose, Format, ##__VA_ARGS__)
-#define AEON_VERY_VERBOSE_LOG(Format, ...) AEON_LOG(VeryVerbose, Format, ##__VA_ARGS__)
-
-#define AEON_ERROR_ALOG(Format, ...) AEON_ERROR_LOG(TEXT(Format), ##__VA_ARGS__)
-#define AEON_WARNING_ALOG(Format, ...) AEON_WARNING_LOG(TEXT(Format), ##__VA_ARGS__)
-#define AEON_INFO_ALOG(Format, ...) AEON_INFO_LOG(TEXT(Format), ##__VA_ARGS__)
-#define AEON_VERBOSE_ALOG(Format, ...) AEON_VERBOSE_LOG(TEXT(Format), ##__VA_ARGS__)
-#define AEON_VERY_VERBOSE_ALOG(Format, ...) AEON_VERY_VERBOSE_LOG(TEXT(Format), ##__VA_ARGS__)

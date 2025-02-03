@@ -14,6 +14,7 @@
 #include "Aeon/AbilitySystem/AeonAbilitySystemComponent.h"
 #include "Aeon/AbilitySystem/AeonAbilityTagRelationshipMapping.h"
 #include "Aeon/Logging.h"
+#include "Logging/StructuredLog.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AeonAbilitySystemComponent)
 
@@ -26,11 +27,11 @@
 void UAeonAbilitySystemComponent::SetTagRelationshipMapping(
     UAeonAbilityTagRelationshipMapping* InTagRelationshipMapping)
 {
-    UE_LOG(AeonTagRelationship,
-           Log,
-           TEXT("TagRelationshipMapping changed to %s for AeonAbilitySystemComponent %s"),
-           *GetNameSafe(InTagRelationshipMapping),
-           *GetNameSafe(GetOwnerActor()));
+    UE_LOGFMT(AeonTagRelationship,
+              Log,
+              "TagRelationshipMapping changed to {Mapping} for AeonAbilitySystemComponent {OwnerActor}",
+              GetNameSafe(InTagRelationshipMapping),
+              GetNameSafe(GetOwnerActor()));
     TagRelationshipMapping = InTagRelationshipMapping;
 }
 
@@ -54,14 +55,14 @@ void UAeonAbilitySystemComponent::ApplyAbilityBlockAndCancelTags(const FGameplay
         FGameplayTagContainer AllCancelTags = CancelTags;
         TagRelationshipMapping->GetAbilityTagsToBlockAndCancel(AbilityTags, AllBlockTags, AllCancelTags);
 
-        UE_LOG(AeonTagRelationship,
-               Verbose,
-               TEXT("ApplyAbilityBlockAndCancelTags for ability defined "
-                    "by tags %s added %s block tags and %s cancel tags for actor '%s'"),
-               *AbilityTags.ToString(),
-               *ToTagDeltaDiffString(AllBlockTags, BlockTags),
-               *ToTagDeltaDiffString(AllCancelTags, CancelTags),
-               *GetNameSafe(GetOwnerActor()));
+        UE_LOGFMT(AeonTagRelationship,
+                  Verbose,
+                  "ApplyAbilityBlockAndCancelTags for ability defined "
+                  "by tags {Tags} added {BlockTags} block tags and {CancelTags} cancel tags for actor '{OwnerActor}'",
+                  AbilityTags.ToString(),
+                  ToTagDeltaDiffString(AllBlockTags, BlockTags),
+                  ToTagDeltaDiffString(AllCancelTags, CancelTags),
+                  GetNameSafe(GetOwnerActor()));
 
         Super::ApplyAbilityBlockAndCancelTags(AbilityTags,
                                               RequestingAbility,
@@ -98,23 +99,23 @@ void UAeonAbilitySystemComponent::GetAdditionalTagRequirements(const FGameplayTa
                                                              OutSourceBlockedTags,
                                                              OutTargetRequiredTags,
                                                              OutTargetBlockedTags);
-        UE_LOG(AeonTagRelationship,
-               Verbose,
-               TEXT("GetAdditionalTagRequirements for ability defined by tags %s for actor '%s': "
-                    "ActivationRequiredTags=%s "
-                    "ActivationBlockedTags=%s "
-                    "SourceRequiredTags=%s "
-                    "SourceBlockedTags=%s "
-                    "TargetRequiredTags=%s "
-                    "TargetBlockedTags=%s"),
-               *AbilityTags.ToString(),
-               *GetNameSafe(GetOwnerActor()),
-               *OutActivationRequiredTags.ToString(),
-               *OutActivationBlockedTags.ToString(),
-               *OutSourceRequiredTags.ToString(),
-               *OutSourceBlockedTags.ToString(),
-               *OutTargetRequiredTags.ToString(),
-               *OutTargetBlockedTags.ToString());
+        UE_LOGFMT(AeonTagRelationship,
+                  Verbose,
+                  "GetAdditionalTagRequirements for ability defined by tags {AbilityTags} for actor '{OwnerActor}': "
+                  "ActivationRequiredTags={ActivationRequiredTags} "
+                  "ActivationBlockedTags={ActivationBlockedTags} "
+                  "SourceRequiredTags={SourceRequiredTags} "
+                  "SourceBlockedTags={SourceBlockedTags} "
+                  "TargetRequiredTags={TargetRequiredTags} "
+                  "TargetBlockedTags={TargetBlockedTags}",
+                  AbilityTags,
+                  GetNameSafe(GetOwnerActor()),
+                  OutActivationRequiredTags,
+                  OutActivationBlockedTags,
+                  OutSourceRequiredTags,
+                  OutSourceBlockedTags,
+                  OutTargetRequiredTags,
+                  OutTargetBlockedTags);
     }
 }
 

@@ -18,7 +18,7 @@
 #include "Engine/DataAsset.h"
 #include "EnhancedInputComponent.h"
 #include "GameplayTagContainer.h"
-#include "IndexTypes.h"
+#include "Logging/StructuredLog.h"
 #include "AeonInputConfig.generated.h"
 
 class UInputAction;
@@ -144,12 +144,14 @@ void UAeonInputConfig::BindAbilityInputAction(UEnhancedInputComponent* InputComp
         }
         else
         {
-            AEON_ERROR_ALOG("BindAbilityInputAction: Invalid action at AbilityInputActions[%d] (InputTag='%s' "
-                            "InputAction='%s') in InputConfig named %s",
-                            Index,
-                            *Action.InputTag.ToString(),
-                            IsValid(Action.InputAction) ? *Action.InputAction.GetFullName() : TEXT("?"),
-                            *GetName());
+            UE_LOGFMT(Aeon,
+                      Error,
+                      "BindAbilityInputAction: Invalid action at AbilityInputActions[{Index}] "
+                      "(InputTag='{Tag}' InputAction='{Action}') in InputConfig named {Config}",
+                      Index,
+                      Action.InputTag.GetTagName(),
+                      IsValid(Action.InputAction) ? Action.InputAction.GetFullName() : TEXT("?"),
+                      GetName());
         }
         Index++;
     }
@@ -169,9 +171,11 @@ void UAeonInputConfig::BindNativeInputAction(UEnhancedInputComponent* InputCompo
     }
     else
     {
-        AEON_WARNING_ALOG("BindNativeInputAction: Unable to locate NativeInputAction for InputTag '%s' "
-                          "in InputConfig named '%s'",
-                          *InputTag.ToString(),
-                          *GetName());
+        UE_LOGFMT(Aeon,
+                  Warning,
+                  "BindNativeInputAction: Unable to locate NativeInputAction "
+                  "for InputTag '{Tag}' in InputConfig named '{Config}'",
+                  InputTag.GetTagName(),
+                  GetName());
     }
 }

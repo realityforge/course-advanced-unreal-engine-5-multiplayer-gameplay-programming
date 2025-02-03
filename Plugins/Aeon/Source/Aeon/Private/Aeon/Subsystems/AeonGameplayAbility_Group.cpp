@@ -15,6 +15,7 @@
 #include "AbilitySystemComponent.h"
 #include "Aeon/Logging.h"
 #include "Aeon/Subsystems/GroupAbilitySystem.h"
+#include "Logging/StructuredLog.h"
 #include "Misc/DataValidation.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AeonGameplayAbility_Group)
@@ -41,7 +42,7 @@ void UAeonGameplayAbility_Group::ActivateAbility(const FGameplayAbilitySpecHandl
         }
         else
         {
-            AEON_ERROR_ALOG("AeonGameplayAbility_Group unable to register with group as GroupTag is invalid.");
+            UE_LOGFMT(Aeon, Error, "AeonGameplayAbility_Group unable to register with group as GroupTag is invalid.");
         }
     }
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
@@ -63,7 +64,7 @@ void UAeonGameplayAbility_Group::EndAbility(const FGameplayAbilitySpecHandle Han
         }
         else
         {
-            AEON_ERROR_ALOG("AeonGameplayAbility_Group unable to unregister from group as GroupTag is invalid.");
+            UE_LOGFMT(Aeon, Error, "AeonGameplayAbility_Group unable to unregister from group as GroupTag is invalid.");
         }
     }
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);

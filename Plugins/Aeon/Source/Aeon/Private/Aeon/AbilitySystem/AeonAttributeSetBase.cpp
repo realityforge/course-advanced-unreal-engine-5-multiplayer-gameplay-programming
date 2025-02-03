@@ -14,6 +14,7 @@
 #include "Aeon/AbilitySystem/AeonAttributeSetBase.h"
 #include "AbilitySystemComponent.h"
 #include "Aeon/Logging.h"
+#include "Logging/StructuredLog.h"
 
 void UAeonAttributeSetBase::AddTagBasedOnValueRelativeToThreshold(const FGameplayAttribute& Attribute,
                                                                   const FGameplayTag& Tag,
@@ -53,14 +54,17 @@ void UAeonAttributeSetBase::AddTagBasedOnValueRelativeToThreshold(const FGamepla
     }
     else
     {
-        AEON_ERROR_ALOG("AddTagBasedOnValueRelativeToThreshold invoked attribute='%s', "
-                        "value=%f, threshold=%f, relationship=%s, with %s tag %s",
-                        *Attribute.GetName(),
-                        Value,
-                        ThresholdValue,
-                        bAbove ? TEXT("above") : TEXT("below"),
-                        bReplicated ? TEXT("replicated") : TEXT("loose"),
-                        *Tag.ToString());
+        UE_LOGFMT(Aeon,
+                  Error,
+                  "AddTagBasedOnValueRelativeToThreshold invoked attribute='{Attribute}', "
+                  "value={Value}, threshold={Threshold}, relationship={Relationship}, "
+                  "with {RepStat} tag {Tag}",
+                  Attribute.GetName(),
+                  Value,
+                  ThresholdValue,
+                  bAbove ? TEXT("above") : TEXT("below"),
+                  bReplicated ? TEXT("replicated") : TEXT("loose"),
+                  Tag.GetTagName());
     }
 }
 
@@ -80,10 +84,13 @@ void UAeonAttributeSetBase::AdjustAttributeAfterMaxValueChanges(const FGameplayA
     }
     else
     {
-        AEON_ERROR_ALOG("AdjustAttributeAfterMaxValueChanges invoked for attribute '%s' to change value from "
-                        "%f to %f but no AbilitySystemComponent owns AttributeSet",
-                        *Attribute.GetName(),
-                        OldMaxValue,
-                        NewMaxValue);
+        UE_LOGFMT(Aeon,
+                  Error,
+                  "AdjustAttributeAfterMaxValueChanges invoked for attribute '{Attribute}' "
+                  "to change value from {OldValue} to {NewValue} but no AbilitySystemComponent "
+                  "owns AttributeSet",
+                  Attribute.GetName(),
+                  OldMaxValue,
+                  NewMaxValue);
     }
 }

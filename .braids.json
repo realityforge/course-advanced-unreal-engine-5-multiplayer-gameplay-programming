@@ -4,7 +4,7 @@
     "Plugins/Aeon": {
       "url": "https://github.com/realityforge/Aeon.git",
       "branch": "main",
-      "revision": "7609eddd4c0155661404b82f8d51bde9d5f4fc86"
+      "revision": "614a122715363227112005c7443d120ef52855a2"
     },
     "Plugins/ModularGameplayActors": {
       "url": "https://github.com/realityforge/LyraPlugins.git",

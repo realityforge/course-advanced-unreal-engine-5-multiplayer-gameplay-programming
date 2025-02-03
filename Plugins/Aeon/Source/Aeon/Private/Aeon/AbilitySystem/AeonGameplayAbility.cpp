@@ -142,11 +142,36 @@ bool UAeonGameplayAbility::DoesAbilitySatisfyTagRequirements(const UAbilitySyste
 void UAeonGameplayAbility::MaybeActivateOnGivenAbility(const FGameplayAbilityActorInfo* ActorInfo,
                                                        const FGameplayAbilitySpec& Spec) const
 {
-    if (EAeonAbilityActivationPolicy::OnGiven == AbilityActivationPolicy)
+    // The expanded logic wrt replication while not necessary now was extracted form several
+    // downstream projects. Although it seems that most of these tutorials or projects, probably
+    // cargo-cult copied this from Lyra or an earlier project. Duplicating this until a later date
+    // at which point we can re-assess
+
+    if (EAeonAbilityActivationPolicy::OnGiven == GetAbilityActivationPolicy() && ActorInfo && !Spec.IsActive())
     {
-        if (ActorInfo && !Spec.IsActive())
+        if (const auto AbilitySystemComponent = ActorInfo->AbilitySystemComponent.Get())
         {
-            ActorInfo->AbilitySystemComponent->TryActivateAbility(Spec.Handle);
+            if (const auto AvatarActor = ActorInfo->AvatarActor.Get())
+            {
+                // Actors that are no longer replicated or about to die should not attempt to activate ability
+                if (!AvatarActor->GetTearOff() && AvatarActor->GetLifeSpan() <= 0.0f)
+                {
+                    const bool bIsLocalExecution =
+                        (EGameplayAbilityNetExecutionPolicy::LocalPredicted == GetNetExecutionPolicy())
+                        || (EGameplayAbilityNetExecutionPolicy::LocalOnly == GetNetExecutionPolicy());
+                    const bool bIsServerExecution =
+                        (EGameplayAbilityNetExecutionPolicy::ServerOnly == GetNetExecutionPolicy())
+                        || (EGameplayAbilityNetExecutionPolicy::ServerInitiated == GetNetExecutionPolicy());
+
+                    const bool bClientShouldActivate = ActorInfo->IsLocallyControlled() && bIsLocalExecution;
+                    // ReSharper disable once CppTooWideScopeInitStatement
+                    const bool bServerShouldActivate = ActorInfo->IsNetAuthority() && bIsServerExecution;
+                    if (bClientShouldActivate || bServerShouldActivate)
+                    {
+                        AbilitySystemComponent->TryActivateAbility(Spec.Handle);
+                    }
+                }
+            }
         }
     }
 }

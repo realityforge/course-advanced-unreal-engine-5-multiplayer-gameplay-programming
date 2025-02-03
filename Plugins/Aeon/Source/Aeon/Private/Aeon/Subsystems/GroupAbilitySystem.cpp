@@ -15,6 +15,7 @@
 #include "Aeon/AbilitySystem/AeonAbilitySystemComponent.h"
 #include "Aeon/Logging.h"
 #include "GroupAbilitySystemComponentRegistry.h"
+#include "Logging/StructuredLog.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GroupAbilitySystem)
 
@@ -74,11 +75,14 @@ void UGroupAbilitySystem::RegisterAbilitySystemComponent(const FGameplayTag Grou
     if (ensureAlways(GroupTag.IsValid()))
     {
         FindOrCreateGroupRegistry(GroupTag).RegisterAbilitySystemComponent(AbilitySystemComponent);
-        AEON_VERY_VERBOSE_ALOG("RegisterAbilitySystemComponent invoked with GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon,
+                  VeryVerbose,
+                  "RegisterAbilitySystemComponent invoked with GroupTag {GroupTag}",
+                  GroupTag.GetTagName());
     }
     else
     {
-        AEON_ERROR_ALOG("RegisterAbilitySystemComponent invoked with invalid GroupTag");
+        UE_LOGFMT(Aeon, Error, "RegisterAbilitySystemComponent invoked with invalid GroupTag");
     }
 }
 
@@ -91,11 +95,14 @@ void UGroupAbilitySystem::UnregisterAbilitySystemComponent(const FGameplayTag Gr
     if (ensureAlways(GroupTag.IsValid()))
     {
         FindOrCreateGroupRegistry(GroupTag).UnregisterAbilitySystemComponent(AbilitySystemComponent);
-        AEON_VERY_VERBOSE_ALOG("UnregisterAbilitySystemComponent invoked with GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon,
+                  VeryVerbose,
+                  "UnregisterAbilitySystemComponent invoked with GroupTag {GroupTag}",
+                  GroupTag.GetTagName());
     }
     else
     {
-        AEON_ERROR_ALOG("UnregisterAbilitySystemComponent invoked with invalid GroupTag");
+        UE_LOGFMT(Aeon, Error, "UnregisterAbilitySystemComponent invoked with invalid GroupTag");
     }
 }
 
@@ -115,7 +122,7 @@ bool UGroupAbilitySystem::IsAbilityAddedToGroup(const FGameplayTag GroupTag,
     }
     else
     {
-        AEON_ERROR_ALOG("IsAbilityAddedToGroup invoked with invalid GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon, Error, "IsAbilityAddedToGroup invoked with invalid GroupTag {GroupTag}", GroupTag.GetTagName());
         return false;
     }
 }
@@ -128,7 +135,7 @@ void UGroupAbilitySystem::AddAbilityToGroup(const FGameplayTag GroupTag, const T
     }
     else
     {
-        AEON_ERROR_ALOG("AddAbilityToGroup invoked with invalid GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon, Error, "AddAbilityToGroup invoked with invalid GroupTag {GroupTag}", GroupTag.GetTagName());
     }
 }
 
@@ -141,7 +148,10 @@ void UGroupAbilitySystem::RemoveAbilityFromGroup(const FGameplayTag GroupTag,
     }
     else
     {
-        AEON_ERROR_ALOG("RemoveAbilityFromGroup invoked with invalid GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon,
+                  Error,
+                  "RemoveAbilityFromGroup invoked with invalid GroupTag {GroupTag}",
+                  GroupTag.GetTagName());
     }
 }
 
@@ -155,7 +165,7 @@ bool UGroupAbilitySystem::IsEffectAddedToGroup(const FGameplayTag GroupTag,
     }
     else
     {
-        AEON_ERROR_ALOG("IsEffectAddedToGroup invoked with invalid GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon, Error, "IsEffectAddedToGroup invoked with invalid GroupTag {GroupTag}", GroupTag.GetTagName());
         return false;
     }
 }
@@ -168,7 +178,7 @@ void UGroupAbilitySystem::AddEffectToGroup(const FGameplayTag GroupTag, const TS
     }
     else
     {
-        AEON_ERROR_ALOG("AddEffectToGroup invoked with invalid GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon, Error, "AddEffectToGroup invoked with invalid GroupTag {GroupTag}", GroupTag.GetTagName());
     }
 }
 
@@ -180,6 +190,6 @@ void UGroupAbilitySystem::RemoveEffectFromGroup(const FGameplayTag GroupTag, con
     }
     else
     {
-        AEON_ERROR_ALOG("RemoveEffectFromGroup invoked with invalid GroupTag %s", *GroupTag.ToString());
+        UE_LOGFMT(Aeon, Error, "RemoveEffectFromGroup invoked with invalid GroupTag {GroupTag}", GroupTag.GetTagName());
     }
 }
