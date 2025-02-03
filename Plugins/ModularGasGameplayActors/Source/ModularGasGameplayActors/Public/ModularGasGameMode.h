@@ -23,7 +23,10 @@ class MODULARGASGAMEPLAYACTORS_API AModularGasGameModeBase : public AModularGame
 {
     GENERATED_BODY()
 
-    UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleInstanceOnly,
+              BlueprintReadOnly,
+              Category = "Aeon|AbilitySystem",
+              meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent{ nullptr };
 
 public:
@@ -45,7 +48,10 @@ class MODULARGASGAMEPLAYACTORS_API AModularGasGameMode : public AModularGameMode
 {
     GENERATED_BODY()
 
-    UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleInstanceOnly,
+              BlueprintReadOnly,
+              Category = "Aeon|AbilitySystem",
+              meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent{ nullptr };
 
 public:
