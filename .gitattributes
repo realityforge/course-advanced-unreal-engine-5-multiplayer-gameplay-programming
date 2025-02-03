@@ -14,6 +14,14 @@ Config/*.ini text=auto
 Gemfile text
 LICENSE text
 
+*.h text=auto eol=native
+*.cs text=auto eol=native
+*.cpp text=auto eol=native
+*.py text=auto eol=native
+
+*.uplugin text=auto eol=native
+*.uproject text=auto eol=native
+
 *.uasset !text !filter !merge !diff
 *.fbx !text !filter !merge !diff
 *.png !text !filter !merge !diff
