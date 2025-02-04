@@ -1,26 +1,26 @@
 # DO NOT EDIT: File is auto-generated
 * -text
-Config/*.ini text=auto
-**/Config/*.ini text=auto
-*.json text=auto
-*.md text=auto
-*.sh text=auto eol=lf
-*.bat text=auto eol=crlf
-.braids.json text=auto eol=lf
-*.txt text=auto
-.gitattributes text=auto
-.gitignore text=auto
-.ruby-version text=auto
-Gemfile text=auto
-LICENSE text=auto
+Config/*.ini text
+**/Config/*.ini text
+*.json text
+*.md text
+*.sh text eol=lf
+*.bat text eol=crlf
+.braids.json text eol=lf
+*.txt text
+.gitattributes text
+.gitignore text
+.ruby-version text
+Gemfile text
+LICENSE text
 
-*.h text=auto eol=native
-*.cs text=auto eol=native
-*.cpp text=auto eol=native
-*.py text=auto eol=native
+*.h text eol=native
+*.cs text eol=native
+*.cpp text eol=native
+*.py text eol=native
 
-*.uplugin text=auto eol=native
-*.uproject text=auto eol=native
+*.uplugin text eol=native
+*.uproject text eol=native
 
 *.uasset !text !filter !merge !diff
 *.fbx !text !filter !merge !diff

@@ -1,20 +1,20 @@
 * -text
-Config/*.ini text=auto eol=native
-**/Config/*.ini text=auto eol=native
-*.json text=auto eol=native
-*.csv text=auto eol=native
-*.md text=auto eol=native
-*.txt text=auto eol=native
-.gitattributes text=auto eol=native
-.gitignore text=auto eol=native
-LICENSE text=auto eol=native
+Config/*.ini text eol=native
+**/Config/*.ini text eol=native
+*.json text eol=native
+*.csv text eol=native
+*.md text eol=native
+*.txt text eol=native
+.gitattributes text eol=native
+.gitignore text eol=native
+LICENSE text eol=native
 
-*.h text=auto eol=native
-*.cs text=auto eol=native
-*.cpp text=auto eol=native
+*.h text eol=native
+*.cs text eol=native
+*.cpp text eol=native
 
-*.uplugin text=auto eol=native
-*.uproject text=auto eol=native
+*.uplugin text eol=native
+*.uproject text eol=native
 
 *.uasset !text !filter !merge !diff
 *.fbx !text !filter !merge !diff
