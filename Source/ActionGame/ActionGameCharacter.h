@@ -9,6 +9,7 @@
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
 
+class UInventoryComponent;
 class UCharacterAnimDataAsset;
 class UAG_MotionWarpingComponent;
 class UAG_CharacterMovementComponent;
@@ -33,6 +34,13 @@ UCLASS(config = Game)
 class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
 {
     GENERATED_BODY()
+
+    UPROPERTY(VisibleAnywhere,
+              BlueprintReadOnly,
+              Category = "Inventory",
+              Replicated,
+              meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UInventoryComponent> InventoryComponent{ nullptr };
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Footsteps", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UFootstepsComponent> FootstepsComponent{ nullptr };
@@ -86,6 +94,8 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     TObjectPtr<UAG_MotionWarpingComponent> MotionWarpingComponent{ nullptr };
 
 public:
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
     explicit AActionGameCharacter(const FObjectInitializer& ObjectInitializer);
 
     virtual void PerformJump();

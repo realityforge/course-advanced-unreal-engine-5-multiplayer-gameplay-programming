@@ -17,11 +17,20 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameplayEffectTypes.h"
 #include "InputActionValue.h"
+#include "Inventory/InventoryComponent.h"
+#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
 // AActionGameCharacter
+
+void AActionGameCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(AActionGameCharacter, InventoryComponent);
+}
 
 AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer.SetDefaultSubobjectClass<UAG_CharacterMovementComponent>(CharacterMovementComponentName))
@@ -75,6 +84,9 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
     MotionWarpingComponent = CreateDefaultSubobject<UAG_MotionWarpingComponent>("MotionWarpingComponent");
+
+    InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("InventoryComponent");
+    InventoryComponent->SetIsReplicated(true);
 }
 
 void AActionGameCharacter::PerformJump()

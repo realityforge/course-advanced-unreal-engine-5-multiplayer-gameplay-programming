@@ -10,7 +10,7 @@ public class ActionGame : ModuleRules
         PublicIncludePaths.Add("ActionGame/");
 
         PublicDependencyModuleNames.AddRange(
-            new[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "MotionWarping" });
+            new[] { "Core", "CoreUObject", "Engine", "NetCore", "InputCore", "EnhancedInput", "MotionWarping" });
         PrivateDependencyModuleNames.AddRange(new[] { "GameplayAbilities", "GameplayTags", "GameplayTasks", "Aeon" });
     }
 }
