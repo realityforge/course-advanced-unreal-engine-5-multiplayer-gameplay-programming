@@ -10,9 +10,6 @@ class ACTIONGAME_API UInventoryItemInstance : public UObject
 {
     GENERATED_BODY()
 
-    UPROPERTY(VisibleInstanceOnly, Replicated)
-    TSubclassOf<UItemStaticData> ItemStaticDataClass{ nullptr };
-
     UPROPERTY(VisibleInstanceOnly, ReplicatedUsing = OnRep_Equipped)
     bool bEquipped{ false };
 
@@ -24,6 +21,9 @@ class ACTIONGAME_API UInventoryItemInstance : public UObject
     virtual void OnDropped(AActor* ItemOwner = nullptr) {}
 
 public:
+    UPROPERTY(VisibleInstanceOnly, Replicated)
+    TSubclassOf<UItemStaticData> ItemStaticDataClass{ nullptr };
+
     virtual void Init(TSubclassOf<UItemStaticData> InItemStaticDataClass);
 
     virtual bool IsSupportedForNetworking() const override { return true; }
