@@ -68,3 +68,11 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     int32 MaxStackCount{ 1 };
 };
+
+UENUM(BlueprintType)
+enum class EItemState : uint8
+{
+    None UMETA(DisplayName = "None"),
+    Equipped UMETA(DisplayName = "Equipped"),
+    Dropped UMETA(DisplayName = "Dropped")
+};
