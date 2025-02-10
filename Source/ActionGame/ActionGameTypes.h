@@ -42,13 +42,13 @@ class UItemStaticData : public UObject
 
 public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    FName ItemName{};
+    FName ItemName{ NAME_None };
 
     // UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     // TSubclassOf<class AItemActor> ItemActorClass{ nullptr };
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    FName AttachmentSocket{};
+    FName AttachmentSocket{ NAME_None };
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     bool bCanBeEquipped{ nullptr };
