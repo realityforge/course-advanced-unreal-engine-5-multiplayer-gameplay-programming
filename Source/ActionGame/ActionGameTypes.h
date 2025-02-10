@@ -44,8 +44,8 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     FName ItemName{ NAME_None };
 
-    // UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-    // TSubclassOf<class AItemActor> ItemActorClass{ nullptr };
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TSubclassOf<class AItemActor> ItemActorClass{ nullptr };
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     FName AttachmentSocket{ NAME_None };
