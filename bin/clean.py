@@ -35,6 +35,9 @@ def delete_files_and_directories(paths):
                 print(f"Invalid path: {path}")
 
 
+plugins = ["RuleRanger", "Aeon", "ModularGameplayActors", "ModularGasGameplayActors"]
+plugin_paths = [f"Plugins/{plugin}/Binaries" for plugin in plugins] + \
+               [f"Plugins/{plugin}/Intermediate" for plugin in plugins]
 paths_to_delete = [
     "Plugins/RuleRanger/Binaries",
     "Plugins/RuleRanger/Intermediate",
@@ -43,6 +46,6 @@ paths_to_delete = [
     "Intermediate",
     "Saved",
     "cmake-build-debug"
-]
+] + plugin_paths
 
 delete_files_and_directories(paths_to_delete)
