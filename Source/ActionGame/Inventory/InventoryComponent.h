@@ -35,10 +35,10 @@ public:
     virtual void
     TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
     void AddItem(TSubclassOf<UItemStaticData> InItemStaticDataClass);
 
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
     void RemoveItem(TSubclassOf<UItemStaticData> InItemStaticDataClass);
 
     UFUNCTION(BlueprintCallable, BlueprintPure)

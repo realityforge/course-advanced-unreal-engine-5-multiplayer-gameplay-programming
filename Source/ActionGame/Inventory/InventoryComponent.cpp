@@ -98,12 +98,18 @@ void UInventoryComponent::TickComponent(float DeltaTime,
 
 void UInventoryComponent::AddItem(const TSubclassOf<UItemStaticData> InItemStaticDataClass)
 {
-    InventoryList.AddItem(InItemStaticDataClass);
+    if (GetOwner()->HasAuthority())
+    {
+        InventoryList.AddItem(InItemStaticDataClass);
+    }
 }
 
 void UInventoryComponent::RemoveItem(const TSubclassOf<UItemStaticData> InItemStaticDataClass)
 {
-    InventoryList.RemoveItem(InItemStaticDataClass);
+    if (GetOwner()->HasAuthority())
+    {
+        InventoryList.RemoveItem(InItemStaticDataClass);
+    }
 }
 
 void UInventoryComponent::EquipItem(const TSubclassOf<UItemStaticData> InItemStaticDataClass)
