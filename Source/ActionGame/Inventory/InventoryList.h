@@ -15,7 +15,7 @@ struct FInventoryListItem : public FFastArraySerializerItem
     UPROPERTY(VisibleInstanceOnly)
     TObjectPtr<UInventoryItemInstance> ItemInstance{ nullptr };
 
-    FORCEINLINE UInventoryItemInstance* GetItemStaticData() const { return ItemInstance; }
+    FORCEINLINE const UInventoryItemInstance* GetItemStaticData() const { return ItemInstance; }
 };
 
 USTRUCT(BlueprintType)
