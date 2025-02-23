@@ -1,4 +1,8 @@
 #include "Inventory/InventoryComponent.h"
+#include "Abilities/GameplayAbilityTypes.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "ActionGameGamePlayTags.h"
 #include "ActionGameTypes.h"
 #include "Engine/ActorChannel.h"
 #include "InventoryItemInstance.h"
@@ -28,6 +32,55 @@ void UInventoryComponent::BeginPlay()
     // ...
 }
 
+void UInventoryComponent::HandleGameplayEventInternal(const FGameplayEventData& Payload)
+{
+    if (GetOwner()->HasAuthority())
+    {
+        // ReSharper disable once CppTooWideScopeInitStatement
+        const auto& EventTag = Payload.EventTag;
+        if (ActionGameGameplayTags::Event_Inventory_EquipItemActor.GetTag() == EventTag)
+        {
+            if (const auto ItemInstance = Cast<UInventoryItemInstance>(Payload.OptionalObject))
+            {
+                // Payload.OptionalObject has a const qualifier, const_cast to remove this qualifier
+                AddItemInstance(const_cast<UInventoryItemInstance*>(ItemInstance));
+                if (Payload.Instigator)
+                {
+                    // We assume that if Instigator set then it was an actor that would be picked up
+                    // so we destroy the actor in the world
+                    const_cast<AActor*>(Payload.Instigator.Get())->Destroy();
+                }
+            }
+        }
+        else if (ActionGameGameplayTags::Event_Inventory_DropItem.GetTag() == EventTag)
+        {
+            DropItem();
+        }
+        else if (ActionGameGameplayTags::Event_Inventory_EquipNext.GetTag() == EventTag)
+        {
+            EquipNext();
+        }
+        else if (ActionGameGameplayTags::Event_Inventory_Unequip.GetTag() == EventTag)
+        {
+            UnequipItem();
+        }
+        else
+        {
+            UE_LOGFMT(LogTemp,
+                      Error,
+                      "UInventoryComponent::HandleGameplayEventInternal(...) for Owner "
+                      "{ActorName} failed to handle event tag {Tag}",
+                      GetOwner()->GetActorNameOrLabel(),
+                      EventTag.GetTagName());
+        }
+    }
+}
+
+void UInventoryComponent::ServerHandleGameplayEvent_Implementation(FGameplayEventData Payload)
+{
+    HandleGameplayEventInternal(Payload);
+}
+
 void UInventoryComponent::InitializeComponent()
 {
     Super::InitializeComponent();
@@ -37,6 +90,21 @@ void UInventoryComponent::InitializeComponent()
         {
             InventoryList.AddItem(DefaultItemClass);
         }
+    }
+    if (UAbilitySystemComponent* AbilitySystemComponent =
+            UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner()))
+    {
+        auto& Callbacks = AbilitySystemComponent->GenericGameplayEventCallbacks;
+        // Route all of our callbacks through a single handler.
+        // These handlers have to use exact tag matches
+        Callbacks.FindOrAdd(ActionGameGameplayTags::Event_Inventory_EquipItemActor)
+            .AddUObject(this, &UInventoryComponent::GameplayEventCallback);
+        Callbacks.FindOrAdd(ActionGameGameplayTags::Event_Inventory_DropItem)
+            .AddUObject(this, &UInventoryComponent::GameplayEventCallback);
+        Callbacks.FindOrAdd(ActionGameGameplayTags::Event_Inventory_EquipNext)
+            .AddUObject(this, &UInventoryComponent::GameplayEventCallback);
+        Callbacks.FindOrAdd(ActionGameGameplayTags::Event_Inventory_Unequip)
+            .AddUObject(this, &UInventoryComponent::GameplayEventCallback);
     }
 }
 
@@ -69,6 +137,7 @@ void UInventoryComponent::TickComponent(float DeltaTime,
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+    // ReSharper disable once CppTooWideScope
     const bool bShowDebugInventory = CVarShowDebugInventory->GetBool();
 
     // Incredibly - let's do this in tick....
@@ -78,8 +147,7 @@ void UInventoryComponent::TickComponent(float DeltaTime,
         {
             if (auto ItemInstance = Item.ItemInstance; IsValid(ItemInstance))
             {
-                const auto Data = ItemInstance->GetItemStaticData();
-                if (IsValid(Data))
+                if (const auto Data = ItemInstance->GetItemStaticData(); IsValid(Data))
                 {
                     if (GEngine)
                     {
@@ -101,6 +169,14 @@ void UInventoryComponent::AddItem(const TSubclassOf<UItemStaticData> InItemStati
     if (GetOwner()->HasAuthority())
     {
         InventoryList.AddItem(InItemStaticDataClass);
+    }
+}
+
+void UInventoryComponent::AddItemInstance(UInventoryItemInstance* InItemInstance)
+{
+    if (GetOwner()->HasAuthority())
+    {
+        InventoryList.AddItem(InItemInstance);
     }
 }
 
@@ -141,6 +217,29 @@ void UInventoryComponent::EquipItem(const TSubclassOf<UItemStaticData> InItemSta
                   InItemStaticDataClass->GetFName(),
                   GetOwner()->GetActorNameOrLabel());
     }
+}
+
+void UInventoryComponent::EquipItemInstance(UInventoryItemInstance* InItemInstance)
+{
+    check(InItemInstance);
+    if (GetOwner()->HasAuthority())
+    {
+        for (const auto& Item : InventoryList.GetItems())
+        {
+            if (Item.ItemInstance == InItemInstance)
+            {
+                Item.ItemInstance->OnEquipped(GetOwner());
+                CurrentItem = Item.ItemInstance;
+                return;
+            }
+        }
+    }
+    UE_LOGFMT(LogTemp,
+              Error,
+              "UInventoryComponent::EquipItemInstance({InItemInstance}) invoked on actor {Actor} but "
+              "no such item exists in inventory",
+              InItemInstance->GetFName(),
+              GetOwner()->GetActorNameOrLabel());
 }
 
 void UInventoryComponent::UnequipItem()
@@ -197,6 +296,53 @@ void UInventoryComponent::DropItem()
                   Error,
                   "UInventoryComponent::DropItem() invoked on non-authoritative actor {Actor}",
                   GetOwner()->GetActorNameOrLabel());
+    }
+}
+
+void UInventoryComponent::EquipNext()
+{
+    if (GetOwner()->HasAuthority())
+    {
+        for (const auto& Item : InventoryList.GetItems())
+        {
+            if (Item.ItemInstance->GetItemStaticData()->bCanBeEquipped && Item.ItemInstance != CurrentItem)
+            {
+                if (CurrentItem)
+                {
+                    UnequipItem();
+                }
+
+                EquipItemInstance(Item.ItemInstance);
+                return;
+            }
+            // No item other than currently equipped item can be equipped
+            // so this action is a noop
+        }
+    }
+    else
+    {
+        UE_LOGFMT(LogTemp, Warning, "UInventoryComponent::EquipNext() invoked without Authority");
+    }
+}
+
+void UInventoryComponent::GameplayEventCallback(const FGameplayEventData* Payload)
+{
+    // ReSharper disable once CppTooWideScopeInitStatement
+    const ENetRole NetRole = GetOwnerRole();
+    if (ROLE_Authority == NetRole)
+    {
+        HandleGameplayEventInternal(*Payload);
+    }
+    else if (ROLE_AutonomousProxy == NetRole)
+    {
+        ServerHandleGameplayEvent(*Payload);
+    }
+    else
+    {
+        UE_LOGFMT(LogTemp,
+                  Error,
+                  "UInventoryComponent::GameplayEventCallback() invoked with Bad NetRole {NetRole}",
+                  StaticEnum<ENetRole>()->GetDisplayNameTextByValue(NetRole).ToString());
     }
 }
 

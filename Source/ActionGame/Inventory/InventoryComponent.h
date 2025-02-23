@@ -28,6 +28,11 @@ protected:
     UPROPERTY(Replicated, VisibleInstanceOnly)
     FInventoryList InventoryList;
 
+    void HandleGameplayEventInternal(const FGameplayEventData& Payload);
+
+    UFUNCTION(Server, Reliable)
+    void ServerHandleGameplayEvent(FGameplayEventData Payload);
+
 public:
     virtual void InitializeComponent() override;
 
@@ -40,6 +45,9 @@ public:
     void AddItem(TSubclassOf<UItemStaticData> InItemStaticDataClass);
 
     UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
+    void AddItemInstance(UInventoryItemInstance* InItemInstance);
+
+    UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
     void RemoveItem(TSubclassOf<UItemStaticData> InItemStaticDataClass);
 
     UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -49,8 +57,16 @@ public:
     void EquipItem(TSubclassOf<UItemStaticData> InItemStaticDataClass);
 
     UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
+    void EquipItemInstance(UInventoryItemInstance* InItemInstance);
+
+    UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
     void UnequipItem();
 
     UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
     void DropItem();
+
+    UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
+    void EquipNext();
+
+    virtual void GameplayEventCallback(const FGameplayEventData* Payload);
 };

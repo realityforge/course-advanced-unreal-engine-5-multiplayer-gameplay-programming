@@ -29,6 +29,22 @@ void AItemActor::Init(UInventoryItemInstance* InItemInstance)
     ItemInstance = InItemInstance;
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AItemActor::OnRep_ItemState()
+{
+    if (EItemState::Equipped == ItemState)
+    {
+        SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        SphereComponent->SetGenerateOverlapEvents(false);
+    }
+    else
+    {
+        check(EItemState::Dropped == ItemState);
+        SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+        SphereComponent->SetGenerateOverlapEvents(true);
+    }
+}
+
 // ReSharper disable once CppMemberFunctionMayBeStatic
 void AItemActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent,
                                          AActor* OtherActor,
@@ -39,7 +55,7 @@ void AItemActor::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponen
 {
     FGameplayEventData Payload;
     Payload.Instigator = this;
-    Payload.OptionalObject = this;
+    Payload.OptionalObject = ItemInstance;
     Payload.EventTag = ActionGameGameplayTags::Event_Inventory_EquipItemActor;
 
     UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(OtherActor, Payload.EventTag, Payload);
@@ -51,6 +67,14 @@ void AItemActor::BeginPlay()
 
     if (HasAuthority())
     {
+        if (!IsValid(ItemInstance) && IsValid(ItemStaticDataClass))
+        {
+            ItemInstance = NewObject<UInventoryItemInstance>();
+            ItemInstance->Init(ItemStaticDataClass);
+
+            SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+            SphereComponent->SetGenerateOverlapEvents(true);
+        }
     }
 }
 
@@ -72,6 +96,7 @@ void AItemActor::OnUnequipped()
 
 void AItemActor::OnDropped()
 {
+    UE_LOG(LogTemp, Display, TEXT("OnDropped"));
     ItemState = EItemState::Dropped;
     GetRootComponent()->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 

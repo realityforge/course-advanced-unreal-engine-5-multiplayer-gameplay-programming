@@ -19,11 +19,17 @@ class ACTIONGAME_API AItemActor : public AActor
     // TODO: This Actor should not exist if in None state -
     //       it is either equipped or dropped ... so not sure
     //       why we have None state
-    UPROPERTY(Replicated)
+    UPROPERTY(ReplicatedUsing = OnRep_ItemState)
     EItemState ItemState{ EItemState::None };
+
+    UFUNCTION()
+    void OnRep_ItemState();
 
     UPROPERTY()
     TObjectPtr<USphereComponent> SphereComponent{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly)
+    TSubclassOf<UItemStaticData> ItemStaticDataClass{ nullptr };
 
     UFUNCTION()
     void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent,
