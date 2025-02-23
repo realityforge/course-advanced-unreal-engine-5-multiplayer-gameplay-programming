@@ -228,7 +228,7 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AActionGameCharacter::OnCrouchStarted()
 {
-    if (const auto ASC = AbilitySystemComponent)
+    if (const auto ASC = AbilitySystemComponent.Get())
     {
         ASC->TryActivateAbilitiesByTag(CrouchTags, true);
     }
@@ -237,7 +237,7 @@ void AActionGameCharacter::OnCrouchStarted()
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AActionGameCharacter::OnCrouchEnded()
 {
-    if (const auto ASC = AbilitySystemComponent)
+    if (const auto ASC = AbilitySystemComponent.Get())
     {
         ASC->CancelAbilities(&CrouchTags);
     }
@@ -246,7 +246,7 @@ void AActionGameCharacter::OnCrouchEnded()
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AActionGameCharacter::OnSprintStarted()
 {
-    if (const auto ASC = AbilitySystemComponent)
+    if (const auto ASC = AbilitySystemComponent.Get())
     {
         ASC->TryActivateAbilitiesByTag(SprintTags, true);
     }
@@ -255,7 +255,7 @@ void AActionGameCharacter::OnSprintStarted()
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AActionGameCharacter::OnSprintEnded()
 {
-    if (const auto ASC = AbilitySystemComponent)
+    if (const auto ASC = AbilitySystemComponent.Get())
     {
         ASC->CancelAbilities(&SprintTags);
     }
