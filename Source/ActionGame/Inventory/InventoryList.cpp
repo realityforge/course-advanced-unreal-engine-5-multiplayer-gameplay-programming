@@ -4,9 +4,13 @@
 
 void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemStaticDataClass)
 {
+    AddItem(NewObject<UInventoryItemInstance>());
+}
+
+void FInventoryList::AddItem(UInventoryItemInstance* InItemInstance)
+{
     FInventoryListItem& Item = Items.AddDefaulted_GetRef();
-    Item.ItemInstance = NewObject<UInventoryItemInstance>();
-    Item.ItemInstance->Init(InItemStaticDataClass);
+    Item.ItemInstance = InItemInstance;
 
     // This must be called if you add an item to the array
     MarkItemDirty(Item);
