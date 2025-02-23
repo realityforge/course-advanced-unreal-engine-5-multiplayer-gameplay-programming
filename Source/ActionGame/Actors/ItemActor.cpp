@@ -15,6 +15,8 @@ AItemActor::AItemActor()
     PrimaryActorTick.bAllowTickOnDedicatedServer = false;
     PrimaryActorTick.bTickEvenWhenPaused = false;
     bReplicates = true;
+
+    // Set replicate movement to true so can add physics to item when dropping it etc
     SetReplicatingMovement(true);
 
     SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
