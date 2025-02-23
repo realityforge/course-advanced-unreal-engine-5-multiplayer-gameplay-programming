@@ -2,6 +2,7 @@
 #include "AbilitySystem/Attributes/AG_AttributeSetBase.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemLog.h"
+#include "ActionGameGamePlayTags.h"
 #include "ActorComponents/AG_CharacterMovementComponent.h"
 #include "ActorComponents/AG_MotionWarpingComponent.h"
 #include "ActorComponents/FootstepsComponent.h"
@@ -179,6 +180,27 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
                                                this,
                                                &AActionGameCharacter::PerformJump);
         }
+        if (DropItemAction)
+        {
+            EnhancedInputComponent->BindAction(DropItemAction,
+                                               ETriggerEvent::Started,
+                                               this,
+                                               &AActionGameCharacter::OnDropItem);
+        }
+        if (EquipNextAction)
+        {
+            EnhancedInputComponent->BindAction(EquipNextAction,
+                                               ETriggerEvent::Started,
+                                               this,
+                                               &AActionGameCharacter::OnEquipNext);
+        }
+        if (UnequipAction)
+        {
+            EnhancedInputComponent->BindAction(UnequipAction,
+                                               ETriggerEvent::Started,
+                                               this,
+                                               &AActionGameCharacter::OnUnequipItem);
+        }
 
         if (CrouchAction)
         {
@@ -259,6 +281,35 @@ void AActionGameCharacter::OnSprintEnded()
     {
         ASC->CancelAbilities(&SprintTags);
     }
+}
+
+void AActionGameCharacter::SendGameplayEventToSelf(const FGameplayEventData& EventData)
+{
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, EventData.EventTag, EventData);
+}
+
+void AActionGameCharacter::OnDropItem()
+{
+    FGameplayEventData EventData;
+    EventData.EventTag = ActionGameGameplayTags::Event_Inventory_DropItem;
+
+    SendGameplayEventToSelf(EventData);
+}
+
+void AActionGameCharacter::OnEquipNext()
+{
+    FGameplayEventData EventData;
+    EventData.EventTag = ActionGameGameplayTags::Event_Inventory_EquipNext;
+
+    SendGameplayEventToSelf(EventData);
+}
+
+void AActionGameCharacter::OnUnequipItem()
+{
+    FGameplayEventData EventData;
+    EventData.EventTag = ActionGameGameplayTags::Event_Inventory_Unequip;
+
+    SendGameplayEventToSelf(EventData);
 }
 
 void AActionGameCharacter::Move(const FInputActionValue& Value)

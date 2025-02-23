@@ -75,6 +75,15 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UInputAction> SprintAction{ nullptr };
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UInputAction> DropItemAction{ nullptr };
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UInputAction> EquipNextAction{ nullptr };
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UInputAction> UnequipAction{ nullptr };
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     FGameplayTag JumpEventTag;
 
@@ -92,6 +101,8 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MotionWarp, meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UAG_MotionWarpingComponent> MotionWarpingComponent{ nullptr };
+
+    void SendGameplayEventToSelf(const FGameplayEventData& EventData);
 
 public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -117,6 +128,10 @@ protected:
 
     void OnSprintStarted();
     void OnSprintEnded();
+
+    void OnDropItem();
+    void OnEquipNext();
+    void OnUnequipItem();
 
     FDelegateHandle MaxMovementSpeedChangeDelegateHandle;
 
