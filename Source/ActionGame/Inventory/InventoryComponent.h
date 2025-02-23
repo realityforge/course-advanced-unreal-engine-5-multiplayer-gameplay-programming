@@ -2,9 +2,10 @@
 
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
-#include "GameplayTagContainer.h"
 #include "InventoryList.h"
 #include "InventoryComponent.generated.h"
+
+struct FGameplayEventData;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class ACTIONGAME_API UInventoryComponent : public UActorComponent
