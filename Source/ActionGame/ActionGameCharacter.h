@@ -47,30 +47,30 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
 
     /** Camera boom positioning the camera behind the character */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    USpringArmComponent* CameraBoom;
+    TObjectPtr<USpringArmComponent> CameraBoom{ nullptr };
 
     /** Follow camera */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-    UCameraComponent* FollowCamera;
+    TObjectPtr<UCameraComponent> FollowCamera{ nullptr };
 
     /** MappingContext */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-    UInputMappingContext* DefaultMappingContext;
+    TObjectPtr<UInputMappingContext> DefaultMappingContext{ nullptr };
 
     /** Jump Input Action */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-    UInputAction* JumpAction;
+    TObjectPtr<UInputAction> JumpAction{ nullptr };
 
     /** Move Input Action */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-    UInputAction* MoveAction;
+    TObjectPtr<UInputAction> MoveAction{ nullptr };
 
     /** Look Input Action */
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-    UInputAction* LookAction;
+    TObjectPtr<UInputAction> LookAction{ nullptr };
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-    UInputAction* CrouchAction;
+    TObjectPtr<UInputAction> CrouchAction{ nullptr };
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UInputAction> SprintAction{ nullptr };
