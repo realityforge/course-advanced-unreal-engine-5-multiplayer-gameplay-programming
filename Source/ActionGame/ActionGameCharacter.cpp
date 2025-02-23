@@ -172,11 +172,13 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     // Set up action bindings
     if (const auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
     {
-        // Jumping
-        EnhancedInputComponent->BindAction(JumpAction,
-                                           ETriggerEvent::Started,
-                                           this,
-                                           &AActionGameCharacter::PerformJump);
+        if (JumpAction)
+        {
+            EnhancedInputComponent->BindAction(JumpAction,
+                                               ETriggerEvent::Started,
+                                               this,
+                                               &AActionGameCharacter::PerformJump);
+        }
 
         if (CrouchAction)
         {
@@ -202,11 +204,15 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
                                                &AActionGameCharacter::OnSprintEnded);
         }
 
-        // Moving
-        EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Move);
+        if (MoveAction)
+        {
+            EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Move);
+        }
 
-        // Looking
-        EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Look);
+        if (LookAction)
+        {
+            EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Look);
+        }
     }
     else
     {
