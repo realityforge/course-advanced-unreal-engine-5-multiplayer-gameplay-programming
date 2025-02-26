@@ -167,6 +167,8 @@ public:
         return AbilitySystemComponent;
     }
 
+    FORCEINLINE UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+
     /** Returns CameraBoom subobject **/
     FORCEINLINE USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
     /** Returns FollowCamera subobject **/

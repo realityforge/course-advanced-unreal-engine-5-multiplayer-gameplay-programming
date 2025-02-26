@@ -10,6 +10,8 @@ class ACTIONGAME_API UAG_AnimInstance : public UAnimInstance
 {
     GENERATED_BODY()
 
+    const FCharacterAnimData* GetCurrentItemAnimData() const;
+
     const FCharacterAnimData* GetCharacterAnimData() const;
 
 protected:
