@@ -20,8 +20,8 @@ AItemActor::AItemActor()
     SetReplicatingMovement(true);
 
     SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
-    SphereComponent->SetupAttachment(RootComponent);
     SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnComponentBeginOverlap);
+    SetRootComponent(SphereComponent);
 }
 
 void AItemActor::Init(UInventoryItemInstance* InItemInstance)
