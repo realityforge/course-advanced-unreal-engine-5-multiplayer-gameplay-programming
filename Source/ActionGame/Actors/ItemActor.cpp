@@ -96,7 +96,7 @@ void AItemActor::OnUnequipped()
 
 void AItemActor::OnDropped()
 {
-    UE_LOG(LogTemp, Display, TEXT("OnDropped"));
+    // UE_LOGFMT(LogTemp, Display, "{Item} OnDropped Owner={Owner}", GetActorNameOrLabel(), GetNameSafe(GetOwner()));
 
     // Trace from current position to ground and push the item in front
     // of the character to get the drop location
