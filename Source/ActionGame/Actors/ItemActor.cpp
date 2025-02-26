@@ -97,13 +97,14 @@ void AItemActor::OnUnequipped()
 void AItemActor::OnDropped()
 {
     UE_LOG(LogTemp, Display, TEXT("OnDropped"));
-    ItemState = EItemState::Dropped;
-    GetRootComponent()->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 
     // Trace from current position to ground and push the item in front
     // of the character to get the drop location
     if (const auto ItemOwner = GetOwner())
     {
+        ItemState = EItemState::Dropped;
+        GetRootComponent()->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+
         constexpr float ForwardDistance = 100.0f;
         constexpr float MaxDistanceToGround = 1000.0f;
 
