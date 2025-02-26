@@ -17,7 +17,7 @@ class ACTIONGAME_API AItemActor : public AActor
     TObjectPtr<UInventoryItemInstance> ItemInstance{ nullptr };
 
     UPROPERTY(ReplicatedUsing = OnRep_ItemState)
-    EItemState ItemState{ EItemState::None };
+    EItemState ItemState{ EItemState::Dropped };
 
     UFUNCTION()
     void OnRep_ItemState();
