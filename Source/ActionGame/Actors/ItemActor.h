@@ -16,9 +16,6 @@ class ACTIONGAME_API AItemActor : public AActor
     UPROPERTY(Replicated)
     TObjectPtr<UInventoryItemInstance> ItemInstance{ nullptr };
 
-    // TODO: This Actor should not exist if in None state -
-    //       it is either equipped or dropped ... so not sure
-    //       why we have None state
     UPROPERTY(ReplicatedUsing = OnRep_ItemState)
     EItemState ItemState{ EItemState::None };
 
