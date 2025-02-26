@@ -5,9 +5,6 @@
 #include "CoreMinimal.h"
 #include "AG_AnimInstance.generated.h"
 
-/**
- *
- */
 UCLASS()
 class ACTIONGAME_API UAG_AnimInstance : public UAnimInstance
 {
