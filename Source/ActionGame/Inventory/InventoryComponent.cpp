@@ -151,10 +151,18 @@ void UInventoryComponent::TickComponent(float DeltaTime,
                 {
                     if (GEngine)
                     {
+
+                        const auto NetMode = GetWorld()->GetNetMode();
+                        const auto NetModeDesc = NM_Standalone == NetMode ? TEXT("Standalone")
+                            : NM_DedicatedServer == NetMode               ? TEXT("DedicatedServer")
+                            : NM_ListenServer == NetMode                  ? TEXT("ListenServer")
+                            : NM_Client == NetMode                        ? TEXT("Client")
+                                                                          : TEXT("Unknown");
                         GEngine->AddOnScreenDebugMessage(-1,
                                                          0,
                                                          FColor::Blue,
-                                                         FString::Printf(TEXT("Actor: %s Item: %s"),
+                                                         FString::Printf(TEXT("NetMode: %s Actor: %s Item: %s"),
+                                                                         NetModeDesc,
                                                                          *GetOwner()->GetActorNameOrLabel(),
                                                                          *Data->ItemName.ToString()));
                     }
