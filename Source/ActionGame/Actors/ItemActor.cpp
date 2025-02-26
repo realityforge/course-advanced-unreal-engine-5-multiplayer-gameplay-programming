@@ -117,11 +117,10 @@ void AItemActor::OnDropped()
 
         const TArray IgnoreActors{ ItemOwner };
         FHitResult HitResult;
-        static const FName ProfileName("WorldStatic");
         UKismetSystemLibrary::LineTraceSingleByProfile(Owner,
                                                        TraceStart,
                                                        TraceEnd,
-                                                       ProfileName,
+                                                       UCollisionProfile::BlockAll_ProfileName,
                                                        true,
                                                        IgnoreActors,
                                                        DrawDebugType,
