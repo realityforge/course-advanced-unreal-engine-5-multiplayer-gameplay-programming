@@ -36,6 +36,8 @@ class ACTIONGAME_API AItemActor : public AActor
                                  bool bFromSweep,
                                  const FHitResult& SweepResult);
 
+    void UpdateSphereCollision() const;
+
 protected:
     virtual void BeginPlay() override;
 

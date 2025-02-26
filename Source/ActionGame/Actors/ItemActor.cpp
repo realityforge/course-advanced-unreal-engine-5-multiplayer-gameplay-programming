@@ -32,17 +32,7 @@ void AItemActor::Init(UInventoryItemInstance* InItemInstance)
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AItemActor::OnRep_ItemState()
 {
-    if (EItemState::Equipped == ItemState)
-    {
-        SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-        SphereComponent->SetGenerateOverlapEvents(false);
-    }
-    else
-    {
-        check(EItemState::Dropped == ItemState);
-        SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-        SphereComponent->SetGenerateOverlapEvents(true);
-    }
+    UpdateSphereCollision();
 }
 
 // ReSharper disable once CppMemberFunctionMayBeStatic
@@ -72,26 +62,36 @@ void AItemActor::BeginPlay()
             ItemInstance = NewObject<UInventoryItemInstance>();
             ItemInstance->Init(ItemStaticDataClass);
 
-            SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-            SphereComponent->SetGenerateOverlapEvents(true);
+            UpdateSphereCollision();
         }
+    }
+}
+
+void AItemActor::UpdateSphereCollision() const
+{
+    if (EItemState::Equipped == ItemState || EItemState::None == ItemState)
+    {
+        SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        SphereComponent->SetGenerateOverlapEvents(false);
+    }
+    else
+    {
+        check(EItemState::Dropped == ItemState);
+        SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+        SphereComponent->SetGenerateOverlapEvents(true);
     }
 }
 
 void AItemActor::OnEquipped()
 {
     ItemState = EItemState::Equipped;
-
-    SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    SphereComponent->SetGenerateOverlapEvents(false);
+    UpdateSphereCollision();
 }
 
 void AItemActor::OnUnequipped()
 {
     ItemState = EItemState::None;
-
-    SphereComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    SphereComponent->SetGenerateOverlapEvents(false);
+    UpdateSphereCollision();
 }
 
 void AItemActor::OnDropped()
@@ -129,10 +129,9 @@ void AItemActor::OnDropped()
                                                        true);
 
         SetActorLocation(HitResult.bBlockingHit ? HitResult.Location : TraceEnd);
-    }
 
-    SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-    SphereComponent->SetGenerateOverlapEvents(true);
+        UpdateSphereCollision();
+    }
 }
 
 void AItemActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
