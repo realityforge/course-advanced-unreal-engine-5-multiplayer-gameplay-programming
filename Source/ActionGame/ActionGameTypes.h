@@ -69,6 +69,39 @@ public:
     int32 MaxStackCount{ 1 };
 };
 
+UCLASS(Abstract)
+class UWeaponStaticData : public UItemStaticData
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TSubclassOf<UGameplayEffect> DamageEffect{ nullptr };
+
+    // One of Skeletal or Static mesh will be used. We will try one and then the other in the actor
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TObjectPtr<USkeletalMesh> SkeletalMesh{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TObjectPtr<UStaticMesh> StaticMesh{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TObjectPtr<UAnimMontage> AttackMontage{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    float FireRate{ 0.f };
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    float BaseDamage{ 0.f };
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TObjectPtr<USoundBase> AttackSound{ nullptr };
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    FGameplayTag AmmoTag{ FGameplayTag::EmptyTag };
+};
+
 UENUM(BlueprintType)
 enum class EItemState : uint8
 {
