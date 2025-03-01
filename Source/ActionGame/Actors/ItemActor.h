@@ -44,6 +44,9 @@ protected:
     virtual void BeginPlay() override;
 
     virtual void InitInternal();
+
+    FORCEINLINE UInventoryItemInstance* GetItemInstance() const { return ItemInstance; };
+
 public:
     AItemActor();
 
