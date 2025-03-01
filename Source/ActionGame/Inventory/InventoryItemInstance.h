@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "InventoryItemInstance.generated.h"
 
+struct FGameplayAbilitySpecHandle;
+struct FActiveGameplayEffectHandle;
 class AItemActor;
 class UItemStaticData;
 
@@ -20,6 +22,18 @@ class ACTIONGAME_API UInventoryItemInstance : public UObject
 
     UFUNCTION()
     void OnRep_Equipped();
+
+    void TryGrantAbilities(AActor* ItemOwner);
+    void TryRemoveAbilities(AActor* ItemOwner);
+
+    void TryApplyEffects(AActor* ItemOwner);
+    void TryRemoveEffects(AActor* ItemOwner);
+
+    UPROPERTY()
+    TArray<FGameplayAbilitySpecHandle> GrantedAbilityHandles;
+
+    UPROPERTY()
+    TArray<FActiveGameplayEffectHandle> OngoingEffectHandles;
 
 public:
     UPROPERTY(VisibleInstanceOnly, Replicated)

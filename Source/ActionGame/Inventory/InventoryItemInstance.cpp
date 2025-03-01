@@ -1,4 +1,7 @@
 #include "Inventory/InventoryItemInstance.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemLog.h"
 #include "ActionGameTypes.h"
 #include "Actors/ItemActor.h"
 #include "GameFramework/Character.h"
@@ -7,6 +10,93 @@
 
 // ReSharper disable once CppMemberFunctionMayBeStatic
 void UInventoryItemInstance::OnRep_Equipped() {}
+
+void UInventoryItemInstance::TryGrantAbilities(AActor* ItemOwner)
+{
+    checkf(IsValid(ItemOwner), TEXT("UInventoryItemInstance::TryGrantAbilities called with invalid ItemOwner"));
+    if (ItemOwner && ItemOwner->HasAuthority())
+    {
+        if (const auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ItemOwner))
+        {
+            if (ItemStaticDataClass)
+            {
+                for (const auto& Ability : GetItemStaticData()->GrantedAbilities)
+                {
+                    FGameplayAbilitySpec AbilitySpec(Ability);
+                    AbilitySpec.SourceObject = this;
+                    // ReSharper disable once CppTooWideScopeInitStatement
+                    const auto Handle = ASC->GiveAbility(AbilitySpec);
+                    if (Handle.IsValid())
+                    {
+                        GrantedAbilityHandles.Add(Handle);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void UInventoryItemInstance::TryRemoveAbilities(AActor* ItemOwner)
+{
+    if (ItemOwner && ItemOwner->HasAuthority())
+    {
+        if (const auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ItemOwner))
+        {
+            for (const auto& Ability : GrantedAbilityHandles)
+            {
+                ASC->ClearAbility(Ability);
+            }
+            GrantedAbilityHandles.Empty();
+        }
+    }
+}
+
+void UInventoryItemInstance::TryApplyEffects(AActor* ItemOwner)
+{
+    if (const auto AbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ItemOwner))
+    {
+        const auto EffectContext = AbilitySystemComponent->MakeEffectContext();
+        for (auto& Effect : GetItemStaticData()->GrantedEffects)
+        {
+            if (Effect.Get())
+            {
+                // ReSharper disable once CppTooWideScopeInitStatement
+                const auto SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(Effect, 1, EffectContext);
+                if (SpecHandle.IsValid())
+                {
+                    // ReSharper disable once CppTooWideScopeInitStatement
+                    auto Handle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+                    if (Handle.WasSuccessfullyApplied())
+                    {
+                        OngoingEffectHandles.Add(Handle);
+                    }
+                    else
+                    {
+                        ABILITY_LOG(Log,
+                                    TEXT("Item %s failed to apply runtime effect %s"),
+                                    *GetName(),
+                                    *GetNameSafe(Effect));
+                    }
+                }
+            }
+        }
+    }
+}
+
+void UInventoryItemInstance::TryRemoveEffects(AActor* ItemOwner)
+{
+    if (const auto ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ItemOwner))
+    {
+        for (auto Handle : OngoingEffectHandles)
+        {
+            if (Handle.IsValid())
+            {
+                ASC->RemoveActiveGameplayEffect(Handle);
+            }
+        }
+        OngoingEffectHandles.Empty();
+    }
+}
 
 void UInventoryItemInstance::Init(const TSubclassOf<UItemStaticData> InItemStaticDataClass)
 {
@@ -80,6 +170,8 @@ void UInventoryItemInstance::OnEquipped(AActor* ItemOwner)
         }
     }
 
+    TryGrantAbilities(ItemOwner);
+
     bEquipped = true;
 }
 
@@ -100,6 +192,7 @@ void UInventoryItemInstance::OnDropped(AActor* ItemOwner)
     {
         ItemActor->OnDropped();
     }
+    TryRemoveAbilities(ItemOwner);
 
     bEquipped = false;
 }
