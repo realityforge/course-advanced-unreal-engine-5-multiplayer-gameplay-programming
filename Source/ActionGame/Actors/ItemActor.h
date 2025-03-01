@@ -13,7 +13,7 @@ class ACTIONGAME_API AItemActor : public AActor
 {
     GENERATED_BODY()
 
-    UPROPERTY(Replicated)
+    UPROPERTY(ReplicatedUsing = OnRep_ItemInstance)
     TObjectPtr<UInventoryItemInstance> ItemInstance{ nullptr };
 
     UPROPERTY(ReplicatedUsing = OnRep_ItemState)
@@ -21,6 +21,8 @@ class ACTIONGAME_API AItemActor : public AActor
 
     UFUNCTION()
     void OnRep_ItemState();
+    UFUNCTION()
+    void OnRep_ItemInstance(const UInventoryItemInstance* OldItemInstance);
 
     UPROPERTY()
     TObjectPtr<USphereComponent> SphereComponent{ nullptr };
@@ -41,6 +43,7 @@ class ACTIONGAME_API AItemActor : public AActor
 protected:
     virtual void BeginPlay() override;
 
+    virtual void InitInternal();
 public:
     AItemActor();
 

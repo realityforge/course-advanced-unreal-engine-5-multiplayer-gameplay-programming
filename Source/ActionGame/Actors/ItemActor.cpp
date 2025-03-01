@@ -27,12 +27,23 @@ AItemActor::AItemActor()
 void AItemActor::Init(UInventoryItemInstance* InItemInstance)
 {
     ItemInstance = InItemInstance;
+    InitInternal();
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void AItemActor::OnRep_ItemState()
 {
     UpdateSphereCollision();
+}
+
+void AItemActor::OnRep_ItemInstance(const UInventoryItemInstance* OldItemInstance)
+{
+    if (IsValid(ItemInstance) && !IsValid(OldItemInstance))
+    {
+        // If we get here - this is the first time this actor has replicated
+        // as Instance does not change
+        InitInternal();
+    }
 }
 
 // ReSharper disable once CppMemberFunctionMayBeStatic
@@ -63,8 +74,15 @@ void AItemActor::BeginPlay()
             ItemInstance->Init(ItemStaticDataClass);
 
             UpdateSphereCollision();
+
+            InitInternal();
         }
     }
+}
+
+void AItemActor::InitInternal()
+{
+    // Do nothing here but subclasses may use it to initialize
 }
 
 void AItemActor::UpdateSphereCollision() const
