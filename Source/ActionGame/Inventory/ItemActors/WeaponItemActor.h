@@ -19,4 +19,7 @@ protected:
 
 public:
     AWeaponItemActor();
+
+    UFUNCTION(BlueprintPure, BlueprintCallable)
+    FVector GetMuzzleLocation() const;
 };

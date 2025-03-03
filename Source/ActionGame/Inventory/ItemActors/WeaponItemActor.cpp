@@ -57,3 +57,9 @@ void AWeaponItemActor::InitInternal()
 }
 
 AWeaponItemActor::AWeaponItemActor() {}
+
+FVector AWeaponItemActor::GetMuzzleLocation() const
+{
+    static FName MuzzleSocketName("Muzzle");
+    return MeshComponent ? MeshComponent->GetSocketLocation(MuzzleSocketName) : FVector::ZeroVector;
+}
