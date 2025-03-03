@@ -21,6 +21,8 @@ class ACTIONGAME_API UGameplayAbility_InventoryAbility : public UAG_GameplayAbil
     TObjectPtr<UInventoryComponent> InventoryComponent{ nullptr };
 
 public:
+    UGameplayAbility_InventoryAbility();
+
     virtual void OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 
     UFUNCTION(BlueprintCallable, BlueprintPure)

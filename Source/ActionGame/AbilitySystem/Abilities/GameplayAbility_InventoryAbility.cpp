@@ -5,6 +5,11 @@
 #include "Inventory/ItemActors/WeaponItemActor.h"
 #include "Logging/StructuredLog.h"
 
+UGameplayAbility_InventoryAbility::UGameplayAbility_InventoryAbility()
+{
+    InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+}
+
 void UGameplayAbility_InventoryAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo,
                                                       const FGameplayAbilitySpec& Spec)
 {
