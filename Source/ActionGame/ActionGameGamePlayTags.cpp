@@ -11,4 +11,7 @@ namespace ActionGameGameplayTags
                                    "Try and Equip Next Item Event")
     UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Inventory_Unequip, "Event.Inventory.Unequip", "Unequip current item Event")
 
+    UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Attack_Started, "Event.Attack.Started", "Attack button pressed")
+    UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Attack_Ended, "Event.Attack.Ended", "Attack button released")
+
 } // namespace ActionGameGameplayTags

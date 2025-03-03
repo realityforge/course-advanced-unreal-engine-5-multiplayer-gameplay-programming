@@ -10,5 +10,7 @@ namespace ActionGameGameplayTags
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Inventory_DropItem)
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Inventory_EquipNext)
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Inventory_Unequip)
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Attack_Started)
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Attack_Ended)
 
 } // namespace ActionGameGameplayTags
