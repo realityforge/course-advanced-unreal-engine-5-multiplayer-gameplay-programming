@@ -15,7 +15,7 @@ class ACTIONGAME_API UInventoryComponent : public UActorComponent
     UPROPERTY(EditDefaultsOnly, meta = (AllowAbstract = false, BlueprintBaseOnly = true))
     TArray<TSubclassOf<UItemStaticData>> DefaultItems{};
 
-    UPROPERTY(Replicated)
+    UPROPERTY(VisibleInstanceOnly, Replicated)
     TObjectPtr<UInventoryItemInstance> CurrentItem{ nullptr };
 
 public:
