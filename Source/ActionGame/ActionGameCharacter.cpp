@@ -225,6 +225,17 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
                                                this,
                                                &AActionGameCharacter::OnSprintEnded);
         }
+        if (AttackAction)
+        {
+            EnhancedInputComponent->BindAction(AttackAction,
+                                               ETriggerEvent::Started,
+                                               this,
+                                               &AActionGameCharacter::OnAttackStarted);
+            EnhancedInputComponent->BindAction(AttackAction,
+                                               ETriggerEvent::Completed,
+                                               this,
+                                               &AActionGameCharacter::OnAttackEnded);
+        }
 
         if (MoveAction)
         {
@@ -309,6 +320,20 @@ void AActionGameCharacter::OnUnequipItem()
     FGameplayEventData EventData;
     EventData.EventTag = ActionGameGameplayTags::Event_Inventory_Unequip;
 
+    SendGameplayEventToSelf(EventData);
+}
+
+void AActionGameCharacter::OnAttackStarted()
+{
+    FGameplayEventData EventData;
+    EventData.EventTag = ActionGameGameplayTags::Event_Attack_Started;
+    SendGameplayEventToSelf(EventData);
+}
+
+void AActionGameCharacter::OnAttackEnded()
+{
+    FGameplayEventData EventData;
+    EventData.EventTag = ActionGameGameplayTags::Event_Attack_Ended;
     SendGameplayEventToSelf(EventData);
 }
 

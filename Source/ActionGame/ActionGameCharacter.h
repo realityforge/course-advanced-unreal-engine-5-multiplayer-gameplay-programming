@@ -84,6 +84,9 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UInputAction> UnequipAction{ nullptr };
 
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UInputAction> AttackAction{ nullptr };
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
     FGameplayTag JumpEventTag;
 
@@ -132,6 +135,9 @@ protected:
     void OnDropItem();
     void OnEquipNext();
     void OnUnequipItem();
+
+    void OnAttackStarted();
+    void OnAttackEnded();
 
     FDelegateHandle MaxMovementSpeedChangeDelegateHandle;
 
