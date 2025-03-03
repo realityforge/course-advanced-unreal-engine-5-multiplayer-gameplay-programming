@@ -17,7 +17,7 @@ class ACTIONGAME_API UGameplayAbility_InventoryAbility : public UAG_GameplayAbil
     GENERATED_BODY()
 
     /** Cached copy of Inventory Component. */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
     TObjectPtr<UInventoryComponent> InventoryComponent{ nullptr };
 
 public:
