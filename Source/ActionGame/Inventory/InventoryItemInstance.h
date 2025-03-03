@@ -49,4 +49,6 @@ public:
     virtual void OnEquipped(AActor* ItemOwner = nullptr);
     virtual void OnUnequipped(AActor* ItemOwner = nullptr);
     virtual void OnDropped(AActor* ItemOwner = nullptr);
+
+    FORCEINLINE AItemActor* GetItemActor() const { return ItemActor; }
 };
