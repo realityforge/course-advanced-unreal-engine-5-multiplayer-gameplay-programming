@@ -182,6 +182,7 @@ void UInventoryItemInstance::OnUnequipped(AActor* ItemOwner)
         ItemActor->Destroy();
         ItemActor = nullptr;
     }
+    TryRemoveAbilities(ItemOwner);
 
     bEquipped = false;
 }
@@ -192,7 +193,6 @@ void UInventoryItemInstance::OnDropped(AActor* ItemOwner)
     {
         ItemActor->OnDropped();
     }
-    TryRemoveAbilities(ItemOwner);
 
     bEquipped = false;
 }
