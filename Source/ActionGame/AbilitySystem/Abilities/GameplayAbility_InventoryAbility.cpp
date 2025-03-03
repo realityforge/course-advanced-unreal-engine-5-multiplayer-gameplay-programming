@@ -13,10 +13,11 @@ void UGameplayAbility_InventoryAbility::OnGiveAbility(const FGameplayAbilityActo
     InventoryComponent = ActorInfo->OwnerActor.Get()->FindComponentByClass<UInventoryComponent>();
     if (!InventoryComponent)
     {
-        UE_LOGFMT(LogTemp,
-                  Error,
-                  "UGameplayAbility_InventoryAbility::OnGiveAbility: Unable to locate InventoryComponent on actor {Actor}",
-                  GetNameSafe(ActorInfo->OwnerActor.Get()));
+        UE_LOGFMT(
+            LogTemp,
+            Error,
+            "UGameplayAbility_InventoryAbility::OnGiveAbility: Unable to locate InventoryComponent on actor {Actor}",
+            GetNameSafe(ActorInfo->OwnerActor.Get()));
     }
 }
 
