@@ -109,3 +109,10 @@ enum class EItemState : uint8
     Equipped UMETA(DisplayName = "Equipped"),
     Dropped UMETA(DisplayName = "Dropped")
 };
+
+UENUM(BlueprintType)
+enum class EMovementDirectionType : uint8
+{
+    OrientToMovement UMETA(DisplayName = "Orient To Movement"),
+    Strafe UMETA(DisplayName = "Strafe")
+};

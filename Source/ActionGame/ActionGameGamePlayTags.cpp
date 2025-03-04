@@ -14,4 +14,8 @@ namespace ActionGameGameplayTags
     UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Attack_Started, "Event.Attack.Started", "Attack button pressed")
     UE_DEFINE_GAMEPLAY_TAG_COMMENT(Event_Attack_Ended, "Event.Attack.Ended", "Attack button released")
 
+    UE_DEFINE_GAMEPLAY_TAG_COMMENT(Movement_Enforced_Strafe,
+                                   "Movement.Enforced.Strafe",
+                                   "Tag is applied to change movement mode to strafing")
+
 } // namespace ActionGameGameplayTags
