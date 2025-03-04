@@ -171,6 +171,7 @@ void UInventoryItemInstance::OnEquipped(AActor* ItemOwner)
     }
 
     TryGrantAbilities(ItemOwner);
+    TryApplyEffects(ItemOwner);
 
     bEquipped = true;
 }
@@ -182,6 +183,7 @@ void UInventoryItemInstance::OnUnequipped(AActor* ItemOwner)
         ItemActor->Destroy();
         ItemActor = nullptr;
     }
+    TryRemoveEffects(ItemOwner);
     TryRemoveAbilities(ItemOwner);
 
     bEquipped = false;
