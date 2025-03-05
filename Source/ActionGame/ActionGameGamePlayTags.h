@@ -13,5 +13,6 @@ namespace ActionGameGameplayTags
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Attack_Started)
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Attack_Ended)
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Enforced_Strafe)
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(SetByCaller_Damage)
 
 } // namespace ActionGameGameplayTags

@@ -18,4 +18,6 @@ namespace ActionGameGameplayTags
                                    "Movement.Enforced.Strafe",
                                    "Tag is applied to change movement mode to strafing")
 
+    UE_DEFINE_GAMEPLAY_TAG_COMMENT(SetByCaller_Damage, "SetByCaller.Damage", "The Damage applied by the Effect")
+
 } // namespace ActionGameGameplayTags
