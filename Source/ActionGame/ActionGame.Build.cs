@@ -11,6 +11,7 @@ public class ActionGame : ModuleRules
 
         PublicDependencyModuleNames.AddRange(
             new[] { "Core", "CoreUObject", "Engine", "NetCore", "InputCore", "EnhancedInput", "MotionWarping" });
-        PrivateDependencyModuleNames.AddRange(new[] { "GameplayAbilities", "GameplayTags", "GameplayTasks", "Aeon" });
+        PrivateDependencyModuleNames.AddRange(
+            new[] { "GameplayAbilities", "GameplayTags", "GameplayTasks", "Aeon", "Niagara" });
     }
 }
