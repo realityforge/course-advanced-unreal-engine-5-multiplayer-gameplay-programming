@@ -15,7 +15,7 @@ class ACTIONGAME_API AWeaponItemActor : public AItemActor
     const UWeaponStaticData* GetWeaponStaticData() const;
 
 protected:
-    virtual void InitInternal();
+    virtual void InitInternal() override;
 
 public:
     AWeaponItemActor();
