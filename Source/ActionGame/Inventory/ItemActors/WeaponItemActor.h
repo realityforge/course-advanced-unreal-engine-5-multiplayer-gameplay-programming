@@ -14,6 +14,11 @@ class ACTIONGAME_API AWeaponItemActor : public AItemActor
 
     const UWeaponStaticData* GetWeaponStaticData() const;
 
+    UFUNCTION(NetMulticast, Reliable)
+    void MulticastPlayWeaponEffects(const FHitResult& HitResult);
+
+    void PlayWeaponEffectsInternal(const FHitResult& HitResult) const;
+
 protected:
     virtual void InitInternal() override;
 
@@ -22,4 +27,7 @@ public:
 
     UFUNCTION(BlueprintPure, BlueprintCallable)
     FVector GetMuzzleLocation() const;
+
+    UFUNCTION(BlueprintCallable)
+    void PlayWeaponEffects(const FHitResult& HitResult);
 };
