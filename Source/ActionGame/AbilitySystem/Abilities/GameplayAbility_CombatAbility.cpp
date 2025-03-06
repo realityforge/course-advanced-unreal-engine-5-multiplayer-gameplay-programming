@@ -1,4 +1,4 @@
-#include "AbilitySystem/GameplayAbility_CombatAbility.h"
+#include "AbilitySystem/Abilities/GameplayAbility_CombatAbility.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "ActionGameGamePlayTags.h"
