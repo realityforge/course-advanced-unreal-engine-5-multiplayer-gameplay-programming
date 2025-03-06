@@ -6,7 +6,7 @@
 
 class AActionGameCharacter;
 
-UCLASS()
+UCLASS(Abstract)
 class ACTIONGAME_API UAG_GameplayAbility : public UGameplayAbility
 {
     GENERATED_BODY()
