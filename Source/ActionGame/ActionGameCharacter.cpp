@@ -246,6 +246,11 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
         {
             EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Look);
         }
+        if (AimAction)
+        {
+            EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Started, this, &ThisClass::OnAimStarted);
+            EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &ThisClass::OnAimEnded);
+        }
     }
     else
     {
@@ -334,6 +339,20 @@ void AActionGameCharacter::OnAttackEnded()
 {
     FGameplayEventData EventData;
     EventData.EventTag = ActionGameGameplayTags::Event_Attack_Ended;
+    SendGameplayEventToSelf(EventData);
+}
+
+void AActionGameCharacter::OnAimStarted()
+{
+    FGameplayEventData EventData;
+    EventData.EventTag = ActionGameGameplayTags::Event_Aim_Started;
+    SendGameplayEventToSelf(EventData);
+}
+
+void AActionGameCharacter::OnAimEnded()
+{
+    FGameplayEventData EventData;
+    EventData.EventTag = ActionGameGameplayTags::Event_Aim_Ended;
     SendGameplayEventToSelf(EventData);
 }
 
