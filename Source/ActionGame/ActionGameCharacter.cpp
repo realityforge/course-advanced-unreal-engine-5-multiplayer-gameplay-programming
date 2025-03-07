@@ -81,7 +81,7 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
     AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
     AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxMovementSpeedAttribute())
-        .AddUObject(this, &AActionGameCharacter::OnMaxMovementSpeedChanged);
+        .AddUObject(this, &ThisClass::OnMaxMovementSpeedChanged);
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
     MotionWarpingComponent = CreateDefaultSubobject<UAG_MotionWarpingComponent>("MotionWarpingComponent");
@@ -175,76 +175,46 @@ void AActionGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     {
         if (JumpAction)
         {
-            EnhancedInputComponent->BindAction(JumpAction,
-                                               ETriggerEvent::Started,
-                                               this,
-                                               &AActionGameCharacter::PerformJump);
+            EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::PerformJump);
         }
         if (DropItemAction)
         {
-            EnhancedInputComponent->BindAction(DropItemAction,
-                                               ETriggerEvent::Started,
-                                               this,
-                                               &AActionGameCharacter::OnDropItem);
+            EnhancedInputComponent->BindAction(DropItemAction, ETriggerEvent::Started, this, &ThisClass::OnDropItem);
         }
         if (EquipNextAction)
         {
-            EnhancedInputComponent->BindAction(EquipNextAction,
-                                               ETriggerEvent::Started,
-                                               this,
-                                               &AActionGameCharacter::OnEquipNext);
+            EnhancedInputComponent->BindAction(EquipNextAction, ETriggerEvent::Started, this, &ThisClass::OnEquipNext);
         }
         if (UnequipAction)
         {
-            EnhancedInputComponent->BindAction(UnequipAction,
-                                               ETriggerEvent::Started,
-                                               this,
-                                               &AActionGameCharacter::OnUnequipItem);
+            EnhancedInputComponent->BindAction(UnequipAction, ETriggerEvent::Started, this, &ThisClass::OnUnequipItem);
         }
 
         if (CrouchAction)
         {
-            EnhancedInputComponent->BindAction(CrouchAction,
-                                               ETriggerEvent::Started,
-                                               this,
-                                               &AActionGameCharacter::OnCrouchStarted);
-            EnhancedInputComponent->BindAction(CrouchAction,
-                                               ETriggerEvent::Completed,
-                                               this,
-                                               &AActionGameCharacter::OnCrouchEnded);
+            EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ThisClass::OnCrouchStarted);
+            EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ThisClass::OnCrouchEnded);
         }
 
         if (SprintAction)
         {
-            EnhancedInputComponent->BindAction(SprintAction,
-                                               ETriggerEvent::Started,
-                                               this,
-                                               &AActionGameCharacter::OnSprintStarted);
-            EnhancedInputComponent->BindAction(SprintAction,
-                                               ETriggerEvent::Completed,
-                                               this,
-                                               &AActionGameCharacter::OnSprintEnded);
+            EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &ThisClass::OnSprintStarted);
+            EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ThisClass::OnSprintEnded);
         }
         if (AttackAction)
         {
-            EnhancedInputComponent->BindAction(AttackAction,
-                                               ETriggerEvent::Started,
-                                               this,
-                                               &AActionGameCharacter::OnAttackStarted);
-            EnhancedInputComponent->BindAction(AttackAction,
-                                               ETriggerEvent::Completed,
-                                               this,
-                                               &AActionGameCharacter::OnAttackEnded);
+            EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ThisClass::OnAttackStarted);
+            EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Completed, this, &ThisClass::OnAttackEnded);
         }
 
         if (MoveAction)
         {
-            EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Move);
+            EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
         }
 
         if (LookAction)
         {
-            EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AActionGameCharacter::Look);
+            EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
         }
         if (AimAction)
         {
