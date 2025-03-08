@@ -23,4 +23,6 @@ namespace ActionGameGameplayTags
 
     UE_DEFINE_GAMEPLAY_TAG_COMMENT(SetByCaller_Damage, "SetByCaller.Damage", "The Damage applied by the Effect")
 
+    UE_DEFINE_GAMEPLAY_TAG_COMMENT(State_Combat_Aiming, "State.Combat.Aiming", "The actor is currently aiming")
+
 } // namespace ActionGameGameplayTags

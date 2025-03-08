@@ -12,4 +12,7 @@ class ACTIONGAME_API UGameplayAbility_CombatAbility : public UGameplayAbility_In
 public:
     UFUNCTION(BlueprintPure, Category = "AbilitySystem")
     FGameplayEffectSpecHandle GetWeaponEffectSpec(const FHitResult& InHitResult) const;
+
+    UFUNCTION(BlueprintPure, BlueprintCallable, Category = "AbilitySystem")
+    bool GetWeaponToFocusTraceResult(float TraceDistance, ETraceTypeQuery TraceType, FHitResult& OutHitResult) const;
 };

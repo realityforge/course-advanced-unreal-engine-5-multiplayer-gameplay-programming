@@ -17,4 +17,6 @@ namespace ActionGameGameplayTags
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Movement_Enforced_Strafe)
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(SetByCaller_Damage)
 
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Combat_Aiming)
+
 } // namespace ActionGameGameplayTags
