@@ -1,5 +1,5 @@
 #include "ActionGameGameMode.h"
-#include "ActionGameCharacter.h"
+#include "PlayerControllers/ActionGamePlayerController.h"
 #include "UObject/ConstructorHelpers.h"
 
 AActionGameGameMode::AActionGameGameMode()
@@ -10,5 +10,15 @@ AActionGameGameMode::AActionGameGameMode()
     if (nullptr != PlayerPawnBPClass.Class)
     {
         DefaultPawnClass = PlayerPawnBPClass.Class;
+    }
+    PlayerControllerClass = AActionGamePlayerController::StaticClass();
+}
+
+// ReSharper disable once CppMemberFunctionMayBeStatic
+void AActionGameGameMode::NotifyPlayerDied(AActionGamePlayerController* PlayerController)
+{
+    if (PlayerController)
+    {
+        PlayerController->RestartPlayerIn(2.0f);
     }
 }

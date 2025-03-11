@@ -5,6 +5,7 @@
 
 namespace ActionGameGameplayTags
 {
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_Death)
 
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Inventory_EquipItemActor)
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Event_Inventory_DropItem)
@@ -18,5 +19,9 @@ namespace ActionGameGameplayTags
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(SetByCaller_Damage)
 
     ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Combat_Aiming)
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Ragdoll)
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(State_Dead)
+
+    ACTIONGAME_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Health_Zero)
 
 } // namespace ActionGameGameplayTags

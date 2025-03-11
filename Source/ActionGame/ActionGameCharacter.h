@@ -121,6 +121,7 @@ public:
     virtual void OnEndCrouch(float HalfHeightAdjust, float ScaledHalfHeightAdjust) override;
 
     void OnMaxMovementSpeedChanged(const FOnAttributeChangeData& Data);
+    void OnHealthAttributeChanged(const FOnAttributeChangeData& Data);
 
     FORCEINLINE UAG_MotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
     FORCEINLINE UAG_CharacterMovementComponent* GetAGCharacterMovementComponent() const
@@ -144,6 +145,8 @@ protected:
 
     void OnAimStarted();
     void OnAimEnded();
+
+    void OnRagdollStateTagChanged(const FGameplayTag Tag, int32 NewCount);
 
     FDelegateHandle MaxMovementSpeedChangeDelegateHandle;
 
@@ -173,6 +176,8 @@ protected:
 
 public:
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+    void StartRagdoll() const;
 
     FORCEINLINE UAeonAbilitySystemComponent* GetAeonAbilitySystemComponent_Fast() const
     {

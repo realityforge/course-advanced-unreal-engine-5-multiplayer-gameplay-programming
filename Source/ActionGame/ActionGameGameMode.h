@@ -4,6 +4,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "ActionGameGameMode.generated.h"
 
+class AActionGamePlayerController;
+
 UCLASS(minimalapi)
 class AActionGameGameMode : public AGameModeBase
 {
@@ -11,4 +13,6 @@ class AActionGameGameMode : public AGameModeBase
 
 public:
     AActionGameGameMode();
+
+    void NotifyPlayerDied(AActionGamePlayerController* PlayerController);
 };

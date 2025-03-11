@@ -82,6 +82,10 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
 
     AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxMovementSpeedAttribute())
         .AddUObject(this, &ThisClass::OnMaxMovementSpeedChanged);
+    AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute())
+        .AddUObject(this, &ThisClass::OnHealthAttributeChanged);
+    AbilitySystemComponent->RegisterGameplayTagEvent(ActionGameGameplayTags::State_Ragdoll)
+        .AddUObject(this, &ThisClass::OnRagdollStateTagChanged);
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
     MotionWarpingComponent = CreateDefaultSubobject<UAG_MotionWarpingComponent>("MotionWarpingComponent");
@@ -153,6 +157,24 @@ void AActionGameCharacter::OnEndCrouch(const float HalfHeightAdjust, const float
 void AActionGameCharacter::OnMaxMovementSpeedChanged(const FOnAttributeChangeData& Data)
 {
     GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
+}
+
+void AActionGameCharacter::OnHealthAttributeChanged(const FOnAttributeChangeData& Data)
+{
+    if (Data.NewValue <= 0 && Data.OldValue > 0)
+    {
+        // How to get instigator character
+        // const AActionGameCharacter* OtherCharacter = nullptr;
+        // if (Data.GEModData)
+        // {
+        //     const auto& EffectContext = Data.GEModData->EffectSpec.GetEffectContext();
+        //     OtherCharacter = Cast<AActionGameCharacter>(EffectContext.GetInstigator());
+        // }
+
+        FGameplayEventData EventData;
+        EventData.EventTag = ActionGameGameplayTags::Attribute_Health_Zero;
+        SendGameplayEventToSelf(EventData);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -326,6 +348,20 @@ void AActionGameCharacter::OnAimEnded()
     SendGameplayEventToSelf(EventData);
 }
 
+// ReSharper disable once CppMemberFunctionMayBeConst
+void AActionGameCharacter::OnRagdollStateTagChanged([[maybe_unused]] const FGameplayTag Tag, const int32 NewCount)
+{
+    if (NewCount > 0)
+    {
+        // If the tag is present then start a ragdoll
+        StartRagdoll();
+    }
+    else
+    {
+        // We could also remove ragdoll-ing here ... but we have scenario we intend to use so ignoring
+    }
+}
+
 void AActionGameCharacter::Move(const FInputActionValue& Value)
 {
     if (Controller)
@@ -383,6 +419,23 @@ void AActionGameCharacter::OnRep_PlayerState()
 UAbilitySystemComponent* AActionGameCharacter::GetAbilitySystemComponent() const
 {
     return AbilitySystemComponent;
+}
+
+void AActionGameCharacter::StartRagdoll() const
+{
+    if (const auto SkeletalMeshComponent = GetMesh())
+    {
+        if (!SkeletalMeshComponent->IsSimulatingPhysics())
+        {
+            static const FName Ragdoll_ProfileName("Ragdoll");
+            SkeletalMeshComponent->SetCollisionProfileName(Ragdoll_ProfileName);
+            SkeletalMeshComponent->SetSimulatePhysics(true);
+            SkeletalMeshComponent->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
+            SkeletalMeshComponent->SetAllPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+            SkeletalMeshComponent->WakeAllRigidBodies();
+            GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        }
+    }
 }
 
 UCharacterAnimDataAsset* AActionGameCharacter::GetCharacterAnimDataAsset() const
