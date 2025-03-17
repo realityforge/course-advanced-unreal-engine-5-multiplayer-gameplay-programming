@@ -16,6 +16,11 @@ static TAutoConsoleVariable CVarShowDebugInventory(TEXT("ShowDebugInventory"),
                                                         " 1 : on\n"),
                                                    ECVF_Cheat);
 
+TArray<UInventoryItemInstance*> UInventoryComponent::GetAllInstancesWithTag(const FGameplayTag Tag)
+{
+    return InventoryList.GetAllInstancesWithTag(Tag);
+}
+
 UInventoryComponent::UInventoryComponent()
 {
     // Should never tick in a real project but we have left it in here to help debug...
@@ -168,6 +173,14 @@ void UInventoryComponent::TickComponent(float DeltaTime,
                     }
                 }
             }
+            for (const auto& Record : InventoryTags.GetTagArray())
+            {
+                GEngine->AddOnScreenDebugMessage(
+                    -1,
+                    0,
+                    FColor::Purple,
+                    FString::Printf(TEXT("Tag %s count: %d"), *Record.Tag.ToString(), Record.Count));
+            }
         }
     }
 }
@@ -184,7 +197,48 @@ void UInventoryComponent::AddItemInstance(UInventoryItemInstance* InItemInstance
 {
     if (GetOwner()->HasAuthority())
     {
+        auto Items = InventoryList.GetAllAvailableInstancesOfType(InItemInstance->ItemStaticDataClass);
+
+        // Sort instances so that those that have fewer slots are first so that we will up slots
+        // from the most full to the least full
+        Algo::Sort(Items, [](auto InA, auto InB) { return InA->GetQuantity() < InB->GetQuantity(); });
+
+        // Each slot will hold at most this count
+        const auto MaxItemStackCount = InItemInstance->GetItemStaticData()->MaxStackCount;
+        auto ItemsLeft = InItemInstance->GetQuantity();
+        for (const auto Item : Items)
+        {
+            const auto EmptySlots = MaxItemStackCount - Item->GetQuantity();
+            const auto SlotsToAdd = FMath::Max(EmptySlots, ItemsLeft);
+            ItemsLeft -= SlotsToAdd;
+            Item->AddItems(SlotsToAdd);
+            InItemInstance->AddItems(-SlotsToAdd);
+            for (const auto InventoryTag : Item->GetItemStaticData()->InventoryTags)
+            {
+                InventoryTags.AddTagCount(InventoryTag, SlotsToAdd);
+            }
+
+            if (ItemsLeft <= 0)
+            {
+                return;
+            }
+        }
+        while (ItemsLeft > MaxItemStackCount)
+        {
+            AddItem(InItemInstance->GetItemStaticData()->GetClass());
+            for (const auto InventoryTag : InItemInstance->GetItemStaticData()->InventoryTags)
+            {
+                InventoryTags.AddTagCount(InventoryTag, MaxItemStackCount);
+            }
+            ItemsLeft -= MaxItemStackCount;
+            InItemInstance->AddItems(-MaxItemStackCount);
+        }
+
         InventoryList.AddItem(InItemInstance);
+        for (const auto InventoryTag : InItemInstance->GetItemStaticData()->InventoryTags)
+        {
+            InventoryTags.AddTagCount(InventoryTag, InItemInstance->GetQuantity());
+        }
     }
 }
 
@@ -194,6 +248,63 @@ void UInventoryComponent::RemoveItem(const TSubclassOf<UItemStaticData> InItemSt
     {
         InventoryList.RemoveItem(InItemStaticDataClass);
     }
+}
+
+void UInventoryComponent::RemoveItemInstance(UInventoryItemInstance* InItemInstance)
+{
+    if (GetOwner()->HasAuthority())
+    {
+        InventoryList.RemoveItem(InItemInstance);
+    }
+}
+
+void UInventoryComponent::RemoveItemWithInventoryTag(const FGameplayTag Tag, const int32 Count)
+{
+    if (GetOwner()->HasAuthority())
+    {
+        int32 ItemsLeft = Count;
+        auto Items = GetAllInstancesWithTag(Tag);
+
+        Algo::Sort(Items, [](auto InA, auto InB) { return InA->GetQuantity() < InB->GetQuantity(); });
+
+        for (const auto Item : Items)
+        {
+            const auto AvailableCount = Item->GetQuantity();
+            const auto SlotsToRemove = FMath::Min(AvailableCount, ItemsLeft);
+            UE_LOGFMT(LogTemp,
+                      Warning,
+                      "AvailableCount={AvailableCount} SlotsToRemove={SlotsToRemove}",
+                      AvailableCount,
+                      SlotsToRemove);
+            if (SlotsToRemove >= AvailableCount)
+            {
+                RemoveItemInstance(Item);
+            }
+            else
+            {
+                Item->AddItems(-SlotsToRemove);
+            }
+            for (const auto InventoryTag : Item->GetItemStaticData()->InventoryTags)
+            {
+                InventoryTags.AddTagCount(InventoryTag, -SlotsToRemove);
+            }
+            ItemsLeft -= SlotsToRemove;
+            if (ItemsLeft <= 0)
+            {
+                break;
+            }
+        }
+    }
+}
+
+int32 UInventoryComponent::GetInventoryTagCount(const FGameplayTag Tag) const
+{
+    return InventoryTags.GetTagCount(Tag);
+}
+
+void UInventoryComponent::AddInventoryTagCount(const FGameplayTag Tag, const int32 Count)
+{
+    InventoryTags.AddTagCount(Tag, Count);
 }
 
 void UInventoryComponent::EquipItem(const TSubclassOf<UItemStaticData> InItemStaticDataClass)

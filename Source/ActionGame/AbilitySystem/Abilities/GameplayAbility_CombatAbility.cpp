@@ -5,8 +5,43 @@
 #include "ActionGameGamePlayTags.h"
 #include "ActionGameTypes.h"
 #include "Camera/CameraComponent.h"
+#include "Inventory/InventoryComponent.h"
 #include "Inventory/ItemActors/WeaponItemActor.h"
 #include "Kismet/KismetSystemLibrary.h"
+
+bool UGameplayAbility_CombatAbility::CommitAbility(const FGameplayAbilitySpecHandle Handle,
+                                                   const FGameplayAbilityActorInfo* ActorInfo,
+                                                   const FGameplayAbilityActivationInfo ActivationInfo,
+                                                   FGameplayTagContainer* OptionalRelevantTags)
+{
+    return Super::CommitAbility(Handle, ActorInfo, ActivationInfo, OptionalRelevantTags) && HasEnoughAmmo();
+}
+
+bool UGameplayAbility_CombatAbility::HasEnoughAmmo() const
+{
+    if (const auto Data = GetEquippedItemWeaponStaticData())
+    {
+        if (const auto Inventory = GetInventoryComponent())
+        {
+            return !Data->AmmoTag.IsValid() || Inventory->GetInventoryTagCount(Data->AmmoTag) > 0;
+        }
+    }
+    return false;
+}
+
+void UGameplayAbility_CombatAbility::DecAmmo() const
+{
+    if (const auto Data = GetEquippedItemWeaponStaticData())
+    {
+        if (Data->AmmoTag.IsValid())
+        {
+            if (const auto Inventory = GetInventoryComponent())
+            {
+                Inventory->RemoveItemWithInventoryTag(Data->AmmoTag, 1);
+            }
+        }
+    }
+}
 
 FGameplayEffectSpecHandle UGameplayAbility_CombatAbility::GetWeaponEffectSpec(const FHitResult& InHitResult) const
 {

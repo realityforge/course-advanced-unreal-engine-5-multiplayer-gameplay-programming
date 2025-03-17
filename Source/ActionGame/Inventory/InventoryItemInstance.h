@@ -39,7 +39,10 @@ public:
     UPROPERTY(VisibleInstanceOnly, Replicated)
     TSubclassOf<UItemStaticData> ItemStaticDataClass{ nullptr };
 
-    virtual void Init(TSubclassOf<UItemStaticData> InItemStaticDataClass);
+    UPROPERTY(Replicated)
+    int32 Quantity{ 1 };
+
+    virtual void Init(TSubclassOf<UItemStaticData> InItemStaticDataClass, int32 InQuantity = 1);
 
     virtual bool IsSupportedForNetworking() const override { return true; }
 
@@ -51,4 +54,7 @@ public:
     virtual void OnDropped(AActor* ItemOwner = nullptr);
 
     FORCEINLINE AItemActor* GetItemActor() const { return ItemActor; }
+    FORCEINLINE int32 GetQuantity() const { return Quantity; }
+
+    void AddItems(int32 Count);
 };

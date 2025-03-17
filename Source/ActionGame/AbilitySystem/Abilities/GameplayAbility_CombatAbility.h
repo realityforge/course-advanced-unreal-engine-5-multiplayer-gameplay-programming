@@ -9,7 +9,19 @@ class ACTIONGAME_API UGameplayAbility_CombatAbility : public UGameplayAbility_In
 {
     GENERATED_BODY()
 
+protected:
+    UFUNCTION(BlueprintPure)
+    bool HasEnoughAmmo() const;
+
+    UFUNCTION(BlueprintCallable)
+    void DecAmmo() const;
+
 public:
+    virtual bool CommitAbility(const FGameplayAbilitySpecHandle Handle,
+                               const FGameplayAbilityActorInfo* ActorInfo,
+                               const FGameplayAbilityActivationInfo ActivationInfo,
+                               FGameplayTagContainer* OptionalRelevantTags = nullptr) override;
+
     UFUNCTION(BlueprintPure, Category = "AbilitySystem")
     FGameplayEffectSpecHandle GetWeaponEffectSpec(const FHitResult& InHitResult) const;
 

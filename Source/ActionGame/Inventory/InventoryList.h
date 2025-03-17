@@ -4,6 +4,7 @@
 #include "Net/Serialization/FastArraySerializer.h"
 #include "InventoryList.generated.h"
 
+struct FGameplayTag;
 class UItemStaticData;
 class UInventoryItemInstance;
 
@@ -32,8 +33,14 @@ struct FInventoryList : public FFastArraySerializer
     void AddItem(UInventoryItemInstance* InItemInstance);
 
     void RemoveItem(const TSubclassOf<UItemStaticData>& InItemStaticDataClass);
+    void RemoveItem(UInventoryItemInstance* InItemInstance);
 
     const TArray<FInventoryListItem>& GetItems() const { return Items; }
+
+    TArray<UInventoryItemInstance*> GetAllInstancesWithTag(FGameplayTag Tag);
+
+    TArray<UInventoryItemInstance*>
+    GetAllAvailableInstancesOfType(const TSubclassOf<UItemStaticData>& ItemStaticDataClass);
 
 private:
     UPROPERTY(VisibleInstanceOnly)

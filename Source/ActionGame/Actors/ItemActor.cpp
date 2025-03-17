@@ -71,7 +71,7 @@ void AItemActor::BeginPlay()
         if (!IsValid(ItemInstance) && IsValid(ItemStaticDataClass))
         {
             ItemInstance = NewObject<UInventoryItemInstance>();
-            ItemInstance->Init(ItemStaticDataClass);
+            ItemInstance->Init(ItemStaticDataClass, Quantity);
 
             UpdateSphereCollision();
 
@@ -158,6 +158,7 @@ void AItemActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeti
 
     DOREPLIFETIME(AItemActor, ItemInstance);
     DOREPLIFETIME(AItemActor, ItemState);
+    DOREPLIFETIME(AItemActor, Quantity);
 }
 
 bool AItemActor::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)

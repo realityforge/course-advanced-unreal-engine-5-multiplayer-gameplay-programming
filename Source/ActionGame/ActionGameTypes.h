@@ -65,6 +65,7 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     TArray<FGameplayTag> InventoryTags{};
 
+    /** The maximum number of entries that can be included in each inventory slot. */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     int32 MaxStackCount{ 1 };
 };
@@ -100,6 +101,16 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
     FGameplayTag AmmoTag{ FGameplayTag::EmptyTag };
+};
+
+UCLASS(Abstract)
+class UAmmoItemStaticData : public UItemStaticData
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+    TObjectPtr<UStaticMesh> StaticMesh{ nullptr };
 };
 
 UENUM(BlueprintType)

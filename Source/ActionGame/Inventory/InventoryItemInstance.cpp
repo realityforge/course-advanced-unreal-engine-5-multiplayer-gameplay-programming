@@ -98,9 +98,10 @@ void UInventoryItemInstance::TryRemoveEffects(AActor* ItemOwner)
     }
 }
 
-void UInventoryItemInstance::Init(const TSubclassOf<UItemStaticData> InItemStaticDataClass)
+void UInventoryItemInstance::Init(const TSubclassOf<UItemStaticData> InItemStaticDataClass, const int32 InQuantity)
 {
     ItemStaticDataClass = InItemStaticDataClass;
+    Quantity = InQuantity;
 }
 
 UItemStaticData* UInventoryItemInstance::GetItemStaticData() const
@@ -115,6 +116,7 @@ void UInventoryItemInstance::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
     DOREPLIFETIME(UInventoryItemInstance, ItemStaticDataClass);
     DOREPLIFETIME(UInventoryItemInstance, bEquipped);
     DOREPLIFETIME(UInventoryItemInstance, ItemActor);
+    DOREPLIFETIME(UInventoryItemInstance, Quantity);
 }
 
 void UInventoryItemInstance::OnEquipped(AActor* ItemOwner)
@@ -197,4 +199,13 @@ void UInventoryItemInstance::OnDropped(AActor* ItemOwner)
     }
 
     bEquipped = false;
+}
+
+void UInventoryItemInstance::AddItems(const int32 Count)
+{
+    Quantity += Count;
+    if (Quantity < 0)
+    {
+        Quantity = 0;
+    }
 }

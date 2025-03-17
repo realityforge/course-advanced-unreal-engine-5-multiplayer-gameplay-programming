@@ -19,6 +19,9 @@ class ACTIONGAME_API AItemActor : public AActor
     UPROPERTY(ReplicatedUsing = OnRep_ItemState)
     EItemState ItemState{ EItemState::Dropped };
 
+    UPROPERTY(EditAnywhere, Replicated)
+    int32 Quantity{ 1 };
+
     UFUNCTION()
     void OnRep_ItemState();
     UFUNCTION()
@@ -27,7 +30,7 @@ class ACTIONGAME_API AItemActor : public AActor
     UPROPERTY()
     TObjectPtr<USphereComponent> SphereComponent{ nullptr };
 
-    UPROPERTY(EditDefaultsOnly)
+    UPROPERTY(EditAnywhere)
     TSubclassOf<UItemStaticData> ItemStaticDataClass{ nullptr };
 
     UFUNCTION()

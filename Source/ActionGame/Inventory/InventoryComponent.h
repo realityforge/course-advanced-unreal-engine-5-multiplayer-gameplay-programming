@@ -2,6 +2,7 @@
 
 #include "Components/ActorComponent.h"
 #include "CoreMinimal.h"
+#include "FastArrayTagCounter.h"
 #include "InventoryList.h"
 #include "InventoryComponent.generated.h"
 
@@ -17,6 +18,16 @@ class ACTIONGAME_API UInventoryComponent : public UActorComponent
 
     UPROPERTY(VisibleInstanceOnly, Replicated)
     TObjectPtr<UInventoryItemInstance> CurrentItem{ nullptr };
+
+    /**
+     * A map between an inventory tag and an amount.
+     * This is effectively a cache that could be derived from the InventoryList but is easier to manage.
+     * The key for the cache is determined by InventoryTags on ItemStaticData.
+     */
+    UPROPERTY(Replicated)
+    FFastArrayTagCounter InventoryTags;
+
+    TArray<UInventoryItemInstance*> GetAllInstancesWithTag(FGameplayTag Tag);
 
 public:
     // Sets default values for this component's properties
@@ -49,6 +60,18 @@ public:
 
     UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
     void RemoveItem(TSubclassOf<UItemStaticData> InItemStaticDataClass);
+
+    UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
+    void RemoveItemInstance(UInventoryItemInstance* InItemInstance);
+
+    UFUNCTION(BlueprintCallable)
+    void RemoveItemWithInventoryTag(FGameplayTag Tag, int32 Count = 1);
+
+    UFUNCTION(BlueprintCallable, BlueprintPure)
+    int32 GetInventoryTagCount(FGameplayTag Tag) const;
+
+    UFUNCTION(BlueprintCallable)
+    void AddInventoryTagCount(FGameplayTag Tag, int32 Count = 1);
 
     UFUNCTION(BlueprintCallable, BlueprintPure)
     UInventoryItemInstance* GetCurrentItem() const;
