@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import os
 import shutil
-
+from pathlib import Path
 
 def delete_files_and_directories(paths):
     for path in paths:
@@ -35,17 +35,17 @@ def delete_files_and_directories(paths):
                 print(f"Invalid path: {path}")
 
 
-plugins = ["RuleRanger", "Aeon", "ModularGameplayActors", "ModularGasGameplayActors"]
-plugin_paths = [f"Plugins/{plugin}/Binaries" for plugin in plugins] + \
-               [f"Plugins/{plugin}/Intermediate" for plugin in plugins]
 paths_to_delete = [
-    "Plugins/RuleRanger/Binaries",
-    "Plugins/RuleRanger/Intermediate",
     "DerivedDataCache",
     "Binaries",
     "Intermediate",
     "Saved",
     "cmake-build-debug"
-] + plugin_paths
+]
 
 delete_files_and_directories(paths_to_delete)
+
+for plugin in Path("Plugins").iterdir():
+    if plugin.is_dir():
+        delete_files_and_directories([str(plugin / "Binaries").replace("\\", "/")])
+        delete_files_and_directories([str(plugin / "Intermediate").replace("\\", "/")])
