@@ -11,10 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#pragma once
 
-#include "Aeon/Logging.h"
+#include "CoreMinimal.h"
+#include "Modules/ModuleManager.h"
 
-// The implementation of log category top use within plugin
-DEFINE_LOG_CATEGORY(LogAeon);
-
-DEFINE_LOG_CATEGORY(LogAeonTagRelationship);
+class FAeonAIModule final : public IModuleInterface
+{
+public:
+    /** IModuleInterface implementation */
+    virtual void StartupModule() override;
+    virtual void ShutdownModule() override;
+};

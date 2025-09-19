@@ -16,13 +16,25 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AeonInputConfig)
 
+#if WITH_EDITOR
+void FAeonNativeInputAction::InitEditorFriendlyTitleProperty()
+{
+    EditorFriendlyTitle = InputTag.ToString();
+}
+
+void FAeonAbilityInputAction::InitEditorFriendlyTitleProperty()
+{
+    EditorFriendlyTitle = InputTag.ToString();
+}
+#endif
+
 const UInputAction* UAeonInputConfig::FindNativeInputActionByTag(const FGameplayTag& InInputTag) const
 {
-    for (const auto& [InputTag, InputAction] : NativeInputActions)
+    for (const auto& Action : NativeInputActions)
     {
-        if (InputTag == InInputTag && InputAction)
+        if (Action.InputTag == InInputTag && Action.InputAction)
         {
-            return InputAction;
+            return Action.InputAction;
         }
     }
     return nullptr;
@@ -39,16 +51,14 @@ EDataValidationResult UAeonInputConfig::IsDataValid(FDataValidationContext& Cont
         {
             if (!InputAction.InputTag.IsValid())
             {
-                Context.AddError(FText::FromString(FString::Printf(TEXT("NativeInputActions[%d] has an "
-                                                                        "invalid InputTag"),
-                                                                   Index)));
+                Context.AddError(
+                    FText::FromString(FString::Printf(TEXT("NativeInputActions[%d].InputTag is invalid"), Index)));
                 Result = EDataValidationResult::Invalid;
             }
             if (!InputAction.InputAction)
             {
-                Context.AddError(FText::FromString(FString::Printf(TEXT("NativeInputActions[%d] has an "
-                                                                        "invalid InputAction"),
-                                                                   Index)));
+                Context.AddError(
+                    FText::FromString(FString::Printf(TEXT("NativeInputActions[%d].InputAction is invalid"), Index)));
                 Result = EDataValidationResult::Invalid;
             }
         }
@@ -60,20 +70,78 @@ EDataValidationResult UAeonInputConfig::IsDataValid(FDataValidationContext& Cont
         {
             if (!InputAction.InputTag.IsValid())
             {
-                Context.AddError(FText::FromString(FString::Printf(TEXT("AbilityInputActions[%d] has an "
-                                                                        "invalid InputTag"),
-                                                                   Index)));
+                Context.AddError(
+                    FText::FromString(FString::Printf(TEXT("AbilityInputActions[%d].InputTag is invalid"), Index)));
                 Result = EDataValidationResult::Invalid;
             }
             if (!InputAction.InputAction)
             {
-                Context.AddError(FText::FromString(FString::Printf(TEXT("AbilityInputActions[%d] has an "
-                                                                        "invalid InputAction"),
-                                                                   Index)));
+                Context.AddError(
+                    FText::FromString(FString::Printf(TEXT("AbilityInputActions[%d].InputAction is invalid"), Index)));
                 Result = EDataValidationResult::Invalid;
             }
         }
     }
     return Result;
+}
+
+void UAeonInputConfig::UpdateNativeInputActionsEditorFriendlyTitles()
+{
+    for (int32 Index = 0; Index < NativeInputActions.Num(); ++Index)
+    {
+        NativeInputActions[Index].InitEditorFriendlyTitleProperty();
+    }
+}
+
+void UAeonInputConfig::UpdateAbilityInputActionsEditorFriendlyTitles()
+{
+    for (int32 Index = 0; Index < AbilityInputActions.Num(); ++Index)
+    {
+        AbilityInputActions[Index].InitEditorFriendlyTitleProperty();
+    }
+}
+
+void UAeonInputConfig::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+    Super::PostEditChangeProperty(PropertyChangedEvent);
+
+    if (PropertyChangedEvent.Property)
+    {
+        // ReSharper disable once CppTooWideScopeInitStatement
+        const auto PropertyName = PropertyChangedEvent.Property->GetFName();
+
+        if ((GET_MEMBER_NAME_CHECKED(ThisClass, NativeInputActions)) == PropertyName)
+        {
+            UpdateNativeInputActionsEditorFriendlyTitles();
+        }
+        else if ((GET_MEMBER_NAME_CHECKED(ThisClass, AbilityInputActions)) == PropertyName)
+        {
+            UpdateAbilityInputActionsEditorFriendlyTitles();
+        }
+    }
+}
+
+void UAeonInputConfig::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
+{
+    Super::PostEditChangeChainProperty(PropertyChangedEvent);
+
+    // ReSharper disable once CppTooWideScopeInitStatement
+    const auto PropertyName = PropertyChangedEvent.PropertyChain.GetActiveMemberNode()->GetValue()->GetFName();
+
+    if ((GET_MEMBER_NAME_CHECKED(ThisClass, NativeInputActions)) == PropertyName)
+    {
+        UpdateNativeInputActionsEditorFriendlyTitles();
+    }
+    else if ((GET_MEMBER_NAME_CHECKED(ThisClass, AbilityInputActions)) == PropertyName)
+    {
+        UpdateAbilityInputActionsEditorFriendlyTitles();
+    }
+}
+
+void UAeonInputConfig::PostLoad()
+{
+    Super::PostLoad();
+    UpdateNativeInputActionsEditorFriendlyTitles();
+    UpdateAbilityInputActionsEditorFriendlyTitles();
 }
 #endif

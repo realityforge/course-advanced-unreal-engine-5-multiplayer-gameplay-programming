@@ -11,10 +11,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "AeonAI.h"
 
-#include "Aeon/Logging.h"
+#define LOCTEXT_NAMESPACE "FAeonAIModule"
 
-// The implementation of log category top use within plugin
-DEFINE_LOG_CATEGORY(LogAeon);
+void FAeonAIModule::StartupModule() {}
 
-DEFINE_LOG_CATEGORY(LogAeonTagRelationship);
+void FAeonAIModule::ShutdownModule() {}
+
+#undef LOCTEXT_NAMESPACE
+
+IMPLEMENT_MODULE(FAeonAIModule, AeonAI)

@@ -1,3 +1,9 @@
+# Local patch files
+/patch*.diff
+
+# Idea Project files
+/.idea
+
 # Binary Files
 Binaries/*
 

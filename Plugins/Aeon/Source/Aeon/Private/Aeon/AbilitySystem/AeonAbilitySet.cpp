@@ -22,6 +22,17 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AeonAbilitySet)
 
 #if WITH_EDITOR
+static FString GameplayTagContainerToString(const FGameplayTagContainer& TagContainer)
+{
+    TArray<FString> TagNames;
+    for (const auto& Tag : TagContainer)
+    {
+        TagNames.Add(Tag.ToString());
+    }
+
+    return FString::Join(TagNames, TEXT(","));
+}
+
 void FAeonGameplayAbilityEntry::InitEditorFriendlyTitleProperty()
 {
     if (Ability)
@@ -33,7 +44,7 @@ void FAeonGameplayAbilityEntry::InitEditorFriendlyTitleProperty()
             EditorFriendlyTitle = FString::Printf(TEXT("%s [%d] %s"),
                                                   *FPackageName::GetShortName(Package),
                                                   Level,
-                                                  InputTag.IsValid() ? *InputTag.ToString() : TEXT(""));
+                                                  *GameplayTagContainerToString(InputTags));
         }
         else
         {
@@ -41,7 +52,7 @@ void FAeonGameplayAbilityEntry::InitEditorFriendlyTitleProperty()
                                                   *FPackageName::GetShortName(Package),
                                                   *Ability->GetName(),
                                                   Level,
-                                                  InputTag.IsValid() ? *InputTag.ToString() : TEXT(""));
+                                                  *GameplayTagContainerToString(InputTags));
         }
     }
     else
@@ -138,7 +149,7 @@ void FAeonAbilitySetHandles::RemoveFromAbilitySystemComponent()
         }
         else
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Warning,
                       "RemoveAbilitySetFromAbilitySystemComponent() must be invoked when "
                       "OwnerActor is Authoritative");
@@ -146,7 +157,7 @@ void FAeonAbilitySetHandles::RemoveFromAbilitySystemComponent()
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Warning,
                   "RemoveAbilitySetFromAbilitySystemComponent() invoked when AbilitySystemComponent "
                   "is invalid. This is likely a result of invoking it multiple times. Please guard "
@@ -161,10 +172,10 @@ bool FAeonAbilitySetHandles::IsValid() const
 
 UAeonAbilitySet::UAeonAbilitySet(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 
-void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystemComponent,
-                                          FAeonAbilitySetHandles* OutGrantedHandles,
-                                          int32 LevelDelta,
-                                          UObject* SourceObject) const
+void UAeonAbilitySet::GrantToAbilitySystem(UAbilitySystemComponent* AbilitySystemComponent,
+                                           FAeonAbilitySetHandles* OutGrantedHandles,
+                                           int32 LevelDelta,
+                                           UObject* SourceObject) const
 {
     checkf(AbilitySystemComponent, TEXT("AbilitySystemComponent must not be null"));
     if (AbilitySystemComponent->IsOwnerActorAuthoritative())
@@ -176,13 +187,13 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
 
         if (!Tags.IsEmpty())
         {
-            if (UE_LOG_ACTIVE(Aeon, Error))
+            if (UE_LOG_ACTIVE(LogAeon, Error))
             {
                 for (int32 Index = 0; Index < Tags.Num(); ++Index)
                 {
                     if (const auto Tag = Tags.GetByIndex(Index); !Tag.IsValid())
                     {
-                        UE_LOGFMT(Aeon,
+                        UE_LOGFMT(LogAeon,
                                   Error,
                                   "AbilitySet '{AbilitySet}' has invalid tag at Tags[{Tags}]",
                                   GetNameSafe(this),
@@ -212,7 +223,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             }
             else
             {
-                UE_LOGFMT(Aeon,
+                UE_LOGFMT(LogAeon,
                           Error,
                           "AbilitySet '{AbilitySet}' has invalid value at AttributeSets[{Index}]",
                           GetNameSafe(this),
@@ -228,10 +239,10 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
                 const auto CDO = Entry.Ability->GetDefaultObject<UGameplayAbility>();
                 FGameplayAbilitySpec AbilitySpec(CDO, Entry.Level + LevelDelta);
                 AbilitySpec.SourceObject = SourceObject;
-                if (Entry.InputTag.IsValid())
+                for (auto InputTag : Entry.InputTags)
                 {
                     // Only add tag if it is valid
-                    AbilitySpec.GetDynamicSpecSourceTags().AddTag(Entry.InputTag);
+                    AbilitySpec.GetDynamicSpecSourceTags().AddTag(InputTag);
                 }
 
                 // ReSharper disable once CppTooWideScopeInitStatement
@@ -243,7 +254,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             }
             else
             {
-                UE_LOGFMT(Aeon,
+                UE_LOGFMT(LogAeon,
                           Error,
                           "AbilitySet '{AbilitySet}' has invalid value at Abilities[{Index}]",
                           GetNameSafe(this),
@@ -258,6 +269,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             {
                 const auto CDO = Entry.Effect->GetDefaultObject<UGameplayEffect>();
                 auto EffectContext = AbilitySystemComponent->MakeEffectContext();
+                EffectContext.AddSourceObject(SourceObject);
                 const float EffectLevel = Entry.Level + LevelDelta;
                 // ReSharper disable once CppTooWideScopeInitStatement
                 const auto Handle = AbilitySystemComponent->ApplyGameplayEffectToSelf(CDO, EffectLevel, EffectContext);
@@ -268,7 +280,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             }
             else
             {
-                UE_LOGFMT(Aeon,
+                UE_LOGFMT(LogAeon,
                           Error,
                           "AbilitySet '{AbilitySet}' has invalid value at Effects[{Index}]",
                           GetNameSafe(this),
@@ -290,7 +302,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
                 }
                 else
                 {
-                    UE_LOGFMT(Aeon,
+                    UE_LOGFMT(LogAeon,
                               Error,
                               "AbilitySet '{AbilitySet}' has an attribute initializer '{Attribute}' for an "
                               "attribute from an AttributeSet '{AttributeSet}' that is not granted to the "
@@ -303,7 +315,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
             }
             else
             {
-                UE_LOGFMT(Aeon,
+                UE_LOGFMT(LogAeon,
                           Error,
                           "AbilitySet '{AbilitySet}' has invalid value at AttributeValues[{Index}]",
                           GetNameSafe(this),
@@ -313,7 +325,7 @@ void UAeonAbilitySet::GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystem
     }
     else
     {
-        UE_LOGFMT(Aeon, Warning, "GiveToAbilitySystem() must be invoked when OwnerActor is Authoritative");
+        UE_LOGFMT(LogAeon, Warning, "GiveToAbilitySystem() must be invoked when OwnerActor is Authoritative");
     }
 }
 
@@ -462,19 +474,19 @@ void UAeonAbilitySet::PostEditChangeProperty(FPropertyChangedEvent& PropertyChan
         // ReSharper disable once CppTooWideScopeInitStatement
         const auto PropertyName = PropertyChangedEvent.Property->GetFName();
 
-        if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Abilities)) == PropertyName)
+        if ((GET_MEMBER_NAME_CHECKED(ThisClass, Abilities)) == PropertyName)
         {
             UpdateAbilityEditorFriendlyTitles();
         }
-        else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Effects)) == PropertyName)
+        else if ((GET_MEMBER_NAME_CHECKED(ThisClass, Effects)) == PropertyName)
         {
             UpdateEffectEditorFriendlyTitles();
         }
-        else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeSets)) == PropertyName)
+        else if ((GET_MEMBER_NAME_CHECKED(ThisClass, AttributeSets)) == PropertyName)
         {
             UpdateAttributeSetEditorFriendlyTitles();
         }
-        else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeValues)) == PropertyName)
+        else if ((GET_MEMBER_NAME_CHECKED(ThisClass, AttributeValues)) == PropertyName)
         {
             UpdateAttributeValueEditorFriendlyTitles();
         }
@@ -488,32 +500,30 @@ void UAeonAbilitySet::PostEditChangeChainProperty(FPropertyChangedChainEvent& Pr
     // ReSharper disable once CppTooWideScopeInitStatement
     const auto PropertyName = PropertyChangedEvent.PropertyChain.GetActiveMemberNode()->GetValue()->GetFName();
 
-    if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Abilities)) == PropertyName)
+    if ((GET_MEMBER_NAME_CHECKED(ThisClass, Abilities)) == PropertyName)
     {
         UpdateAbilityEditorFriendlyTitles();
     }
-    else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, Effects)) == PropertyName)
+    else if ((GET_MEMBER_NAME_CHECKED(ThisClass, Effects)) == PropertyName)
     {
         UpdateEffectEditorFriendlyTitles();
     }
-    else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeSets)) == PropertyName)
+    else if ((GET_MEMBER_NAME_CHECKED(ThisClass, AttributeSets)) == PropertyName)
     {
         UpdateAttributeSetEditorFriendlyTitles();
     }
-    else if ((GET_MEMBER_NAME_CHECKED(UAeonAbilitySet, AttributeValues)) == PropertyName)
+    else if ((GET_MEMBER_NAME_CHECKED(ThisClass, AttributeValues)) == PropertyName)
     {
         UpdateAttributeValueEditorFriendlyTitles();
     }
 }
-#endif
 
 void UAeonAbilitySet::PostLoad()
 {
     Super::PostLoad();
-#if WITH_EDITOR
     UpdateAbilityEditorFriendlyTitles();
     UpdateEffectEditorFriendlyTitles();
     UpdateAttributeSetEditorFriendlyTitles();
     UpdateAttributeValueEditorFriendlyTitles();
-#endif
 }
+#endif

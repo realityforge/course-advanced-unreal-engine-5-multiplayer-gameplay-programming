@@ -20,7 +20,8 @@ public class Aeon : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new[] { "Core", "EnhancedInput", "GameplayAbilities", "GameplayTags" });
+        PublicDependencyModuleNames.AddRange(new[] { "Core", "EnhancedInput", "GameplayAbilities", "GameplayTags",
+                                                     "ModularGameplayActors", "ModularGasGameplayActors" });
         PrivateDependencyModuleNames.AddRange(new[] { "CoreUObject", "Engine", "GameplayTasks" });
     }
 }

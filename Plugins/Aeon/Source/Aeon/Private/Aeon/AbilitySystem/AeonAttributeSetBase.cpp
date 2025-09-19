@@ -54,7 +54,7 @@ void UAeonAttributeSetBase::AddTagBasedOnValueRelativeToThreshold(const FGamepla
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "AddTagBasedOnValueRelativeToThreshold invoked attribute='{Attribute}', "
                   "value={Value}, threshold={Threshold}, relationship={Relationship}, "
@@ -84,7 +84,7 @@ void UAeonAttributeSetBase::AdjustAttributeAfterMaxValueChanges(const FGameplayA
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "AdjustAttributeAfterMaxValueChanges invoked for attribute '{Attribute}' "
                   "to change value from {OldValue} to {NewValue} but no AbilitySystemComponent "

@@ -42,7 +42,7 @@ bool UAeonFunctionLibrary::TryActivateRandomSingleAbilityByTag(UAbilitySystemCom
         if (ensureAlways(AbilitySystemComponent))
         {
             TArray<FGameplayAbilitySpec*> AbilitySpecs;
-            const auto GameplayTags = AbilityTag.GetSingleTagContainer();
+            const auto& GameplayTags = AbilityTag.GetSingleTagContainer();
             AbilitySystemComponent->GetActivatableGameplayAbilitySpecsByAllMatchingTags(GameplayTags, AbilitySpecs);
             if (!AbilitySpecs.IsEmpty())
             {
@@ -64,10 +64,10 @@ bool UAeonFunctionLibrary::TryActivateRandomSingleAbilityByTag(UAbilitySystemCom
             }
             else
             {
-                UE_LOGFMT(Aeon,
+                UE_LOGFMT(LogAeon,
                           VeryVerbose,
-                          "TryActivateRandomSingleAbilityByTag invoked with tag 'Tag' found no "
-                          "matching 'Activatable' GameplayAbilitySpecs on actor 'Actor'. Either no such "
+                          "TryActivateRandomSingleAbilityByTag invoked with tag '{Tag}' found no "
+                          "matching 'Activatable' GameplayAbilitySpecs on actor '{Actor}'. Either no such "
                           "Ability exists or the matching abilities are blocked or missing required tags",
                           AbilityTag.GetTagName(),
                           AbilitySystemComponent->GetOwnerActor()->GetActorNameOrLabel());
@@ -76,7 +76,7 @@ bool UAeonFunctionLibrary::TryActivateRandomSingleAbilityByTag(UAbilitySystemCom
         }
         else
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Verbose,
                       "TryActivateRandomSingleAbilityByTag invoked with tag '{Tag}' on invalid actor",
                       AbilityTag.GetTagName());
@@ -85,7 +85,7 @@ bool UAeonFunctionLibrary::TryActivateRandomSingleAbilityByTag(UAbilitySystemCom
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Verbose,
                   "TryActivateRandomSingleAbilityByTag invoked with empty tag on actor '{Actor}'",
                   AbilitySystemComponent->GetOwnerActor()->GetActorNameOrLabel());
@@ -111,7 +111,7 @@ void UAeonFunctionLibrary::ExecuteGameplayCueLocal(const UAbilitySystemComponent
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "UAeonFunctionLibrary::ExecuteGameplayCueLocal invoked with invalid AbilitySystemComponent");
     }
@@ -136,7 +136,9 @@ void UAeonFunctionLibrary::AddGameplayCueLocal(const UAbilitySystemComponent* Ab
     }
     else
     {
-        UE_LOGFMT(Aeon, Error, "UAeonFunctionLibrary::AddGameplayCueLocal invoked with invalid AbilitySystemComponent");
+        UE_LOGFMT(LogAeon,
+                  Error,
+                  "UAeonFunctionLibrary::AddGameplayCueLocal invoked with invalid AbilitySystemComponent");
     }
 }
 
@@ -153,7 +155,7 @@ void UAeonFunctionLibrary::RemoveGameplayCueLocal(const UAbilitySystemComponent*
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "UAeonFunctionLibrary::RemoveGameplayCueLocal invoked with invalid AbilitySystemComponent");
     }

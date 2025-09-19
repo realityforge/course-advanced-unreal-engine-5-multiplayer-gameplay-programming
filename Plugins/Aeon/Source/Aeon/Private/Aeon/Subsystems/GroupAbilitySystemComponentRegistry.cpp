@@ -125,7 +125,7 @@ void UGroupAbilitySystemComponentRegistry::RegisterAbilitySystemComponent(
     {
         if (!ensureAlways(!AbilitySystemComponents.Contains(AbilitySystemComponent)))
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Error,
                       "RegisterAbilitySystemComponent(bImplicit=true) invoked but AbilitySystemComponent "
                       "is already explicitly registered. A child group has attempted to add the "
@@ -138,7 +138,7 @@ void UGroupAbilitySystemComponentRegistry::RegisterAbilitySystemComponent(
         }
         else
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Error,
                       "RegisterAbilitySystemComponent(bImplicit=true) invoked but AbilitySystemComponent "
                       "is already implicitly registered. Multiple child groups have attempted to add the "
@@ -149,7 +149,7 @@ void UGroupAbilitySystemComponentRegistry::RegisterAbilitySystemComponent(
     {
         if (!ensureAlways(!ImplicitAbilitySystemComponents.Contains(AbilitySystemComponent)))
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Error,
                       "RegisterAbilitySystemComponent(bImplicit=false) invoked but AbilitySystemComponent "
                       "is already implicitly registered. A child group has already already registered "
@@ -162,7 +162,7 @@ void UGroupAbilitySystemComponentRegistry::RegisterAbilitySystemComponent(
         }
         else
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Error,
                       "RegisterAbilitySystemComponent(bImplicit=false) invoked but AbilitySystemComponent "
                       "is already explicitly registered. An AbilitySystemComponent can not be part of the "
@@ -203,7 +203,7 @@ void UGroupAbilitySystemComponentRegistry::UnregisterAbilitySystemComponent(
         }
         else
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Error,
                       "UnregisterAbilitySystemComponent(bImplicit=false) invoked but AbilitySystemComponent "
                       "is not implicitly registered.");
@@ -218,7 +218,7 @@ void UGroupAbilitySystemComponentRegistry::UnregisterAbilitySystemComponent(
         }
         else
         {
-            UE_LOGFMT(Aeon,
+            UE_LOGFMT(LogAeon,
                       Error,
                       "UnregisterAbilitySystemComponent(bImplicit=false) invoked but AbilitySystemComponent "
                       "is not implicitly registered.");
@@ -246,7 +246,7 @@ bool UGroupAbilitySystemComponentRegistry::IsAbilityPresent(const TSubclassOf<UG
 {
     if (!Ability.Get())
     {
-        UE_LOGFMT(Aeon, Error, "IsAbilityPresent invoked but the specified ability is null");
+        UE_LOGFMT(LogAeon, Error, "IsAbilityPresent invoked but the specified ability is null");
         return false;
     }
     else
@@ -259,7 +259,7 @@ void UGroupAbilitySystemComponentRegistry::AddAbility(const TSubclassOf<UGamepla
 {
     if (!Ability.Get())
     {
-        UE_LOGFMT(Aeon, Error, "AddAbility invoked but the specified ability is null");
+        UE_LOGFMT(LogAeon, Error, "AddAbility invoked but the specified ability is null");
     }
     else if (!Abilities.Contains(Ability))
     {
@@ -275,7 +275,7 @@ void UGroupAbilitySystemComponentRegistry::AddAbility(const TSubclassOf<UGamepla
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "AddAbility invoked with the ability '{Ability}' but the ability is "
                   "already added to the group",
@@ -287,7 +287,7 @@ void UGroupAbilitySystemComponentRegistry::RemoveAbility(const TSubclassOf<UGame
 {
     if (!Ability.Get())
     {
-        UE_LOGFMT(Aeon, Error, "RemoveAbility invoked but the specified ability is null");
+        UE_LOGFMT(LogAeon, Error, "RemoveAbility invoked but the specified ability is null");
     }
     else if (Abilities.Contains(Ability))
     {
@@ -296,7 +296,7 @@ void UGroupAbilitySystemComponentRegistry::RemoveAbility(const TSubclassOf<UGame
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "RemoveAbility invoked with the ability '{Ability}' but the ability is "
                   "not present in the group",
@@ -308,7 +308,7 @@ bool UGroupAbilitySystemComponentRegistry::IsEffectPresent(const TSubclassOf<UGa
 {
     if (!Effect.Get())
     {
-        UE_LOGFMT(Aeon, Error, "IsEffectPresent invoked but the specified effect is null");
+        UE_LOGFMT(LogAeon, Error, "IsEffectPresent invoked but the specified effect is null");
         return false;
     }
     else
@@ -321,7 +321,7 @@ void UGroupAbilitySystemComponentRegistry::AddEffect(const TSubclassOf<UGameplay
 {
     if (!Effect.Get())
     {
-        UE_LOGFMT(Aeon, Error, "AddEffect invoked but the specified effect is null");
+        UE_LOGFMT(LogAeon, Error, "AddEffect invoked but the specified effect is null");
     }
     else if (!Effects.Contains(Effect))
     {
@@ -337,7 +337,7 @@ void UGroupAbilitySystemComponentRegistry::AddEffect(const TSubclassOf<UGameplay
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "AddEffect invoked with the effect '{Effect}' but the effect is already added to the group",
                   GetNameSafe(Effect));
@@ -348,7 +348,7 @@ void UGroupAbilitySystemComponentRegistry::RemoveEffect(const TSubclassOf<UGamep
 {
     if (!Effect.Get())
     {
-        UE_LOGFMT(Aeon, Error, "RemoveEffect invoked but the specified effect is null");
+        UE_LOGFMT(LogAeon, Error, "RemoveEffect invoked but the specified effect is null");
     }
     else if (Effects.Contains(Effect))
     {
@@ -357,7 +357,7 @@ void UGroupAbilitySystemComponentRegistry::RemoveEffect(const TSubclassOf<UGamep
     }
     else
     {
-        UE_LOGFMT(Aeon,
+        UE_LOGFMT(LogAeon,
                   Error,
                   "RemoveEffect invoked with the effect '{Effect}' but the effect is "
                   "not present in the group",

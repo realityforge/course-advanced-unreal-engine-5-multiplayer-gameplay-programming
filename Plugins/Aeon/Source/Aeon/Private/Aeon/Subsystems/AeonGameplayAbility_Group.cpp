@@ -42,7 +42,9 @@ void UAeonGameplayAbility_Group::ActivateAbility(const FGameplayAbilitySpecHandl
         }
         else
         {
-            UE_LOGFMT(Aeon, Error, "AeonGameplayAbility_Group unable to register with group as GroupTag is invalid.");
+            UE_LOGFMT(LogAeon,
+                      Error,
+                      "AeonGameplayAbility_Group unable to register with group as GroupTag is invalid.");
         }
     }
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
@@ -64,7 +66,9 @@ void UAeonGameplayAbility_Group::EndAbility(const FGameplayAbilitySpecHandle Han
         }
         else
         {
-            UE_LOGFMT(Aeon, Error, "AeonGameplayAbility_Group unable to unregister from group as GroupTag is invalid.");
+            UE_LOGFMT(LogAeon,
+                      Error,
+                      "AeonGameplayAbility_Group unable to unregister from group as GroupTag is invalid.");
         }
     }
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);

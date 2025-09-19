@@ -23,7 +23,7 @@
  * <p>The AbilitySystemComponent is registered with the group using the
  * @link UGroupAbilitySystem @endlink subsystem.</p>
  */
-UCLASS(Abstract)
+UCLASS(Abstract, meta = (RuleRangerDataOnly))
 class AEON_API UAeonGameplayAbility_Group : public UAeonGameplayAbility
 {
     GENERATED_BODY()

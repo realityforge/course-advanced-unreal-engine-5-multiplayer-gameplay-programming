@@ -51,9 +51,11 @@ struct FAeonGameplayAbilityEntry
     UPROPERTY(EditDefaultsOnly)
     int32 Level{ 1 };
 
-    /** Tag indicating input that can trigger the Ability. */
+    /**
+     * Tag indicating input tags that can trigger the Ability or specify how input is processed.
+     */
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "Input"))
-    FGameplayTag InputTag{ FGameplayTag::EmptyTag };
+    FGameplayTagContainer InputTags;
 
 #if WITH_EDITOR
 
@@ -176,7 +178,7 @@ private:
  * granted will not appear in the lists below.
  */
 USTRUCT(BlueprintType)
-struct FAeonAbilitySetHandles
+struct AEON_API FAeonAbilitySetHandles
 {
     GENERATED_BODY()
 
@@ -268,10 +270,10 @@ public:
      * @param LevelDelta The Delta to apply to Level of effects and abilities before granting them to the ASC.
      * @param SourceObject The source-object to apply when granting abilities.
      */
-    void GiveToAbilitySystem(UAbilitySystemComponent* AbilitySystemComponent,
-                             FAeonAbilitySetHandles* OutGrantedHandles = nullptr,
-                             int32 LevelDelta = 0,
-                             UObject* SourceObject = nullptr) const;
+    void GrantToAbilitySystem(UAbilitySystemComponent* AbilitySystemComponent,
+                              FAeonAbilitySetHandles* OutGrantedHandles = nullptr,
+                              int32 LevelDelta = 0,
+                              UObject* SourceObject = nullptr) const;
 
 #pragma region AActor Interface
 #if WITH_EDITOR
@@ -313,7 +315,11 @@ public:
      * This is called when properties that are inside of structs are modified.
      */
     virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
-#endif // WITH_EDITOR
 
+    /**
+     * Updates the titles of abilities, effects, and attribute sets after the asset is initially loaded.
+     */
     virtual void PostLoad() override;
+
+#endif // WITH_EDITOR
 };

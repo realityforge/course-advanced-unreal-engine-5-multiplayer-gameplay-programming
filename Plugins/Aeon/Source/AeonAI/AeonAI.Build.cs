@@ -12,9 +12,15 @@
  * limitations under the License.
  */
 
-#include "Aeon/Logging.h"
+using UnrealBuildTool;
 
-// The implementation of log category top use within plugin
-DEFINE_LOG_CATEGORY(LogAeon);
+public class AeonAI : ModuleRules
+{
+    public AeonAI(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-DEFINE_LOG_CATEGORY(LogAeonTagRelationship);
+        PublicDependencyModuleNames.AddRange(new[] { "Core", "GameplayAbilities", "GameplayTags", "AIModule" });
+        PrivateDependencyModuleNames.AddRange(new[] { "CoreUObject", "Engine", "GameplayTasks", "Aeon" });
+    }
+}
