@@ -3,9 +3,7 @@
 
 UGameplayAbility_Crouch::UGameplayAbility_Crouch()
 {
-    // Part of this ability runs predictively on the local client if there is one
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
-    // Each actor gets their own instance of this ability. State can be saved, replication is possible.
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 }
 
@@ -54,8 +52,8 @@ void UGameplayAbility_Crouch::ActivateAbility(const FGameplayAbilitySpecHandle H
 void UGameplayAbility_Crouch::EndAbility(const FGameplayAbilitySpecHandle Handle,
                                          const FGameplayAbilityActorInfo* ActorInfo,
                                          const FGameplayAbilityActivationInfo ActivationInfo,
-                                         bool bReplicateEndAbility,
-                                         bool bWasCancelled)
+                                         const bool bReplicateEndAbility,
+                                         const bool bWasCancelled)
 {
     const auto Actor = ActorInfo->AvatarActor.Get();
     if (const auto Character = CastChecked<ACharacter>(Actor, ECastCheckedType::NullAllowed))
