@@ -17,7 +17,7 @@ import argparse
 import json
 import os
 
-plugins_to_process = ["RuleRanger", "Aeon", "ModularGasGameplayActors"]
+plugins_to_process = ["Aeon", "ModularGasGameplayActors", "RuleRanger"]
 
 parser = argparse.ArgumentParser(description="Unreal Source Code Formatter")
 
@@ -32,6 +32,7 @@ if args.verbose:
         print(f"Performing Source Code Checking. Files: {args.files}")
     else:
         print(f"Performing Source Code Formatting. Files: {args.files}")
+
 
 def format_json(filename, dry_run):
     with open(filename, "r") as file:
