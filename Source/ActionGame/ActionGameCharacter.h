@@ -9,9 +9,9 @@
 #include "Logging/LogMacros.h"
 #include "ActionGameCharacter.generated.h"
 
+class UMotionWarpingComponent;
 class UInventoryComponent;
 class UCharacterAnimDataAsset;
-class UAG_MotionWarpingComponent;
 class UAG_CharacterMovementComponent;
 class UAeonAbilitySet;
 class UFootstepsComponent;
@@ -106,7 +106,7 @@ class AActionGameCharacter : public ACharacter, public IAbilitySystemInterface
     FGameplayTagContainer SprintTags;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MotionWarp, meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UAG_MotionWarpingComponent> MotionWarpingComponent{ nullptr };
+    TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent{ nullptr };
 
     void SendGameplayEventToSelf(const FGameplayEventData& EventData);
 
@@ -123,7 +123,7 @@ public:
     void OnMaxMovementSpeedChanged(const FOnAttributeChangeData& Data);
     void OnHealthAttributeChanged(const FOnAttributeChangeData& Data);
 
-    FORCEINLINE UAG_MotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
+    FORCEINLINE UMotionWarpingComponent* GetMotionWarpingComponent() const { return MotionWarpingComponent; }
     FORCEINLINE UAG_CharacterMovementComponent* GetAGCharacterMovementComponent() const
     {
         return GetCharacterMovement<UAG_CharacterMovementComponent>();

@@ -1,9 +1,9 @@
 #include "AbilitySystem/Abilities/GameplayAbility_Vault.h"
 #include "ActionGameCharacter.h"
-#include "ActorComponents/AG_MotionWarpingComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "MotionWarpingComponent.h"
 
 const FName UGameplayAbility_Vault::NAME_JumpToLocation("JumpToLocation");
 const FName UGameplayAbility_Vault::NAME_JumpOverLocation("JumpOverLocation");

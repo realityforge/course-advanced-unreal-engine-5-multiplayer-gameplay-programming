@@ -4,7 +4,6 @@
 #include "AbilitySystemLog.h"
 #include "ActionGameGamePlayTags.h"
 #include "ActorComponents/AG_CharacterMovementComponent.h"
-#include "ActorComponents/AG_MotionWarpingComponent.h"
 #include "ActorComponents/FootstepsComponent.h"
 #include "Aeon/AbilitySystem/AeonAbilitySet.h"
 #include "Aeon/AbilitySystem/AeonAbilitySystemComponent.h"
@@ -19,6 +18,7 @@
 #include "GameplayEffectTypes.h"
 #include "InputActionValue.h"
 #include "Inventory/InventoryComponent.h"
+#include "MotionWarpingComponent.h"
 #include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -88,7 +88,7 @@ AActionGameCharacter::AActionGameCharacter(const FObjectInitializer& ObjectIniti
         .AddUObject(this, &ThisClass::OnRagdollStateTagChanged);
 
     FootstepsComponent = CreateDefaultSubobject<UFootstepsComponent>("FootstepsComponent");
-    MotionWarpingComponent = CreateDefaultSubobject<UAG_MotionWarpingComponent>("MotionWarpingComponent");
+    MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarpingComponent");
 
     InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("InventoryComponent");
     InventoryComponent->SetIsReplicated(true);
