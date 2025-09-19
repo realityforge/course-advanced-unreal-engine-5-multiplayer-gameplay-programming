@@ -37,7 +37,6 @@ bool UGameplayAbility_Vault::CommitCheck(const FGameplayAbilitySpecHandle Handle
 
         const auto DebugDrawType = bShowDebugTraversal ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None;
 
-        bool bJumpToLocationSet = false;
         int32 JumpToLocationIndex = INDEX_NONE;
 
         int32 Index = 0;
