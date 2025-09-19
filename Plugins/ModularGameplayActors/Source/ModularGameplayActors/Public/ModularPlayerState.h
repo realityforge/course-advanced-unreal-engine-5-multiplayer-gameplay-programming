@@ -26,6 +26,6 @@ public:
 
 protected:
 	//~ Begin APlayerState interface
-	virtual void CopyProperties(APlayerState* PlayerState);
+	virtual void CopyProperties(APlayerState* PlayerState) override;
 	//~ End APlayerState interface
 };
