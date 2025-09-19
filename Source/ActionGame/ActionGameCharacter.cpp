@@ -402,7 +402,7 @@ void AActionGameCharacter::PossessedBy(AController* NewController)
     AbilitySystemComponent->InitAbilityActorInfo(this, this);
     if (AbilitySet)
     {
-        AbilitySet->GiveToAbilitySystem(AbilitySystemComponent);
+        AbilitySet->GrantToAbilitySystem(AbilitySystemComponent);
         AttributeSet = CastChecked<UAG_AttributeSetBase>(
             AbilitySystemComponent->GetAttributeSet(UAG_AttributeSetBase::StaticClass()));
     }
