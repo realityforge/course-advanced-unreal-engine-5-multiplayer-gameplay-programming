@@ -33,18 +33,22 @@ if args.verbose:
     else:
         print(f"Performing Source Code Formatting. Files: {args.files}")
 
-def remove_bom(filename):
+def remove_bom(filename, dry_run):
     with open(filename, "rb") as f:
         content = f.read()
     # UTF-8 BOM is b'\xef\xbb\xbf'
     if content.startswith(b'\xef\xbb\xbf'):
-        content = content[3:]
-        with open(filename, "wb") as f:
-            f.write(content)
-        print(f"BOM removed from {filename}")
+        if not dry_run:
+            content = content[3:]
+            with open(filename, "wb") as f:
+                f.write(content)
+            print(f"BOM removed from {filename}")
+            return True
+        else:
+            return False
 
 
-def normalize_line_endings(filename):
+def normalize_line_endings(filename, dry_run):
     # Read file in text mode
     with open(filename, "r", encoding="utf-8", newline="") as f:
         content = f.read()
@@ -53,9 +57,13 @@ def normalize_line_endings(filename):
     new_content = content.replace("\r\n", "\n").replace("\r", "\n").replace("\n", os.linesep)
     if new_content != content:
         # Write back with normalized line endings
-        with open(filename, "w", encoding="utf-8", newline="") as f:
-            f.write(new_content)
-        print(f"Line endings normalized to {repr(os.linesep)} in {filename}")
+        if not dry_run:
+            with open(filename, "w", encoding="utf-8", newline="") as f:
+                f.write(new_content)
+            print(f"Line endings normalized to {repr(os.linesep)} in {filename}")
+            return True
+        else:
+            return False
 
 
 def format_json(filename, dry_run):
@@ -111,6 +119,14 @@ try:
                 exitcode = 1
 
         if 0 != len(files_to_format):
+            for file in files_to_format:
+                if remove_bom(file, True):
+                    print(f"File {file} contains BOM mark that would be stripped.")
+                    exitcode = 1
+                if normalize_line_endings(file, True):
+                    print(f"File {file} contains non-normalized line endings that would be fixed.")
+                    exitcode = 1
+
             result = subprocess.run(["clang-format", " --dry-run", "--Werror", "-i", *files_to_format])
             if 0 != result.returncode:
                 print(result.stderr)
