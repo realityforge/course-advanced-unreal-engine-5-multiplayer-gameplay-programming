@@ -7,9 +7,6 @@ Shorthand notes of where to go next with this experiment:
 
 * RuleRanger should ALSO invoke validation on each object ... otherwise problems highlighted via IsDataValid will be missed. Note that by default validation also invokes RuleRanger so we will need to guard this scenario and avoid duplicate invocations
 
-* Add the ability for RuleSet to contain Data Tables (like in `RuleRangerConfig`)
-  - (Also change `Aeon` RuleSet to include `DT_AeonNameConventions`)
-
 * Add concept of ExclusionSet that is a set of Rules and RuleSets that can be excluded? So we can have a common exclude for all ThirdParty stuff across projects?
 * Consider using a separate Plugin+module for Niagara checks so we can have a clean dependency tree.
 * Add rules so that we can enforce constraints about asset referencing.

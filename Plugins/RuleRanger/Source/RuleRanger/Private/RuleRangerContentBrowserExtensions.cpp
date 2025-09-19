@@ -261,7 +261,7 @@ static void OnFixSelectedPaths(const TArray<FString>& AssetPaths)
 // ReSharper disable once CppPassValueParameterByConstReference
 static void OnExtendForSelectedPaths(FMenuBuilder& MenuBuilder)
 {
-    UE_LOGFMT(RuleRanger, VeryVerbose, "FRuleRangerContentBrowserExtensions: OnExtendContentBrowser() invoked.");
+    UE_LOGFMT(LogRuleRanger, VeryVerbose, "FRuleRangerContentBrowserExtensions: OnExtendContentBrowser() invoked.");
 
     MenuBuilder.BeginSection("RuleRangerContentBrowserContext",
                              NSLOCTEXT("RuleRanger", "ContextMenuSectionName", "Rule Ranger"));
@@ -275,7 +275,7 @@ static void OnExtendForSelectedPaths(FMenuBuilder& MenuBuilder)
 
 static TSharedRef<FExtender> OnExtendSelectedPathsMenu(const TArray<FString>& Paths)
 {
-    UE_LOGFMT(RuleRanger, VeryVerbose, "OnExtendSelectedPathsMenu() invoked.");
+    UE_LOGFMT(LogRuleRanger, VeryVerbose, "OnExtendSelectedPathsMenu() invoked.");
 
     const TSharedPtr<FUICommandList> CommandList = MakeShareable(new FUICommandList);
     CommandList->MapAction(FRuleRangerCommands::Get().ScanSelectedPaths,
@@ -293,7 +293,7 @@ static TSharedRef<FExtender> OnExtendSelectedPathsMenu(const TArray<FString>& Pa
 // ReSharper disable once CppPassValueParameterByConstReference
 static void OnExtendForSelectedAssets(FMenuBuilder& MenuBuilder)
 {
-    UE_LOGFMT(RuleRanger, VeryVerbose, "OnExtendForSelectedAssets() invoked.");
+    UE_LOGFMT(LogRuleRanger, VeryVerbose, "OnExtendForSelectedAssets() invoked.");
 
     MenuBuilder.BeginSection("RuleRangerContentBrowserContext",
                              NSLOCTEXT("RuleRanger", "ContextMenuSectionName", "Rule Ranger"));
@@ -307,7 +307,7 @@ static void OnExtendForSelectedAssets(FMenuBuilder& MenuBuilder)
 
 static TSharedRef<FExtender> OnExtendForSelectedAssetsMenu(const TArray<FAssetData>& Assets)
 {
-    UE_LOGFMT(RuleRanger, VeryVerbose, "OnExtendForSelectedAssetsMenu() invoked.");
+    UE_LOGFMT(LogRuleRanger, VeryVerbose, "OnExtendForSelectedAssetsMenu() invoked.");
 
     const TSharedPtr<FUICommandList> CommandList = MakeShareable(new FUICommandList);
     CommandList->MapAction(FRuleRangerCommands::Get().ScanSelectedAssets,
@@ -333,7 +333,7 @@ void FRuleRangerContentBrowserExtensions::Initialize()
 {
     auto& Module = FModuleManager::LoadModuleChecked<FContentBrowserModule>(TEXT("ContentBrowser"));
 
-    UE_LOGFMT(RuleRanger,
+    UE_LOGFMT(LogRuleRanger,
               VeryVerbose,
               "FRuleRangerContentBrowserExtensions::Shutdown(): Registering ContentBrowser Extensions.");
     SelectedPathsDelegate = FContentBrowserMenuExtender_SelectedPaths::CreateStatic(&OnExtendSelectedPathsMenu);
@@ -357,7 +357,7 @@ void FRuleRangerContentBrowserExtensions::Shutdown()
         auto& Module = FModuleManager::LoadModuleChecked<FContentBrowserModule>(ContentBrowserModuleName);
         if (SelectedPathsDelegateHandle.IsValid())
         {
-            UE_LOGFMT(RuleRanger,
+            UE_LOGFMT(LogRuleRanger,
                       VeryVerbose,
                       "FRuleRangerContentBrowserExtensions::Shutdown(): Deregistering ContentBrowser Extensions.");
             auto Target = SelectedPathsDelegateHandle;
@@ -367,7 +367,7 @@ void FRuleRangerContentBrowserExtensions::Shutdown()
         }
         else
         {
-            UE_LOGFMT(RuleRanger,
+            UE_LOGFMT(LogRuleRanger,
                       Verbose,
                       "FRuleRangerContentBrowserExtensions::Shutdown(): Skipping deregister of "
                       "ContentBrowserExtensions as handle is Invalid.");

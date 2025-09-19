@@ -31,7 +31,7 @@ void FRuleRangerMessageLog::Initialize()
     MessageLogModule.RegisterLogListing(GetMessageLogName(),
                                         NSLOCTEXT("RuleRanger", "RuleRangerLogLabel", "Rule Ranger"),
                                         InitOptions);
-    UE_LOGFMT(RuleRanger, VeryVerbose, "FRuleRangerMessageLog::Shutdown(): Registered MessageLog.");
+    UE_LOGFMT(LogRuleRanger, VeryVerbose, "FRuleRangerMessageLog::Shutdown(): Registered MessageLog.");
 }
 
 void FRuleRangerMessageLog::Shutdown()
@@ -42,12 +42,12 @@ void FRuleRangerMessageLog::Shutdown()
         FMessageLogModule& MessageLogModule = FModuleManager::GetModuleChecked<FMessageLogModule>(MessageLogModuleName);
         if (MessageLogModule.IsRegisteredLogListing(GetMessageLogName()))
         {
-            UE_LOGFMT(RuleRanger, VeryVerbose, "FRuleRangerMessageLog::Shutdown(): Deregistering MessageLog.");
+            UE_LOGFMT(LogRuleRanger, VeryVerbose, "FRuleRangerMessageLog::Shutdown(): Deregistering MessageLog.");
             MessageLogModule.UnregisterLogListing(GetMessageLogName());
         }
         else
         {
-            UE_LOGFMT(RuleRanger,
+            UE_LOGFMT(LogRuleRanger,
                       Verbose,
                       "FRuleRangerMessageLog::Shutdown(): Skipping deregister of MessageLog as not registered.");
         }

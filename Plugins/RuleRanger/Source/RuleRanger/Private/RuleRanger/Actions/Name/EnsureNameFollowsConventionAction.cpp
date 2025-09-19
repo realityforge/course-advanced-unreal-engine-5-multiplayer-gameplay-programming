@@ -15,6 +15,7 @@
 #include "Editor.h"
 #include "RuleRanger/RuleRangerUtilities.h"
 #include "RuleRangerConfig.h"
+#include "RuleRangerRuleSet.h"
 #include "Subsystems/EditorAssetSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureNameFollowsConventionAction)
@@ -73,9 +74,8 @@ void UEnsureNameFollowsConventionAction::RebuildCachesIfNecessary()
     if (!OnObjectModifiedDelegateHandle.IsValid())
     {
         // Add a callback for when ANY object is modified in the editor so that we can bust the cache
-        OnObjectModifiedDelegateHandle = FCoreUObjectDelegates::OnObjectModified.AddUObject(
-            this,
-            &UEnsureNameFollowsConventionAction::ResetCachesIfTablesModified);
+        OnObjectModifiedDelegateHandle =
+            FCoreUObjectDelegates::OnObjectModified.AddUObject(this, &ThisClass::ResetCachesIfTablesModified);
     }
 }
 
@@ -99,13 +99,6 @@ void UEnsureNameFollowsConventionAction::Apply_Implementation(URuleRangerActionC
     if (Classes.Contains(UObjectRedirector::StaticClass()))
     {
         LogInfo(Object, TEXT("Object is an ObjectRedirector and can not be renamed. No action required."));
-        return;
-    }
-    else if (Classes.Contains(AActor::StaticClass()))
-    {
-        LogInfo(Object,
-                TEXT("Object is an Actor and actor naming is not managed the "
-                     "EnsureNameFollowsConventionAction. No action required."));
         return;
     }
 
@@ -276,9 +269,18 @@ void UEnsureNameFollowsConventionAction::Apply_Implementation(URuleRangerActionC
 
 void UEnsureNameFollowsConventionAction::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
-    const FName PropertyName = PropertyChangedEvent.Property ? PropertyChangedEvent.Property->GetFName() : NAME_None;
-    if ((GET_MEMBER_NAME_CHECKED(UEnsureNameFollowsConventionAction, DeprecatedConventionsTables)) == PropertyName
-        || (GET_MEMBER_NAME_CHECKED(UEnsureNameFollowsConventionAction, NameConventionsTables)) == PropertyName)
+    // ReSharper disable once CppTooWideScopeInitStatement
+    const auto PropertyName = PropertyChangedEvent.Property ? PropertyChangedEvent.Property->GetFName() : NAME_None;
+    if ((GET_MEMBER_NAME_CHECKED(ThisClass, DeprecatedConventionsTables)) == PropertyName
+        || (GET_MEMBER_NAME_CHECKED(ThisClass, NameConventionsTables)) == PropertyName)
+    {
+        ResetCaches();
+    }
+    else if ((GET_MEMBER_NAME_CHECKED(URuleRangerConfig, DataTables)) == PropertyName)
+    {
+        ResetCaches();
+    }
+    else if ((GET_MEMBER_NAME_CHECKED(URuleRangerRuleSet, DataTables)) == PropertyName)
     {
         ResetCaches();
     }
@@ -308,20 +310,13 @@ void UEnsureNameFollowsConventionAction::ResetCaches()
 void UEnsureNameFollowsConventionAction::RebuildConfigConventionsTables(const URuleRangerActionContext* ActionContext)
 {
     ConfigConventionsTables.Reset();
-    for (const auto DataTable : ActionContext->GetOwnerConfig()->DataTables)
+    ActionContext->GetOwnerConfig()->CollectDataTables(FNameConvention::StaticStruct(), ConfigConventionsTables);
+    for (const auto DataTable : ConfigConventionsTables)
     {
-        if (IsValid(DataTable))
-        {
-            if (FNameConvention::StaticStruct() == DataTable->RowStruct)
-            {
-                LogInfo(
-                    nullptr,
-                    FString::Printf(TEXT("Adding DataTable '%s' registered in Config %s to set of conventions applied"),
-                                    *DataTable.GetName(),
-                                    *ActionContext->GetOwnerConfig()->GetName()));
-                ConfigConventionsTables.Add(DataTable);
-            }
-        }
+        LogInfo(nullptr,
+                FString::Printf(TEXT("Adding DataTable '%s' registered in Config %s to set of conventions applied"),
+                                *DataTable.GetName(),
+                                *ActionContext->GetOwnerConfig()->GetName()));
     }
 }
 

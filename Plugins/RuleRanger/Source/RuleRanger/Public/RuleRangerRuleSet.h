@@ -32,6 +32,12 @@ public:
     UPROPERTY(EditDefaultsOnly, Category = "Rule Ranger")
     FText Description;
 
+    /** A set of DataTables that are used to drive different actions. */
+    UPROPERTY(EditDefaultsOnly,
+              Category = "Rule Sets",
+              meta = (DisplayThumbnail = "false", ForceShowPluginContent = "true"))
+    TArray<TObjectPtr<UDataTable>> DataTables;
+
     /** A set of RuleSets that this ruleSet aggregates. These rules are applied prior to the individual rules. */
     UPROPERTY(EditDefaultsOnly,
               Category = "Rules",
@@ -43,4 +49,13 @@ public:
               Category = "Rules",
               meta = (AllowAbstract = "false", DisplayThumbnail = "false", ForceShowPluginContent = "true"))
     TArray<TObjectPtr<URuleRangerRule>> Rules;
+
+    /**
+     * Collect the DataTables that are transitively defined in the RuleRangerRuleSet that have the specified
+     * RowStructure.
+     *
+     * @param RowStructure The type representing each row in data table.
+     * @param OutDataTables The variable in which to place matching DataTables.
+     */
+    void CollectDataTables(const UScriptStruct* RowStructure, TArray<TObjectPtr<UDataTable>>& OutDataTables) const;
 };

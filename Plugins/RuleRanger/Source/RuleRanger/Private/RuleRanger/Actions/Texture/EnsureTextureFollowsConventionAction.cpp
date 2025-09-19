@@ -15,6 +15,7 @@
 #include "EnsureTextureFollowsConventionAction.h"
 #include "RuleRanger/RuleRangerUtilities.h"
 #include "RuleRangerConfig.h"
+#include "RuleRangerRuleSet.h"
 #include "Subsystems/EditorAssetSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(EnsureTextureFollowsConventionAction)
@@ -25,13 +26,17 @@ void UEnsureTextureFollowsConventionAction::PostEditChangeProperty(FPropertyChan
 {
     // ReSharper disable once CppTooWideScopeInitStatement
     const FName PropertyName = PropertyChangedEvent.Property ? PropertyChangedEvent.Property->GetFName() : NAME_None;
-    if ((GET_MEMBER_NAME_CHECKED(UEnsureTextureFollowsConventionAction, ConventionsTables)) == PropertyName)
+    if ((GET_MEMBER_NAME_CHECKED(ThisClass, ConventionsTables)) == PropertyName)
     {
-        ResetConventionsCache();
+        ResetCaches();
     }
     else if ((GET_MEMBER_NAME_CHECKED(URuleRangerConfig, DataTables)) == PropertyName)
     {
-        ResetConventionsCache();
+        ResetCaches();
+    }
+    else if ((GET_MEMBER_NAME_CHECKED(URuleRangerRuleSet, DataTables)) == PropertyName)
+    {
+        ResetCaches();
     }
     Super::PostEditChangeProperty(PropertyChangedEvent);
 }
@@ -47,12 +52,12 @@ void UEnsureTextureFollowsConventionAction::ResetCacheIfTableModified(UObject* O
             LogInfo(nullptr,
                     FString::Printf(TEXT("ResetCacheIfTableModified invoked for %s and caused a reset"),
                                     *Object->GetName()));
-            ResetConventionsCache();
+            ResetCaches();
         }
     }
 }
 
-void UEnsureTextureFollowsConventionAction::ResetConventionsCache()
+void UEnsureTextureFollowsConventionAction::ResetCaches()
 {
     LogInfo(nullptr, TEXT("Resetting the Conventions Cache"));
 
@@ -81,7 +86,7 @@ void UEnsureTextureFollowsConventionAction::RebuildConventionsCacheIfNecessary()
 
     if (ConventionsCache.IsEmpty() && bTableDataPresent)
     {
-        ResetConventionsCache();
+        ResetCaches();
         // Add a callback for when ANY object is modified in the editor so that we can bust the cache
         OnObjectModifiedDelegateHandle = FCoreUObjectDelegates::OnObjectModified.AddUObject(
             this,
@@ -235,7 +240,7 @@ void UEnsureTextureFollowsConventionAction::PerformTextureGroupCheck(
         if (bApplyFix && Convention->TextureGroups.Num() > 0)
         {
             FFormatNamedArguments Arguments;
-            Arguments.Add(TEXT("OriginalGroup"), Enum->GetDisplayNameTextByValue(Texture->CompressionSettings));
+            Arguments.Add(TEXT("OriginalGroup"), Enum->GetDisplayNameTextByValue(Texture->LODGroup));
             Arguments.Add(TEXT("NewGroup"), Enum->GetDisplayNameTextByValue(Convention->TextureGroups[0]));
             if (ActionContext->IsDryRun())
             {
@@ -496,20 +501,14 @@ void UEnsureTextureFollowsConventionAction::RebuildConfigConventionsTables(
     const URuleRangerActionContext* ActionContext)
 {
     ConfigConventionsTables.Reset();
-    for (const auto DataTable : ActionContext->GetOwnerConfig()->DataTables)
+    ActionContext->GetOwnerConfig()->CollectDataTables(FRuleRangerTextureConvention::StaticStruct(),
+                                                       ConfigConventionsTables);
+    for (const auto DataTable : ConfigConventionsTables)
     {
-        if (IsValid(DataTable))
-        {
-            if (FRuleRangerTextureConvention::StaticStruct() == DataTable->RowStruct)
-            {
-                LogInfo(
-                    nullptr,
-                    FString::Printf(TEXT("Adding DataTable '%s' registered in Config %s to set of conventions applied"),
-                                    *DataTable.GetName(),
-                                    *ActionContext->GetOwnerConfig()->GetName()));
-                ConfigConventionsTables.Add(DataTable);
-            }
-        }
+        LogInfo(nullptr,
+                FString::Printf(TEXT("Adding DataTable '%s' registered in Config %s to set of conventions applied"),
+                                *DataTable.GetName(),
+                                *ActionContext->GetOwnerConfig()->GetName()));
     }
 }
 

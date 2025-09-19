@@ -15,4 +15,4 @@
 #include "RuleRangerLogging.h"
 
 // The implementation of log category top use within plugin
-DEFINE_LOG_CATEGORY(RuleRanger);
+DEFINE_LOG_CATEGORY(LogRuleRanger);

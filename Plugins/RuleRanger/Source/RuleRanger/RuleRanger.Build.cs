@@ -19,8 +19,6 @@ public class RuleRanger : ModuleRules
     public RuleRanger(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-        PublicIncludePaths.AddRange(new string[] {});
-        PrivateIncludePaths.AddRange(new string[] {});
         PublicDependencyModuleNames.AddRange(new[] { "ContentBrowser", "Core" });
         // clang-format off
         PrivateDependencyModuleNames.AddRange(new[] {
@@ -43,6 +41,5 @@ public class RuleRanger : ModuleRules
             });
 		// clang-format on                    
         PrivateIncludePathModuleNames.AddRange(new[] { "MessageLog" });
-        DynamicallyLoadedModuleNames.AddRange(new string[] {});
     }
 }

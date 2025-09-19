@@ -14,3 +14,22 @@
 #include "RuleRangerRuleSet.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RuleRangerRuleSet)
+
+void URuleRangerRuleSet::CollectDataTables(const UScriptStruct* RowStructure,
+                                           TArray<TObjectPtr<UDataTable>>& OutDataTables) const
+{
+    for (const auto DataTable : DataTables)
+    {
+        if (IsValid(DataTable) && RowStructure == DataTable->RowStruct)
+        {
+            OutDataTables.Add(DataTable);
+        }
+    }
+    for (const auto RuleSet : RuleSets)
+    {
+        if (IsValid(RuleSet))
+        {
+            RuleSet->CollectDataTables(RowStructure, OutDataTables);
+        }
+    }
+}

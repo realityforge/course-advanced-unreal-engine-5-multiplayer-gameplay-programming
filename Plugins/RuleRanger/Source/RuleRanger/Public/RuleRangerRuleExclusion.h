@@ -15,23 +15,18 @@
 
 #include "RuleRangerRuleExclusion.generated.h"
 
+class URuleRangerConfig;
 class URuleRangerRule;
 class URuleRangerRuleSet;
 
 /**
  * Configuration indicating that one or more rules should be excluded when checking certain assets.
  */
-UCLASS(AutoExpandCategories = ("Rule Ranger"),
-       Blueprintable,
-       BlueprintType,
-       CollapseCategories,
-       DefaultToInstanced,
-       EditInlineNew)
-class RULERANGER_API URuleRangerRuleExclusion final : public UDataAsset
+USTRUCT(BlueprintType)
+struct FRuleRangerRuleExclusion final
 {
     GENERATED_BODY()
 
-public:
     /** A description indicating why the exclusion is in place. */
     UPROPERTY(EditDefaultsOnly, Category = "Rule Ranger")
     FText Description;
@@ -59,4 +54,20 @@ public:
     TArray<FDirectoryPath> Dirs;
 
     bool ExclusionMatches(const UObject& Object, const FString& Path) const;
+
+#if WITH_EDITORONLY_DATA
+    friend URuleRangerConfig;
+
+    /** The transient title property to use in the editor. */
+    UPROPERTY(VisibleDefaultsOnly, Transient, meta = (EditCondition = false, EditConditionHides))
+    FString EditorFriendlyTitle;
+
+private:
+    /**
+     * Derive the transient title property for use in the editor.
+     */
+    void InitEditorFriendlyTitleProperty();
+
+    FString DeriveSuffix() const;
+#endif
 };

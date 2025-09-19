@@ -18,5 +18,5 @@
 
 bool UMetadataTagPresent::Test_Implementation(UObject* Object) const
 {
-    return Key != NAME_None && IsValid(Object) ? Object->GetPackage()->GetMetaData()->HasValue(Object, Key) : false;
+    return Key != NAME_None && IsValid(Object) ? Object->GetPackage()->GetMetaData().HasValue(Object, Key) : false;
 }

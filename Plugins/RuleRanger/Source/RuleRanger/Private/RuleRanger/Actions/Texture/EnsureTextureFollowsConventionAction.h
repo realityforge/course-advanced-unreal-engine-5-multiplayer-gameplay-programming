@@ -58,7 +58,7 @@ class RULERANGER_API UEnsureTextureFollowsConventionAction final : public UTextu
     void ResetCacheIfTableModified(UObject* Object);
 
     /** Method to clear cache. */
-    void ResetConventionsCache();
+    void ResetCaches();
 
     /** Method to build cache if necessary. */
     void RebuildConventionsCacheIfNecessary();

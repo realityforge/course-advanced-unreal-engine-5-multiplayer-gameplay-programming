@@ -53,7 +53,7 @@ void URuleRangerRule::Apply_Implementation(URuleRangerActionContext* ActionConte
                     const auto State = ActionContext->GetState();
                     if (ERuleRangerActionState::AS_Fatal == State)
                     {
-                        UE_LOGFMT(RuleRanger,
+                        UE_LOGFMT(LogRuleRanger,
                                   Verbose,
                                   "ApplyRule({Object}) on rule {Rule} applied action {Action} "
                                   "which resulted in fatal error. Processing rules will not continue.",
@@ -65,7 +65,7 @@ void URuleRangerRule::Apply_Implementation(URuleRangerActionContext* ActionConte
                     else if (!bContinueOnError && ERuleRangerActionState::AS_Error == State)
                     {
                         UE_LOGFMT(
-                            RuleRanger,
+                            LogRuleRanger,
                             Verbose,
                             "ApplyRule({Object}) on rule {Rule} applied action {Action} "
                             "which resulted in error. Processing rules will not continue as ContinueOnError=False.",
@@ -98,7 +98,7 @@ bool URuleRangerRule::Match(URuleRangerActionContext* ActionContext, UObject* Ob
             {
                 if (!Matcher->Test(Object))
                 {
-                    UE_LOGFMT(RuleRanger,
+                    UE_LOGFMT(LogRuleRanger,
                               Verbose,
                               "Match({Object}) on rule {Rule} exited early as matcher {Matcher} did not match",
                               Object->GetName(),

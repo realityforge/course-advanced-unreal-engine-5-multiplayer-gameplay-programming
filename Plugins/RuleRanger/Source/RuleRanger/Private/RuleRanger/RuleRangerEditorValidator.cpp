@@ -51,7 +51,7 @@ EDataValidationResult URuleRangerEditorValidator::ValidateLoadedAsset_Implementa
 {
     if (!ActionContext)
     {
-        UE_LOGFMT(RuleRanger, VeryVerbose, "RuleRangerEditorSubsystem: Creating the initial ActionContext");
+        UE_LOGFMT(LogRuleRanger, VeryVerbose, "RuleRangerEditorSubsystem: Creating the initial ActionContext");
         ActionContext = NewObject<URuleRangerActionContext>(this, URuleRangerActionContext::StaticClass());
     }
 
@@ -69,7 +69,7 @@ EDataValidationResult URuleRangerEditorValidator::ValidateLoadedAsset_Implementa
     }
     else
     {
-        UE_LOGFMT(RuleRanger,
+        UE_LOGFMT(LogRuleRanger,
                   Error,
                   "OnAssetValidate({Asset}) unable to locate RuleRangerEditorSubsystem.",
                   InAsset->GetName());
@@ -92,7 +92,7 @@ bool URuleRangerEditorValidator::ProcessRule(URuleRangerConfig* const Config,
     const bool bIsSave = EDataValidationUsecase::Save == Context.GetValidationUsecase();
     if ((!bIsSave && Rule->bApplyOnValidate) || (bIsSave && Rule->bApplyOnSave))
     {
-        UE_LOGFMT(RuleRanger,
+        UE_LOGFMT(LogRuleRanger,
                   VeryVerbose,
                   "OnAssetValidate({Object}) detected applicable rule {Rule}.",
                   InObject->GetName(),
@@ -139,7 +139,7 @@ bool URuleRangerEditorValidator::WillRuleRunInDataValidationUsecase(
     const bool bIsSave = EDataValidationUsecase::Save == DataValidationUsecase;
     if (!bIsSave && Rule->bApplyOnValidate)
     {
-        UE_LOGFMT(RuleRanger,
+        UE_LOGFMT(LogRuleRanger,
                   VeryVerbose,
                   "CanValidateAsset({Object}) detected applicable rule {Rule} in usecase {Usecase}.",
                   InObject->GetName(),
@@ -149,7 +149,7 @@ bool URuleRangerEditorValidator::WillRuleRunInDataValidationUsecase(
     }
     else if (bIsSave && Rule->bApplyOnSave)
     {
-        UE_LOGFMT(RuleRanger,
+        UE_LOGFMT(LogRuleRanger,
                   VeryVerbose,
                   "CanValidateAsset({Object}) detected applicable rule {Rule} in usecase {Usecase}.",
                   InObject->GetName(),
@@ -186,7 +186,7 @@ bool URuleRangerEditorValidator::CanValidateAsset_Implementation(const FAssetDat
     }
     else
     {
-        UE_LOGFMT(RuleRanger,
+        UE_LOGFMT(LogRuleRanger,
                   Error,
                   "CanValidateAsset_Implementation({Asset}) unable to locate RuleRangerEditorSubsystem.",
                   InAsset->GetName());

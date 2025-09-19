@@ -18,19 +18,65 @@
 #include "EnsureDataOnlyBlueprintAction.generated.h"
 
 /**
+ * The structure for recording asset types that should have DataOnly blueprints.
+ */
+USTRUCT(BlueprintType)
+struct FDataOnlyBlueprintEntry final : public FTableRowBase
+{
+    GENERATED_BODY();
+
+    UPROPERTY(EditAnywhere, meta = (AllowAbstract))
+    TSoftClassPtr<UObject> ObjectType{ nullptr };
+};
+
+/**
  * Action to check that Blueprints assets that extend specific types are DataOnlyBlueprints.
+ * The action also checks that any Blueprints that extend a UCLASS with the (boolean) meta property
+ * 'RuleRangerDataOnly' must be a DataOnlyBlueprint.
  */
 UCLASS(DisplayName = "Ensure Blueprints derived from specific types are Data Only Blueprints")
 class RULERANGER_API UEnsureDataOnlyBlueprintAction final : public URuleRangerAction
 {
     GENERATED_BODY()
 
+    /** The array of tables that defines DataOnlyBlueprint types */
+    UPROPERTY(EditAnywhere,
+              meta = (RequiredAssetDataTags = "RowStructure=/Script/RuleRanger.DataOnlyBlueprintEntry",
+                      ForceShowPluginContent = "true"))
+    TArray<TObjectPtr<UDataTable>> DataOnlyBlueprintTables;
+
+    /** Cache of DataTables from Config. */
+    UPROPERTY(Transient)
+    TArray<TObjectPtr<UDataTable>> ConfigConventionsTables;
+
+    /** Cache for looking up rules. */
+    TSet<TSoftClassPtr<UObject>> ConventionsCache;
+
     /** The types where subtypes MUST be DataOnlyBlueprints. */
     UPROPERTY(EditAnywhere, meta = (AllowAbstract = true))
     TArray<TSubclassOf<UObject>> ObjectTypes;
 
+    /** Handle for delegate called when any object modified in editor. */
+    FDelegateHandle OnObjectModifiedDelegateHandle;
+
+    /** Callback when any object is modified in the editor. */
+    void ResetCachesIfTablesModified(UObject* Object);
+
+    /** Method to clear cache. */
+    void ResetCaches();
+
+    /** Method to build ConfigConventionsTables. */
+    void RebuildConfigConventionsTables(const URuleRangerActionContext* ActionContext);
+
+    /** Method to build convention cache if necessary. */
+    void RebuildConventionCacheIfNecessary();
+
+    void RebuildCachesIfNecessary();
+
 public:
     virtual void Apply_Implementation(URuleRangerActionContext* ActionContext, UObject* Object) override;
+
+    virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 
     virtual UClass* GetExpectedType() override;
 };

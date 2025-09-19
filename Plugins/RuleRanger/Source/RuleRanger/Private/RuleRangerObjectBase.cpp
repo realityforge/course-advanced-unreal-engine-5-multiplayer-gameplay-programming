@@ -20,7 +20,7 @@
 
 void URuleRangerObjectBase::LogInfo(const UObject* const Object, const FString& Message) const
 {
-    UE_LOGFMT(RuleRanger,
+    UE_LOGFMT(LogRuleRanger,
               VeryVerbose,
               "{Type}:{Instance}: {Message}",
               GetClass()->GetName(),
@@ -30,7 +30,7 @@ void URuleRangerObjectBase::LogInfo(const UObject* const Object, const FString& 
 
 void URuleRangerObjectBase::LogError(const UObject* const Object, const FString& Message) const
 {
-    UE_LOGFMT(RuleRanger,
+    UE_LOGFMT(LogRuleRanger,
               Error,
               "{Type}:{Instance}: {Message}",
               GetClass()->GetName(),

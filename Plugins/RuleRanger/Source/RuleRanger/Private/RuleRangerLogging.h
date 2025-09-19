@@ -16,4 +16,4 @@
 #include "Logging/LogCategory.h"
 
 // Log category to use within the RuleRanger plugin
-DECLARE_LOG_CATEGORY_EXTERN(RuleRanger, Verbose, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogRuleRanger, Warning, All);
