@@ -16,6 +16,7 @@ import subprocess
 import argparse
 import json
 import os
+import black
 
 plugins_to_process = ["Aeon", "ModularGasGameplayActors", "RuleRanger"]
 
@@ -88,12 +89,15 @@ try:
                                          universal_newlines=True).splitlines()
     files = tree_files + index_files
     files_to_format = []
+    python_files_to_format = []
     files_to_format_assuming_json = []
     for file in files:
         if not os.path.exists(file):
             # File does not exist. Probably means that the index list
             # includes deleted files. We just skip it
             pass
+        elif file.lower().endswith(".py"):
+            python_files_to_format.append(file)
         elif file.lower().endswith(".uproject"):
             files_to_format_assuming_json.append(file)
         elif file.lower().endswith(".h") or file.lower().endswith(".cpp") or file.lower().endswith(".cs"):
@@ -111,12 +115,23 @@ try:
     files_to_format.sort()
     files_to_format_assuming_json = list(set(files_to_format_assuming_json))
     files_to_format_assuming_json.sort()
+    python_files_to_format = list(set(python_files_to_format))
+    python_files_to_format.sort()
 
     if args.dry_run:
         for file in files_to_format_assuming_json:
             if format_json(file, True):
                 print(f"File {file} is not formatted correctly.")
                 exitcode = 1
+        if 0 != len(python_files_to_format):
+            mode = black.Mode()
+            for file in python_files_to_format:
+                src_path = Path(file)
+                src_text = src_path.read_text()
+                formatted = black.format_file_contents(src_text, fast=False, mode=mode)
+                if formatted != src_text:
+                    print(f"File {file} would be reformatted.")
+                    exitcode = 1
 
         if 0 != len(files_to_format):
             for file in files_to_format:
@@ -135,6 +150,16 @@ try:
         for file in files_to_format_assuming_json:
             format_json(file, False)
             normalize_line_endings(file)
+
+        if 0 != len(python_files_to_format):
+            mode = black.Mode()
+            for file in python_files_to_format:
+                black.format_file_in_place(
+                    Path(file),
+                    fast=False,
+                    mode=mode,
+                    write_back=black.WriteBack.YES
+                )
 
         if 0 != len(files_to_format):
             subprocess.run(["clang-format", "-i", *files_to_format], check=True)
