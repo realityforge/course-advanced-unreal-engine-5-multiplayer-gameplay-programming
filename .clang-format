@@ -16,6 +16,7 @@
 ---
 Language: Cpp
 BasedOnStyle: LLVM
+UseCRLF: true
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignEscapedNewlines: Left
