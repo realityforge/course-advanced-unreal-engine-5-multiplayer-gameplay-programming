@@ -13,4 +13,4 @@ rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 rem See the License for the specific language governing permissions and
 rem limitations under the License.
 
-braid push Plugins/RuleRanger && braid push Plugins/ModularGameplayActors && braid push Plugins/ModularGasGameplayActors && git add . && git stash && braid up Plugins/Aeon && braid up Plugins/RuleRanger && braid up Plugins/ModularGameplayActors && braid up Plugins/ModularGasGameplayActors && git stash pop && git reset
+braid push Plugins/Aeon && braid push Plugins/ModularGameplayActors && braid push Plugins/ModularGasGameplayActors && braid push Plugins/RuleRanger && git add . && git stash && braid up Plugins/Aeon && braid up Plugins/ModularGameplayActors && braid up Plugins/ModularGasGameplayActors && braid up Plugins/RuleRanger && braid up Plugins/MDMetaDataEditor && git stash pop && git reset
