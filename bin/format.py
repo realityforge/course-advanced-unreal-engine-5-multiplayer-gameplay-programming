@@ -16,6 +16,7 @@ import subprocess
 import argparse
 import json
 import os
+from pathlib import Path
 
 try:
     import black
@@ -28,9 +29,11 @@ plugins_to_process = ["Aeon", "ModularGasGameplayActors", "RuleRanger"]
 
 parser = argparse.ArgumentParser(description="Unreal Source Code Formatter")
 
-parser.add_argument('--verbose', action='store_true', help='Increase output verbosity')
-parser.add_argument('--dry-run', action='store_true', help='Should run in dry run mode and emit errors')
-parser.add_argument('files', type=str, nargs='*', help='The file to analyze')
+parser.add_argument("--verbose", action="store_true", help="Increase output verbosity")
+parser.add_argument(
+    "--dry-run", action="store_true", help="Should run in dry run mode and emit errors"
+)
+parser.add_argument("files", type=str, nargs="*", help="The file to analyze")
 
 args = parser.parse_args()
 
@@ -40,11 +43,12 @@ if args.verbose:
     else:
         print(f"Performing Source Code Formatting. Files: {args.files}")
 
+
 def remove_bom(filename, dry_run):
     with open(filename, "rb") as f:
         content = f.read()
     # UTF-8 BOM is b'\xef\xbb\xbf'
-    if content.startswith(b'\xef\xbb\xbf'):
+    if content.startswith(b"\xef\xbb\xbf"):
         if not dry_run:
             content = content[3:]
             with open(filename, "wb") as f:
@@ -61,7 +65,9 @@ def normalize_line_endings(filename, dry_run):
         content = f.read()
 
     # Normalize to LF first, then expand to platform default
-    new_content = content.replace("\r\n", "\n").replace("\r", "\n").replace("\n", os.linesep)
+    new_content = (
+        content.replace("\r\n", "\n").replace("\r", "\n").replace("\n", os.linesep)
+    )
     if new_content != content:
         # Write back with normalized line endings
         if not dry_run:
@@ -89,10 +95,14 @@ def format_json(filename, dry_run):
 exitcode = 0
 
 try:
-    index_files = subprocess.check_output(["git", "diff-index", "--cached", "--name-only", "HEAD", *args.files],
-                                          universal_newlines=True).splitlines()
-    tree_files = subprocess.check_output(["git", "ls-tree", "-r", "--name-only", "HEAD", *args.files],
-                                         universal_newlines=True).splitlines()
+    index_files = subprocess.check_output(
+        ["git", "diff-index", "--cached", "--name-only", "HEAD", *args.files],
+        universal_newlines=True,
+    ).splitlines()
+    tree_files = subprocess.check_output(
+        ["git", "ls-tree", "-r", "--name-only", "HEAD", *args.files],
+        universal_newlines=True,
+    ).splitlines()
     files = tree_files + index_files
     files_to_format = []
     python_files_to_format = []
@@ -106,7 +116,11 @@ try:
             python_files_to_format.append(file)
         elif file.lower().endswith(".uproject"):
             files_to_format_assuming_json.append(file)
-        elif file.lower().endswith(".h") or file.lower().endswith(".cpp") or file.lower().endswith(".cs"):
+        elif (
+            file.lower().endswith(".h")
+            or file.lower().endswith(".cpp")
+            or file.lower().endswith(".cs")
+        ):
             if file.startswith("Source/"):
                 files_to_format.append(file)
             elif file.startswith("Plugins/"):
@@ -145,33 +159,34 @@ try:
                     print(f"File {file} contains BOM mark that would be stripped.")
                     exitcode = 1
                 if normalize_line_endings(file, True):
-                    print(f"File {file} contains non-normalized line endings that would be fixed.")
+                    print(
+                        f"File {file} contains non-normalized line endings that would be fixed."
+                    )
                     exitcode = 1
 
-            result = subprocess.run(["clang-format", " --dry-run", "--Werror", "-i", *files_to_format])
+            result = subprocess.run(
+                ["clang-format", " --dry-run", "--Werror", "-i", *files_to_format]
+            )
             if 0 != result.returncode:
                 print(result.stderr)
                 exitcode = result.returncode
     else:
         for file in files_to_format_assuming_json:
             format_json(file, False)
-            normalize_line_endings(file)
+            normalize_line_endings(file, False)
 
         if 0 != len(python_files_to_format):
             mode = black.Mode()
             for file in python_files_to_format:
                 black.format_file_in_place(
-                    Path(file),
-                    fast=False,
-                    mode=mode,
-                    write_back=black.WriteBack.YES
+                    Path(file), fast=False, mode=mode, write_back=black.WriteBack.YES
                 )
 
         if 0 != len(files_to_format):
             subprocess.run(["clang-format", "-i", *files_to_format], check=True)
             for file in files_to_format:
-                remove_bom(file)
-                normalize_line_endings(file)
+                remove_bom(file, False)
+                normalize_line_endings(file, False)
 
     if args.verbose:
         if 0 != len(files_to_format_assuming_json):

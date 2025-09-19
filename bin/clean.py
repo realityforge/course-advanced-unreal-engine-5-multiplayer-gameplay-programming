@@ -16,6 +16,7 @@ import os
 import shutil
 from pathlib import Path
 
+
 def delete_files_and_directories(paths):
     for path in paths:
         if os.path.exists(path):
@@ -40,7 +41,7 @@ paths_to_delete = [
     "Binaries",
     "Intermediate",
     "Saved",
-    "cmake-build-debug"
+    "cmake-build-debug",
 ]
 
 delete_files_and_directories(paths_to_delete)
