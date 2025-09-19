@@ -1,7 +1,6 @@
 #pragma once
 
 #include "AbilitySystemComponent.h"
-#include "Aeon/AbilitySystem/AeonAttributeSetHelper.h"
 #include "AttributeSet.h"
 #include "CoreMinimal.h"
 #include "AG_AttributeSetBase.generated.h"
@@ -14,23 +13,23 @@ class ACTIONGAME_API UAG_AttributeSetBase : public UAttributeSet
 public:
     UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_Health)
     FGameplayAttributeData Health;
-    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, Health);
+    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, Health);
 
     UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_MaxHealth)
     FGameplayAttributeData MaxHealth;
-    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, MaxHealth);
+    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, MaxHealth);
 
     UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_Stamina)
     FGameplayAttributeData Stamina;
-    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, Stamina);
+    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, Stamina);
 
     UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_MaxStamina)
     FGameplayAttributeData MaxStamina;
-    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, MaxStamina);
+    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, MaxStamina);
 
     UPROPERTY(BlueprintReadOnly, Category = "Movement Speed", ReplicatedUsing = OnRep_MaxMovementSpeed)
     FGameplayAttributeData MaxMovementSpeed;
-    ATTRIBUTE_ACCESSORS(UAG_AttributeSetBase, MaxMovementSpeed);
+    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, MaxMovementSpeed);
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
