@@ -35,9 +35,9 @@ public:
     /** The name of the AbilitySystemComponent component */
     static const FName NAME_AbilitySystemComponent;
 
-    //~ Begin IAbilitySystemInterface Interface
+#pragma region IAbilitySystemInterface
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-    //~ End IAbilitySystemInterface Interface
+#pragma endregion
 
     FORCEINLINE UAbilitySystemComponent* GetAbilitySystemComponentFast() const { return AbilitySystemComponent; }
 };
