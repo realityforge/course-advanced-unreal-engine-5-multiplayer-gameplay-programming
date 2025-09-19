@@ -44,6 +44,20 @@ def remove_bom(filename):
         print(f"BOM removed from {filename}")
 
 
+def normalize_line_endings(filename):
+    # Read file in text mode
+    with open(filename, "r", encoding="utf-8", newline="") as f:
+        content = f.read()
+
+    # Normalize to LF first, then expand to platform default
+    new_content = content.replace("\r\n", "\n").replace("\r", "\n").replace("\n", os.linesep)
+    if new_content != content:
+        # Write back with normalized line endings
+        with open(filename, "w", encoding="utf-8", newline="") as f:
+            f.write(new_content)
+        print(f"Line endings normalized to {repr(os.linesep)} in {filename}")
+
+
 def format_json(filename, dry_run):
     with open(filename, "r") as file:
         original_data = file.read()
@@ -104,11 +118,13 @@ try:
     else:
         for file in files_to_format_assuming_json:
             format_json(file, False)
+            normalize_line_endings(file)
 
         if 0 != len(files_to_format):
             subprocess.run(["clang-format", "-i", *files_to_format], check=True)
             for file in files_to_format:
                 remove_bom(file)
+                normalize_line_endings(file)
 
     if args.verbose:
         if 0 != len(files_to_format_assuming_json):
