@@ -193,10 +193,6 @@
       "Enabled": false
     },
     {
-      "Name": "StudioTelemetry",
-      "Enabled": false
-    },
-    {
       "Name": "SpeedTreeImporter",
       "Enabled": false
     },
