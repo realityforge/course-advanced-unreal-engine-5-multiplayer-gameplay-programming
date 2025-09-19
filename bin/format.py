@@ -33,6 +33,16 @@ if args.verbose:
     else:
         print(f"Performing Source Code Formatting. Files: {args.files}")
 
+def remove_bom(filename):
+    with open(filename, "rb") as f:
+        content = f.read()
+    # UTF-8 BOM is b'\xef\xbb\xbf'
+    if content.startswith(b'\xef\xbb\xbf'):
+        content = content[3:]
+        with open(filename, "wb") as f:
+            f.write(content)
+        print(f"BOM removed from {filename}")
+
 
 def format_json(filename, dry_run):
     with open(filename, "r") as file:
@@ -97,6 +107,8 @@ try:
 
         if 0 != len(files_to_format):
             subprocess.run(["clang-format", "-i", *files_to_format], check=True)
+            for file in files_to_format:
+                remove_bom(file)
 
     if args.verbose:
         if 0 != len(files_to_format_assuming_json):
