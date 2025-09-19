@@ -6,6 +6,11 @@
       "branch": "main",
       "revision": "fc014160097e7850e4294c61efa942a73bde03b5"
     },
+    "Plugins/MDMetaDataEditor": {
+      "url": "https://github.com/DoubleDeez/MDMetaDataEditor.git",
+      "branch": "main",
+      "revision": "1a2fa6f02e187518878a4b00dbcd28137706241f"
+    },
     "Plugins/ModularGameplayActors": {
       "url": "https://github.com/realityforge/LyraPlugins.git",
       "branch": "main",
