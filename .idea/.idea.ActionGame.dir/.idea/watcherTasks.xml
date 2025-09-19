@@ -14,9 +14,9 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="python" />
+      <option name="program" value="$PyInterpreterDirectory$/python" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Project Files Tracked by Git" />
+      <option name="scopeName" value="Local" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
@@ -34,9 +34,9 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="python" />
+      <option name="program" value="$PyInterpreterDirectory$/python" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Project Files Tracked by Git" />
+      <option name="scopeName" value="Local" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
@@ -54,9 +54,9 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="python" />
+      <option name="program" value="$PyInterpreterDirectory$/python" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Project Files Tracked by Git" />
+      <option name="scopeName" value="Local" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
@@ -68,15 +68,15 @@
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="uproject" />
       <option name="immediateSync" value="false" />
-      <option name="name" value="Format Unreal Engine project Files" />
+      <option name="name" value="Format Unreal Engine Project Files" />
       <option name="output" value="$FilePath$" />
       <option name="outputFilters">
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="python" />
+      <option name="program" value="$PyInterpreterDirectory$/python" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Project Files Tracked by Git" />
+      <option name="scopeName" value="Local" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
@@ -88,15 +88,35 @@
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="uplugin" />
       <option name="immediateSync" value="false" />
-      <option name="name" value="Format Unreal Engine plugin Files" />
+      <option name="name" value="Format Unreal Engine Plugin Files" />
       <option name="output" value="$FilePath$" />
       <option name="outputFilters">
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="python" />
+      <option name="program" value="$PyInterpreterDirectory$/python" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="Project Files Tracked by Git" />
+      <option name="scopeName" value="Local" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="$PROJECT_DIR$" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="bin/format.py --verbose $FilePathRelativeToProjectRoot$" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="py" />
+      <option name="immediateSync" value="false" />
+      <option name="name" value="Format Python Files" />
+      <option name="output" value="$FilePath$" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="$PyInterpreterDirectory$/python" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="Local" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$PROJECT_DIR$" />
       <envs />
