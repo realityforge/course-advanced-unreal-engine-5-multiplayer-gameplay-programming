@@ -55,31 +55,31 @@ void UAG_AttributeSetBase::PostAttributeChange(const FGameplayAttribute& Attribu
 // ReSharper disable once CppMemberFunctionMayBeConst
 void UAG_AttributeSetBase::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, Health, OldHealth)
+    GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Health, OldHealth)
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void UAG_AttributeSetBase::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, MaxHealth, OldMaxHealth)
+    GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxHealth, OldMaxHealth)
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void UAG_AttributeSetBase::OnRep_Stamina(const FGameplayAttributeData& OldStamina)
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, Stamina, OldStamina)
+    GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, Stamina, OldStamina)
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void UAG_AttributeSetBase::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina)
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, MaxStamina, OldMaxStamina)
+    GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxStamina, OldMaxStamina)
 }
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 void UAG_AttributeSetBase::OnRep_MaxMovementSpeed(const FGameplayAttributeData& OldMaxMovementSpeed)
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UAG_AttributeSetBase, MaxMovementSpeed, OldMaxMovementSpeed)
+    GAMEPLAYATTRIBUTE_REPNOTIFY(ThisClass, MaxMovementSpeed, OldMaxMovementSpeed)
 }
 
 void UAG_AttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -87,9 +87,9 @@ void UAG_AttributeSetBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     // No condition == send anytime it changes
-    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, Health, COND_None, REPNOTIFY_Always)
-    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxHealth, COND_None, REPNOTIFY_Always)
-    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, Stamina, COND_None, REPNOTIFY_Always)
-    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxStamina, COND_None, REPNOTIFY_Always)
-    DOREPLIFETIME_CONDITION_NOTIFY(UAG_AttributeSetBase, MaxMovementSpeed, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Health, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxHealth, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Stamina, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxStamina, COND_None, REPNOTIFY_Always)
+    DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxMovementSpeed, COND_None, REPNOTIFY_Always)
 }

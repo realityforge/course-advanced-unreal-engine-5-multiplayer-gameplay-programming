@@ -13,23 +13,23 @@ class ACTIONGAME_API UAG_AttributeSetBase : public UAttributeSet
 public:
     UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_Health)
     FGameplayAttributeData Health;
-    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, Health);
+    ATTRIBUTE_ACCESSORS_BASIC(ThisClass, Health);
 
     UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_MaxHealth)
     FGameplayAttributeData MaxHealth;
-    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, MaxHealth);
+    ATTRIBUTE_ACCESSORS_BASIC(ThisClass, MaxHealth);
 
     UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_Stamina)
     FGameplayAttributeData Stamina;
-    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, Stamina);
+    ATTRIBUTE_ACCESSORS_BASIC(ThisClass, Stamina);
 
     UPROPERTY(BlueprintReadOnly, Category = "Stamina", ReplicatedUsing = OnRep_MaxStamina)
     FGameplayAttributeData MaxStamina;
-    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, MaxStamina);
+    ATTRIBUTE_ACCESSORS_BASIC(ThisClass, MaxStamina);
 
     UPROPERTY(BlueprintReadOnly, Category = "Movement Speed", ReplicatedUsing = OnRep_MaxMovementSpeed)
     FGameplayAttributeData MaxMovementSpeed;
-    ATTRIBUTE_ACCESSORS_BASIC(UAG_AttributeSetBase, MaxMovementSpeed);
+    ATTRIBUTE_ACCESSORS_BASIC(ThisClass, MaxMovementSpeed);
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
