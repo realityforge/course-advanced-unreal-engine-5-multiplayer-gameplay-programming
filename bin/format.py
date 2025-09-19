@@ -16,7 +16,13 @@ import subprocess
 import argparse
 import json
 import os
-import black
+
+try:
+    import black
+except ModuleNotFoundError:
+    print("⚠️ Black is not installed. Please install it by running:")
+    print("    pip install black")
+    raise SystemExit(1)
 
 plugins_to_process = ["Aeon", "ModularGasGameplayActors", "RuleRanger"]
 
