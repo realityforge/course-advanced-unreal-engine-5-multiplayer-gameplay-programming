@@ -26,6 +26,11 @@
       "LoadingPhase": "Default"
     },
     {
+      "Name": "AeonAnimation",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
       "Name": "AeonEditor",
       "Type": "Editor",
       "LoadingPhase": "Default"

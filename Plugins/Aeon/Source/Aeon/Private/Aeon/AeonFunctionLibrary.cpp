@@ -65,7 +65,7 @@ bool UAeonFunctionLibrary::TryActivateRandomSingleAbilityByTag(UAbilitySystemCom
             else
             {
                 UE_LOGFMT(LogAeon,
-                          VeryVerbose,
+                          Verbose,
                           "TryActivateRandomSingleAbilityByTag invoked with tag '{Tag}' found no "
                           "matching 'Activatable' GameplayAbilitySpecs on actor '{Actor}'. Either no such "
                           "Ability exists or the matching abilities are blocked or missing required tags",
@@ -77,7 +77,7 @@ bool UAeonFunctionLibrary::TryActivateRandomSingleAbilityByTag(UAbilitySystemCom
         else
         {
             UE_LOGFMT(LogAeon,
-                      Verbose,
+                      Warning,
                       "TryActivateRandomSingleAbilityByTag invoked with tag '{Tag}' on invalid actor",
                       AbilityTag.GetTagName());
             return false;
@@ -86,10 +86,45 @@ bool UAeonFunctionLibrary::TryActivateRandomSingleAbilityByTag(UAbilitySystemCom
     else
     {
         UE_LOGFMT(LogAeon,
-                  Verbose,
+                  Warning,
                   "TryActivateRandomSingleAbilityByTag invoked with empty tag on actor '{Actor}'",
                   AbilitySystemComponent->GetOwnerActor()->GetActorNameOrLabel());
         return false;
+    }
+}
+
+void UAeonFunctionLibrary::CancelActiveAbilitiesByTag(UAbilitySystemComponent* AbilitySystemComponent,
+                                                      const FGameplayTag& Tag)
+{
+    if (ensureAlways(Tag.IsValid()))
+    {
+        if (ensureAlways(AbilitySystemComponent))
+        {
+            TArray<FGameplayAbilitySpec*> Specs;
+            AbilitySystemComponent->GetActivatableGameplayAbilitySpecsByAllMatchingTags(Tag.GetSingleTagContainer(),
+                                                                                        Specs);
+            for (const auto Spec : Specs)
+            {
+                if (Spec && Spec->IsActive())
+                {
+                    AbilitySystemComponent->CancelAbilityHandle(Spec->Handle);
+                }
+            }
+        }
+        else
+        {
+            UE_LOGFMT(LogAeon,
+                      Warning,
+                      "CancelActiveAbilitiesByTag invoked with tag '{Tag}' on invalid AbilitySystemComponent");
+        }
+    }
+    else
+    {
+        UE_LOGFMT(LogAeon,
+                  Warning,
+                  "CancelActiveAbilitiesByTag invoked with invalid tag on actor '{Actor}'",
+                  AbilitySystemComponent ? AbilitySystemComponent->GetOwnerActor()->GetActorNameOrLabel()
+                                         : FString("Unknown"));
     }
 }
 

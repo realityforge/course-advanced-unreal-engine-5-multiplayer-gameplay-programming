@@ -32,12 +32,12 @@ bool UAeonGameplayAbility::DoesAbilitySatisfyTagRequirements(const UAbilitySyste
 {
     // NOTE: This method was overriden to incorporate support for the AbilityTagRelationship
 
-    FGameplayTagContainer AllActivationRequiredTags = ActivationRequiredTags;
-    FGameplayTagContainer AllActivationBlockedTags = ActivationBlockedTags;
-    FGameplayTagContainer AllSourceRequiredTags = SourceRequiredTags;
-    FGameplayTagContainer AllSourceBlockedTags = SourceBlockedTags;
-    FGameplayTagContainer AllTargetRequiredTags = TargetRequiredTags;
-    FGameplayTagContainer AllTargetBlockedTags = TargetBlockedTags;
+    auto AllActivationRequiredTags = ActivationRequiredTags;
+    auto AllActivationBlockedTags = ActivationBlockedTags;
+    auto AllSourceRequiredTags = SourceRequiredTags;
+    auto AllSourceBlockedTags = SourceBlockedTags;
+    auto AllTargetRequiredTags = TargetRequiredTags;
+    auto AllTargetBlockedTags = TargetBlockedTags;
 
     // Expand our ability tags to add additional tag requirements
     if (const auto AeonASC = Cast<UAeonAbilitySystemComponent>(&AbilitySystemComponent))
@@ -73,9 +73,7 @@ bool UAeonGameplayAbility::DoesAbilitySatisfyTagRequirements(const UAbilitySyste
             // Ensure the global blocking tag is only added once
             if (!bBlocked)
             {
-                UAbilitySystemGlobals& AbilitySystemGlobals = UAbilitySystemGlobals::Get();
-                const FGameplayTag& BlockedTag = AbilitySystemGlobals.ActivateFailTagsBlockedTag;
-                OptionalRelevantTags->AddTag(BlockedTag);
+                OptionalRelevantTags->AddTag(UAbilitySystemGlobals::Get().ActivateFailTagsBlockedTag);
             }
 
             // Now append all the blocking tags
@@ -99,12 +97,10 @@ bool UAeonGameplayAbility::DoesAbilitySatisfyTagRequirements(const UAbilitySyste
             // Ensure the global missing tag is only added once
             if (!bMissing)
             {
-                UAbilitySystemGlobals& AbilitySystemGlobals = UAbilitySystemGlobals::Get();
-                const FGameplayTag& MissingTag = AbilitySystemGlobals.ActivateFailTagsMissingTag;
-                OptionalRelevantTags->AddTag(MissingTag);
+                OptionalRelevantTags->AddTag(UAbilitySystemGlobals::Get().ActivateFailTagsMissingTag);
             }
 
-            FGameplayTagContainer MissingTags = RequiredTags;
+            auto MissingTags = RequiredTags;
             MissingTags.RemoveTags(TagsToCheck.GetGameplayTagParents());
             OptionalRelevantTags->AppendTags(MissingTags);
         }
