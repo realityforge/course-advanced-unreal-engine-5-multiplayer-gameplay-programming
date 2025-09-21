@@ -121,7 +121,9 @@ bool URuleRangerEditorValidator::ProcessRule(URuleRangerConfig* const Config,
         {
             AssetFails(InObject, ActionContext->GetFatalMessages()[i]);
         }
-        return ActionContext->GetFatalMessages().Num() <= 0;
+        const bool bFail = ActionContext->GetFatalMessages().Num() <= 0;
+        ActionContext->ClearContext();
+        return bFail;
     }
     else
     {

@@ -453,6 +453,7 @@ bool URuleRangerEditorSubsystem::ProcessOnAssetPostImportRule(URuleRangerConfig*
                   Rule->GetName(),
                   bIsReimport ? TEXT("reimport") : TEXT("import"));
     }
+    ActionContext->ClearContext();
     return true;
 }
 
@@ -508,6 +509,7 @@ bool URuleRangerEditorSubsystem::ProcessDemandScan(URuleRangerConfig* const Conf
                   InObject->GetName(),
                   Rule->GetName());
     }
+    ActionContext->ClearContext();
     return true;
 }
 
@@ -564,5 +566,6 @@ bool URuleRangerEditorSubsystem::ProcessDemandScanAndFix(URuleRangerConfig* cons
                   InObject->GetName(),
                   Rule->GetName());
     }
+    ActionContext->ClearContext();
     return true;
 }
